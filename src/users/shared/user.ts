@@ -9,6 +9,7 @@ import {
 // import { Expose } from 'class-transformer';
 
 export class User {
+  _id: string;
   // @Expose({ name: 'Nome' })
   @IsNotEmpty({
     message: 'Nome Completo é obrigatório.',
