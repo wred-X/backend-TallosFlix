@@ -15,6 +15,7 @@ export const MovieSchema = new mongoose.Schema({
   poster: String,
   title: String,
   fullplot: String,
+  metacritic: Number,
   languages: {
     type: [String],
     required: true,
@@ -51,4 +52,11 @@ export const MovieSchema = new mongoose.Schema({
     dvd: Date,
     lastUpdated: Date,
   },
+  dvd: Date,
+  fresh: Number,
+  production: String,
+  rotten: Number,
+  lastUpdated: Date,
+  website: String,
+  writers: [String],
 });

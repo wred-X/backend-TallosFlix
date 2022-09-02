@@ -24,6 +24,11 @@ export class UsersController {
     return await this.userService.getById(id);
   }
 
+  // @Get('me')
+  // getMe(@CurrentUser() user: User) {
+  //   return this.userService.getMe(user);
+  // }
+
   @Post()
   async create(@Body() user: User): Promise<User> {
     return await this.userService.create(user);
