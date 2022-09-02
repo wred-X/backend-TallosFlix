@@ -14,9 +14,6 @@ import { JwtAuthGuard } from './autentications/guards/jwt-autentication.guard';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.USER_BD),
-    // MongooseModule.forRoot(
-    //   'mongodb://wesleysousa:lumia710@somngd01.cloud.dns.internal:27017,somngd02.cloud.dns.internal:27017,somngd03.cloud.dns.internal:27017/lucassantos?authMechanism=DEFAULT&replicaSet=rs0&readPreference=secondaryPreferred&authSource=admin'
-    // ),
     UsersModule,
     CommentsModule,
     MoviesModule,

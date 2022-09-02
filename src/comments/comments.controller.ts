@@ -7,9 +7,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Comment } from './shared/comment';
 import { CommentService } from './shared/comment.service';
 
+@ApiTags('comments')
 @Controller('comments')
 export class CommentsController {
   constructor(private commentService: CommentService) {}

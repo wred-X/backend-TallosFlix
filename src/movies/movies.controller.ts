@@ -7,9 +7,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
-
+@ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
   constructor(private movieService: MovieService) {}
