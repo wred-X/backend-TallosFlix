@@ -1,14 +1,16 @@
 export class Movie {
   plot: string;
-  genres: [];
+  genres: [string];
   runtime: number;
-  cast: [];
+  cast: [string];
   num_mflix_comments: number;
+  poster: string;
   title: string;
   fullplot: string;
-  countries: [];
+  languages: [string];
+  countries: [string];
   realeased: Date;
-  directors: [];
+  directors: [string];
   rated: string;
   awards: {
     wins: number;
@@ -29,6 +31,7 @@ export class Movie {
       numReviews: number;
       meter: number;
     };
+    dvd: Date;
     lastUpdated: Date;
   };
 }

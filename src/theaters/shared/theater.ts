@@ -1,17 +1,21 @@
-export class Theater {
+import { Document } from 'mongoose';
+
+export class Theater extends Document {
   theaterId: number;
   location: {
-    adress: {
+    address: {
       street1: string;
       city: string;
       state: string;
+      zipcode: string;
     };
     geo: {
       type: string;
-      coordinates: {
-        0: number;
-        1: number;
-      };
+      coordinates: [number];
     };
   };
 }
+
+// export interface Coordinates extends Document {
+//   geo: number;
+// }

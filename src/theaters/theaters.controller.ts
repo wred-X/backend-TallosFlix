@@ -1,4 +1,44 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { Theater } from './shared/theater';
+import { TheaterService } from './shared/theater.service';
 
 @Controller('theaters')
-export class TheatersController {}
+export class TheatersController {
+  constructor(private theaterService: TheaterService) {}
+
+  @Get()
+  async getAll(): Promise<Theater[]> {
+    return await this.theaterService.getAll();
+  }
+
+  @Get(':id')
+  async getById(@Param('id') id: string): Promise<Theater> {
+    return await this.theaterService.getById(id);
+  }
+
+  @Post()
+  async create(@Body() theater: Theater): Promise<Theater> {
+    return await this.theaterService.create(theater);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() theater: Theater
+  ): Promise<Theater> {
+    return this.theaterService.update(id, theater);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.theaterService.delete(id);
+  }
+}
