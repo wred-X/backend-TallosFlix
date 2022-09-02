@@ -6,7 +6,7 @@ import { CommentsModule } from './comments/comments.module';
 import { MoviesModule } from './movies/movies.module';
 import { TheatersModule } from './theaters/theaters.module';
 import { SessionsModule } from './sessions/sessions.module';
-import { AutenticationModule } from './autentication/autentication.module';
+import { AutenticationsModule } from './autentications/autentications.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -19,7 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MoviesModule,
     TheatersModule,
     SessionsModule,
-    AutenticationModule,
+    AutenticationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
