@@ -9,7 +9,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { IsPublic } from './decorators/is-public-decorator';
 import { LocalAutenticationGuard } from './guards/local-auth.guard';
-import { AuthRequest } from './models/AuthRequest';
+import { AuthRequest } from './models/authRequest';
 import { AutenticationService } from './shared/autentication.service';
 
 @ApiTags('login')

@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  main:
+    container_name: 'api-movie'
+    build: '.'
+    volumes:
+      - '.:/main:rw'
+      - '/main/node_modules'
+    environment:
+      MONGO_URI: 'mongodb://wesleysousa:lumia710@somngd01.cloud.dns.internal:27017,somngd02.cloud.dns.internal:27017,somngd03.cloud.dns.internal:27017/lucassantos?authMechanism=DEFAULT&replicaSet=rs0&readPreference=secondaryPreferred&authSource=admin'
+    ports:
+      - '3000:3000'
