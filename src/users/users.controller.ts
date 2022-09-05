@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger/dist';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
+import { CurrentUser } from 'src/autentications/decorators/current-user.decorator';
 
 @ApiTags('users')
 @Controller('users')
@@ -26,10 +27,10 @@ export class UsersController {
     return await this.userService.getById(id);
   }
 
-  // @Get('me')
-  // getMe(@CurrentUser() user: User) {
-  //   return this.userService.getMe(user);
-  // }
+  @Get('me')
+  getMe(@CurrentUser() user: User) {
+    return this.userService.getMe(user);
+  }
 
   @Post()
   async create(@Body() user: User): Promise<User> {

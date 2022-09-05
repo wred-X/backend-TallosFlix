@@ -15,8 +15,18 @@ export class CommentService {
     return await this.commentsModel.findById(id).exec();
   }
 
-  async getByMovieId(movie_id: string) {
-    return await this.commentsModel.find({ comments: movie_id });
+  // async getByMovieId(movie_id: string) {
+  //   const movie = movie_id;
+  //   return await this.commentsModel.findOne({ movie }).exec();
+  // }
+
+  async getByMovieId(movie_id: string): Promise<Comment[]> {
+    const id = `ObjectId('${movie_id}')`;
+    const commentsMovie = this.commentsModel.find({
+      movie_id: id,
+    });
+    console.log(commentsMovie, 'serviceeeeeee');
+    return commentsMovie;
   }
 
   async create(comments: Comment) {
