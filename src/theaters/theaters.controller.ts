@@ -7,11 +7,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Theater } from './shared/theater';
 import { TheaterService } from './shared/theater.service';
 
 @ApiTags('theaters')
+@ApiBearerAuth('JWT-auth')
 @Controller('theaters')
 export class TheatersController {
   constructor(private theaterService: TheaterService) {}

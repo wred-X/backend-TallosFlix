@@ -18,6 +18,17 @@ async function bootstrap() {
     .addTag('comments')
     .addTag('login')
     .addTag('sessions')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth'
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

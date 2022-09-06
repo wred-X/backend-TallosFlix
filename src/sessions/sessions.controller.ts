@@ -7,11 +7,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Session } from './shared/session';
 import { SessionService } from './shared/session.service';
 
 @ApiTags('sessions')
+@ApiBearerAuth('JWT-auth')
 @Controller('sessions')
 export class SessionsController {
   constructor(private sessionService: SessionService) {}

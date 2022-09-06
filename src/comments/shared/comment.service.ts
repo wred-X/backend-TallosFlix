@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './comment';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CommentService {
@@ -21,10 +22,10 @@ export class CommentService {
   // }
 
   async getByMovieId(movie_id: string): Promise<Comment[]> {
-    const id = `ObjectId('${movie_id}')`;
-    const commentsMovie = this.commentsModel.find({
-      movie_id: id,
-    });
+    //const id = `ObjectId('${movie_id}')`;
+    const id = new ObjectId(movie_id);
+    const commentsMovie = this.commentsModel.find(id);
+    console.log(commentsMovie, 'serviceeeeeee');
     return commentsMovie;
   }
 

@@ -7,12 +7,13 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger/dist';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger/dist';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
-import { CurrentUser } from 'src/autentications/decorators/current-user.decorator';
+import { CurrentUser } from '../autentications/decorators/current-user.decorator';
 
 @ApiTags('users')
+@ApiBearerAuth('JWT-auth')
 @Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}

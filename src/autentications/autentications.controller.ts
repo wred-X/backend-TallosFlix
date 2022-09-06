@@ -6,13 +6,14 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IsPublic } from './decorators/is-public-decorator';
 import { LocalAutenticationGuard } from './guards/local-auth.guard';
 import { AuthRequest } from './models/authRequest';
 import { AutenticationService } from './shared/autentication.service';
 
 @ApiTags('login')
+@ApiBearerAuth('JWT-auth')
 @Controller()
 export class AutenticationsController {
   constructor(private autenticationService: AutenticationService) {}
