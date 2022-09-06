@@ -13,10 +13,12 @@ import { UsersModule } from 'src/users/users.module';
 import { AutenticationsController } from './autentications.controller';
 import { AutenticationService } from './shared/autentication.service';
 import { ConfigService } from '@nestjs/config/dist';
+import { SessionsModule } from 'src/sessions/sessions.module';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
+    forwardRef(() => SessionsModule),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,

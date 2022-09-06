@@ -17,6 +17,7 @@ async function bootstrap() {
     .addTag('movies')
     .addTag('comments')
     .addTag('login')
+    .addTag('sessions')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

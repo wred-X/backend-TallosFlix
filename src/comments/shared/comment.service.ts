@@ -25,7 +25,6 @@ export class CommentService {
     const commentsMovie = this.commentsModel.find({
       movie_id: id,
     });
-    console.log(commentsMovie, 'serviceeeeeee');
     return commentsMovie;
   }
 

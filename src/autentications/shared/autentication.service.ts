@@ -4,8 +4,10 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/shared/user';
 import { UserService } from 'src/users/shared/user.service';
+import { SessionService } from 'src/sessions/shared/session.service';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 import { UserPayload } from '../models/userPayload';
+import { UserSession } from '../models/userSession';
 import { UserToken } from '../models/userToken';
 
 @Injectable()
@@ -13,6 +15,7 @@ export class AutenticationService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
+    private readonly sessionService: SessionService,
     private readonly configService: ConfigService
   ) {}
 
@@ -23,8 +26,19 @@ export class AutenticationService {
       name: user.name,
     };
 
+    const userInfo = user._id;
+
+    const access = this.jwtService.sign(payload);
+
+    const session: UserSession = {
+      user_id: userInfo,
+      jwt: access,
+    };
+
+    await this.sessionService.create(session);
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: access,
     };
   }
 
@@ -35,10 +49,7 @@ export class AutenticationService {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (isPasswordValid) {
-        return {
-          ...user,
-          password: undefined,
-        };
+        return user;
       }
     }
 

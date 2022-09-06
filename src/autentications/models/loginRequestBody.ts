@@ -6,4 +6,9 @@ export class LoginRequestBody {
 
   @IsString()
   password: string;
+
+  constructor(todo?: Partial<LoginRequestBody>) {
+    this.email = todo?.email;
+    this.password = todo?.password;
+  }
 }

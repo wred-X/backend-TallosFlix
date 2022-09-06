@@ -1,9 +1,4 @@
 import * as mongoose from 'mongoose';
-
-export const CoordinatesSchema = new mongoose.Schema({
-  geo: Number,
-});
-
 export const TheaterSchema = new mongoose.Schema({
   theaterId: Number,
   location: {

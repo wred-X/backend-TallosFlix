@@ -22,14 +22,14 @@ export class UsersController {
     return await this.userService.getAll();
   }
 
-  @Get(':id')
-  async getById(@Param('id') id: string): Promise<User> {
-    return await this.userService.getById(id);
-  }
-
   @Get('me')
   getMe(@CurrentUser() user: User) {
     return this.userService.getMe(user);
+  }
+
+  @Get(':id')
+  async getById(@Param('id') id: string): Promise<User> {
+    return await this.userService.getById(id);
   }
 
   @Post()
