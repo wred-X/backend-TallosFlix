@@ -8,6 +8,6 @@ services:
       - '.:/main:rw'
       - '/main/node_modules'
     environment:
-      MONGO_URI: 'mongodb://wesleysousa:lumia710@somngd01.cloud.dns.internal:27017,somngd02.cloud.dns.internal:27017,somngd03.cloud.dns.internal:27017/lucassantos?authMechanism=DEFAULT&replicaSet=rs0&readPreference=secondaryPreferred&authSource=admin'
+      MONGO_URI: process.env.USER_BD
     ports:
       - '3000:3000'
