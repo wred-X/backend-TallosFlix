@@ -27,6 +27,16 @@ export class TheatersController {
     return await this.theaterService.getById(id);
   }
 
+  @Post('/geoSearch')
+  async getByLocation(
+    @Body() cord: { lat: number; long: number }
+  ): Promise<Theater[]> {
+    console.log(cord);
+    console.log(cord.lat);
+    console.log(cord.long);
+    return await this.theaterService.getByLocation(cord.lat, cord.long);
+  }
+
   @Post()
   async create(@Body() theater: Theater): Promise<Theater> {
     return await this.theaterService.create(theater);

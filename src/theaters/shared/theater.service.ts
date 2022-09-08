@@ -17,6 +17,31 @@ export class TheaterService {
     return await this.theaterModel.findById(id).exec();
   }
 
+  async getByLocation(coordinates1: number, coordinates2: number) {
+    const teste = [coordinates1, coordinates2];
+    console.log(teste);
+    const theaterSearch = await this.theaterModel
+      .aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: 'Point',
+              coordinates: [coordinates1, coordinates2],
+            },
+            spherical: true,
+            distanceField: 'Distance',
+            maxDistance: 1000,
+            minDistance: 0,
+          },
+        },
+        //  { $skip: 0 },
+        //  { $limit: 2 },
+      ])
+      .exec();
+    console.log(theaterSearch);
+    return theaterSearch;
+  }
+
   async create(theater: Theater) {
     const createdTheater = new this.theaterModel(theater);
     return await createdTheater.save();

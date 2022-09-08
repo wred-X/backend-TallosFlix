@@ -10,7 +10,7 @@ export class Movie extends Document {
   plot: string;
 
   @ApiProperty({
-    example: '[Ação, Aventura]',
+    example: ['Ação', 'Aventura'],
     description: `Genero do filme.`,
   })
   @IsNotEmpty({
@@ -26,7 +26,7 @@ export class Movie extends Document {
   runtime: number;
 
   @ApiProperty({
-    example: '[Brad Pitt, Tom Cruise, Jennifer Lawrence]',
+    example: ['Brad Pitt', 'Tom Cruise', 'Jennifer Lawrence'],
     description: `Parte do elenco principal do filme.`,
   })
   @IsNotEmpty({
@@ -72,7 +72,7 @@ export class Movie extends Document {
   metacritic: number;
 
   @ApiProperty({
-    example: '[Portuguese, English]',
+    example: ['Portuguese', 'English'],
     description: `Idiomas disponiveis para assistir o filme.`,
   })
   @IsNotEmpty({
@@ -81,7 +81,7 @@ export class Movie extends Document {
   languages: [string];
 
   @ApiProperty({
-    example: '[Brazil]',
+    example: ['Brazil'],
     description: `País da produção do filme.`,
   })
   @IsNotEmpty({
@@ -97,7 +97,7 @@ export class Movie extends Document {
   realeased: Date;
 
   @ApiProperty({
-    example: '[Tarantino, Christhofer Nolan]',
+    example: ['Tarantino', 'Christhofer Nolan'],
     description: `Diretor(es) do filme.`,
   })
   @IsNotEmpty({
@@ -239,7 +239,7 @@ export class Movie extends Document {
   website: string;
 
   @ApiProperty({
-    example: '[Tarantino]',
+    example: ['Tarantino'],
     description: 'Roteirista(s) do filme.',
   })
   @IsOptional()
