@@ -12,8 +12,10 @@ RUN npm install
 
 COPY . .
 
-ENTRYPOINT [ "npm", "run", "start:dev" ]
+RUN npm run build
+
+ENTRYPOINT [ "npm", "run", "start" ]
 
 USER node
 
-EXPOSE 300
+EXPOSE 3000
