@@ -21,11 +21,11 @@ export class CommentService {
   //   return await this.commentsModel.findOne({ movie }).exec();
   // }
 
-  async getByMovieId(movie_id: string): Promise<Comment[]> {
-    //const id = `ObjectId('${movie_id}')`;
-    const id = new ObjectId(movie_id);
-    const commentsMovie = this.commentsModel.find(id);
-    console.log(commentsMovie, 'serviceeeeeee');
+  async getByMovieId(movie_id: string) {
+    const teste = new ObjectId(movie_id);
+    const commentsMovie = await this.commentsModel
+      .find({ movie_id: teste })
+      .limit(10);
     return commentsMovie;
   }
 
