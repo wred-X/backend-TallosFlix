@@ -32,7 +32,7 @@ export class MoviesController {
   }
 
   @Post('/category')
-  async getCategory(@Body() genres: { category: string }) {
+  async getCategory(@Body() genres: { category: string }): Promise<Movie[]> {
     return await this.movieService.getCategory(genres.category);
   }
 

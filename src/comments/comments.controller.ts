@@ -28,7 +28,7 @@ export class CommentsController {
   }
 
   @Post('movie_id')
-  async getByMovieId(@Body() movie_id: { movie: string }) {
+  async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
     const comments = await this.commentService.getByMovieId(movie_id.movie);
     return comments;
   }
