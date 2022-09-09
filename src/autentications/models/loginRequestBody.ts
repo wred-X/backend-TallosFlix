@@ -1,9 +1,21 @@
-import { IsEmail, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class LoginRequestBody {
-  @IsEmail()
+  @ApiProperty({
+    example: 'testando243@gmail.com',
+    description: `O e-mail é necessário para o login.`,
+  })
+  @IsEmail({ message: 'Email precisa ser um endereço de email válido.' })
   email: string;
 
+  @ApiProperty({
+    example: 'Abc@12345',
+    description: `Para login usando o e-mail diretamente é necessário informar uma senha.`,
+  })
+  @IsNotEmpty({
+    message: 'senha é obrigatório.',
+  })
   @IsString()
   password: string;
 

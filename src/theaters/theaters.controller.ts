@@ -7,7 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { Coordinates } from './model/coordinates';
 import { Theater } from './shared/theater';
 import { TheaterService } from './shared/theater.service';
 
@@ -27,13 +28,11 @@ export class TheatersController {
     return await this.theaterService.getById(id);
   }
 
+  @ApiBody({ type: Coordinates })
   @Post('/geoSearch')
   async getByLocation(
     @Body() cord: { lat: number; long: number }
   ): Promise<Theater[]> {
-    console.log(cord);
-    console.log(cord.lat);
-    console.log(cord.long);
     return await this.theaterService.getByLocation(cord.lat, cord.long);
   }
 

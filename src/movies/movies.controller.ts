@@ -7,7 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { Category } from './model/category';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 @ApiTags('movies')
@@ -31,6 +32,7 @@ export class MoviesController {
     return await this.movieService.create(movie);
   }
 
+  @ApiBody({ type: Category })
   @Post('/category')
   async getCategory(@Body() genres: { category: string }): Promise<Movie[]> {
     return await this.movieService.getCategory(genres.category);

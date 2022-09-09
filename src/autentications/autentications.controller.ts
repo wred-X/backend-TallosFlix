@@ -6,10 +6,11 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { IsPublic } from './decorators/is-public-decorator';
 import { LocalAutenticationGuard } from './guards/local-auth.guard';
 import { AuthRequest } from './models/authRequest';
+import { LoginRequestBody } from './models/loginRequestBody';
 import { AutenticationService } from './shared/autentication.service';
 
 @ApiTags('login')
@@ -19,6 +20,7 @@ export class AutenticationsController {
   constructor(private autenticationService: AutenticationService) {}
 
   @IsPublic()
+  @ApiBody({ type: LoginRequestBody })
   @UseGuards(LocalAutenticationGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)

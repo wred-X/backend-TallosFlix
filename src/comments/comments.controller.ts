@@ -7,7 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { MovieId } from './model/movieId';
 import { Comment } from './shared/comment';
 import { CommentService } from './shared/comment.service';
 
@@ -27,6 +28,7 @@ export class CommentsController {
     return await this.commentService.getById(id);
   }
 
+  @ApiBody({ type: MovieId })
   @Post('movie_id')
   async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
     const comments = await this.commentService.getByMovieId(movie_id.movie);
