@@ -31,6 +31,11 @@ export class MoviesController {
     return await this.movieService.create(movie);
   }
 
+  @Post('/category')
+  async getCategory(@Body() genres: { category: string }) {
+    return await this.movieService.getCategory(genres.category);
+  }
+
   @Put(':id')
   async update(@Param('id') id: string, @Body() movie: Movie): Promise<Movie> {
     return this.movieService.update(id, movie);

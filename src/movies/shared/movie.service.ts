@@ -20,6 +20,16 @@ export class MovieService {
     return await createdMovie.save();
   }
 
+  async getCategory(genre: string) {
+    const genero = genre;
+    const category = await this.movieModel
+      .find({
+        genres: { $all: [genero] },
+      })
+      .limit(20);
+    return category;
+  }
+
   async update(id: string, movie: Movie) {
     return await this.movieModel.findByIdAndUpdate(id, movie, {
       new: true,
