@@ -44,6 +44,7 @@ export class TheaterService {
 
   async create(theater: Theater) {
     const createdTheater = new this.theaterModel(theater);
+    console.log(createdTheater);
     return await createdTheater.save();
   }
 

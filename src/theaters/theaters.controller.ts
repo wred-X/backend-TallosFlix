@@ -38,6 +38,7 @@ export class TheatersController {
 
   @Post()
   async create(@Body() theater: Theater): Promise<Theater> {
+    console.log(theater);
     return await this.theaterService.create(theater);
   }
 

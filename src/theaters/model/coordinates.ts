@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
 
-export class Coordinates extends Document {
+export class Coordinates {
   @ApiProperty({
     example: -91.602524,
     description: `Latitude para de busca coordenadas`,

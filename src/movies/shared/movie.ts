@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
-export class Movie extends Document {
+export class Movie {
   @ApiProperty({
     example: 'era uma vez uma vez...',
     description: `Sinopse do filme.`,
