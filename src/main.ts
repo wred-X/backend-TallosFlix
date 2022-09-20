@@ -8,7 +8,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .addServer('/')
-    .addServer('/mflix')
+    .addServer('/we')
     .setTitle('Documentação com Swagger - Desafio movie API')
     .setDescription('Api mflix, com os cruds pedidos.')
     .setVersion('1.0')
