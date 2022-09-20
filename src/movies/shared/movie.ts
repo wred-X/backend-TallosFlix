@@ -14,7 +14,7 @@ export class Movie {
     description: `Genero do filme.`,
   })
   @IsNotEmpty({
-    message: 'senha é obrigatório.',
+    message: 'Genero do filme é obrigatório.',
   })
   genres: [string];
 
@@ -84,9 +84,7 @@ export class Movie {
     example: ['Brazil'],
     description: `País da produção do filme.`,
   })
-  @IsNotEmpty({
-    message: 'País da produção do filme é obrigatório.',
-  })
+  @IsOptional()
   countries: [string];
 
   @ApiProperty({
@@ -130,18 +128,14 @@ export class Movie {
     example: '2021-07-11T00:00:00.000+00:00',
     description: 'Data da ultima atualização do filme na nossa API.',
   })
-  @IsNotEmpty({
-    message: 'Data da ultima atualização do filme na nossa API é obrigatório.',
-  })
+  @IsOptional()
   lastupdadted: string;
 
   @ApiProperty({
     example: '2020',
     description: 'Ano de lançamento do filme.',
   })
-  @IsNotEmpty({
-    message: 'Ano de lançamento do filme é obrigatório.',
-  })
+  @IsOptional()
   year: number;
 
   @ApiProperty({
@@ -149,10 +143,7 @@ export class Movie {
     description:
       'Media de nota do filme a partir da votação de usuarios e critica da plataforma imdb.',
   })
-  @IsNotEmpty({
-    message:
-      'Media de nota do filme a partir da votação de usuarios e critica da plataforma imdb é obrigatório.',
-  })
+  @IsOptional()
   imdb: {
     rating: number;
     votes: number;
@@ -163,9 +154,7 @@ export class Movie {
     example: 'Movie',
     description: 'Tipo de dado, no caso, filmes.',
   })
-  @IsNotEmpty({
-    message: 'Tipo de dado, no caso, filmes é obrigatório.',
-  })
+  @IsOptional()
   type: string;
 
   @ApiProperty({
@@ -210,9 +199,7 @@ export class Movie {
     example: 'Warner Brothers',
     description: 'Produtora do filme.',
   })
-  @IsNotEmpty({
-    message: 'Produtora do filme é obrigatório.',
-  })
+  @IsOptional()
   production: string;
 
   @ApiProperty({
@@ -226,9 +213,7 @@ export class Movie {
     example: '2022-8-11T00:00:00.000+00:00',
     description: 'Data da ultima atualização do filme na nossa API.',
   })
-  @IsNotEmpty({
-    message: 'Data da ultima atualização do filme na nossa API.',
-  })
+  @IsOptional()
   lastUpdated: Date;
 
   @ApiProperty({

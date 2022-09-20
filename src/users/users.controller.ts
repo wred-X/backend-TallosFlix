@@ -11,6 +11,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger/dist';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
 import { CurrentUser } from '../autentications/decorators/current-user.decorator';
+import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import { Update } from './model/update';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
@@ -39,7 +41,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() user: User): Promise<User> {
+  async update(@Param('id') id: string, @Body() user: Update): Promise<User> {
     return this.userService.update(id, user);
   }
 

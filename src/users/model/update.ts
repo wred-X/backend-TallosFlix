@@ -1,24 +1,19 @@
-import { Document } from 'mongoose';
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-// import { Expose } from 'class-transformer';
 
-export class User {
-  _id: string;
-  // @Expose({ name: 'Nome' })
+export class Update {
   @ApiProperty({
     example: 'Wesley Romão',
     description: `O nome será utilizado para qualquer coisa (Perfil, Home Page, etc) que precise exibir informações da pessoa conectada.`,
   })
-  @IsNotEmpty({
-    message: 'Nome Completo é obrigatório.',
-  })
+  @IsOptional()
   name: string;
 
   // @Expose({
@@ -29,9 +24,7 @@ export class User {
     description: `O e-mail é necessário para o login.`,
   })
   @IsEmail({ message: 'Email precisa ser um endereço de email válido.' })
-  @IsNotEmpty({
-    message: 'Email é obrigatório.',
-  })
+  @IsOptional()
   email: string;
 
   // @Expose({
@@ -41,9 +34,7 @@ export class User {
     example: '1234@Abc',
     description: `Para login usando o e-mail diretamente é necessário informar uma senha.`,
   })
-  @IsNotEmpty({
-    message: 'senha é obrigatório.',
-  })
+  @IsOptional()
   @MinLength(4)
   @MaxLength(20)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {

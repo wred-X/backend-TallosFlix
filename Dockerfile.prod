@@ -18,4 +18,4 @@ ENTRYPOINT [ "npm", "run", "start" ]
 
 USER node
 
-EXPOSE 8000
+EXPOSE 8080

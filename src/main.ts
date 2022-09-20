@@ -7,6 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
+    .addServer('/')
+    .addServer('/mflix')
     .setTitle('Documentação com Swagger - Desafio movie API')
     .setDescription('Api mflix, com os cruds pedidos.')
     .setVersion('1.0')
@@ -35,7 +37,7 @@ async function bootstrap() {
   // Pipes
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(8000);
+  await app.listen(8080);
 }
 
 bootstrap();

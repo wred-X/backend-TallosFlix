@@ -22,7 +22,7 @@ export class AutenticationsController {
   @IsPublic()
   @ApiBody({ type: LoginRequestBody })
   @UseGuards(LocalAutenticationGuard)
-  @Post('login')
+  @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Request() req: AuthRequest) {
     return this.autenticationService.login(req.user);

@@ -3,14 +3,14 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class LoginRequestBody {
   @ApiProperty({
-    example: 'testando243@gmail.com',
+    example: 'email@email.com',
     description: `O e-mail é necessário para o login.`,
   })
   @IsEmail({ message: 'Email precisa ser um endereço de email válido.' })
   email: string;
 
   @ApiProperty({
-    example: 'Abc@12345',
+    example: '1234@Abc',
     description: `Para login usando o e-mail diretamente é necessário informar uma senha.`,
   })
   @IsNotEmpty({
