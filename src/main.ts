@@ -6,6 +6,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .addServer('/')
     .addServer('/we')
@@ -37,7 +39,7 @@ async function bootstrap() {
   // Pipes
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(8080);
+  await app.listen(4000);
 }
 
 bootstrap();
