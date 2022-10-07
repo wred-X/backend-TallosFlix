@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { eComment } from './model/emailComment';
 import { MovieId } from './model/movieId';
 import { Comment } from './shared/comment';
 import { CommentService } from './shared/comment.service';
@@ -32,6 +33,13 @@ export class CommentsController {
   @Post('movie_id')
   async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
     const comments = await this.commentService.getByMovieId(movie_id.movie);
+    return comments;
+  }
+
+  @ApiBody({ type: eComment })
+  @Post('mail')
+  async getByEmail(@Body() email: { mail: string }): Promise<Comment[]> {
+    const comments = await this.commentService.getByEmail(email.mail);
     return comments;
   }
 

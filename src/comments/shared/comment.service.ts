@@ -22,10 +22,17 @@ export class CommentService {
   // }
 
   async getByMovieId(movie_id: string) {
-    const teste = new ObjectId(movie_id);
+    const id = new ObjectId(movie_id);
     const commentsMovie = await this.commentsModel
-      .find({ movie_id: teste })
-      .limit(10);
+      .find({ movie_id: id })
+      .limit(50);
+    return commentsMovie;
+  }
+
+  async getByEmail(mail: string) {
+    const commentsMovie = await this.commentsModel
+      .find({ email: mail })
+      .limit(50);
     return commentsMovie;
   }
 

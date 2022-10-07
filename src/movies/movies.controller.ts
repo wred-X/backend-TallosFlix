@@ -8,7 +8,11 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { Cast } from './model/cast';
 import { Category } from './model/category';
+import { Directors } from './model/directors';
+import { Pages } from './model/pages';
+import { updateMovie } from './model/update';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 @ApiTags('movies')
@@ -20,6 +24,11 @@ export class MoviesController {
   @Get()
   async getAll(): Promise<Movie[]> {
     return await this.movieService.getAll();
+  }
+
+  @Get('/count')
+  async findAndCount() {
+    return this.movieService.findAndCount();
   }
 
   @Get(':id')
@@ -38,8 +47,31 @@ export class MoviesController {
     return await this.movieService.getCategory(genres.category);
   }
 
+  @ApiBody({ type: Directors })
+  @Post('/directors')
+  async getDirectors(
+    @Body() directors: { director: string }
+  ): Promise<Movie[]> {
+    return await this.movieService.getDirectors(directors.director);
+  }
+
+  @ApiBody({ type: Cast })
+  @Post('/cast')
+  async getCast(@Body() cast: { actor: string }): Promise<Movie[]> {
+    return await this.movieService.getCast(cast.actor);
+  }
+
+  @ApiBody({ type: Pages })
+  @Post('/paginates')
+  async findAndPaginate(@Body() pages: { limit: number; skip: number }) {
+    return this.movieService.findAndPaginate(pages.limit, pages.skip);
+  }
+
   @Put(':id')
-  async update(@Param('id') id: string, @Body() movie: Movie): Promise<Movie> {
+  async update(
+    @Param('id') id: string,
+    @Body() movie: updateMovie
+  ): Promise<Movie> {
     return this.movieService.update(id, movie);
   }
 

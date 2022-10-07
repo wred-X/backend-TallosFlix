@@ -8,7 +8,7 @@ export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
   async getAll() {
-    return await this.movieModel.find().exec();
+    return await this.movieModel.find().limit(500).sort({ year: -1 }).exec();
   }
 
   async getById(id: string) {
@@ -26,8 +26,32 @@ export class MovieService {
       .find({
         genres: { $all: [genero] },
       })
-      .limit(20);
+      .limit(500);
     return category;
+  }
+
+  async getCast(actor: string) {
+    const atores = actor;
+    const ator = await this.movieModel.find({
+      cast: { $all: [atores] },
+    });
+    return ator;
+  }
+  async getDirectors(director: string) {
+    const directores = director;
+    const diretor = await this.movieModel.find({
+      directors: { $all: [directores] },
+    });
+    return diretor;
+  }
+
+  async findAndCount() {
+    return await this.movieModel.find().count();
+  }
+
+  async findAndPaginate(limit: number, skip: number) {
+    const skipValue = limit * (skip - 1);
+    return this.movieModel.find().limit(limit).skip(skipValue);
   }
 
   async update(id: string, movie: Movie) {

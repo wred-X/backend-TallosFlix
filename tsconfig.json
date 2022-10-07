@@ -18,5 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
+  "experimentalDecorators": true,
   "exclude": ["node_modules", "dist"]
 }

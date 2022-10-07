@@ -19,7 +19,6 @@ export class TheaterService {
 
   async getByLocation(coordinates1: number, coordinates2: number) {
     const teste = [coordinates1, coordinates2];
-    console.log(teste);
     const theaterSearch = await this.theaterModel
       .aggregate([
         {
@@ -30,7 +29,7 @@ export class TheaterService {
             },
             spherical: true,
             distanceField: 'Distance',
-            maxDistance: 1000,
+            maxDistance: 20000,
             minDistance: 0,
           },
         },
@@ -38,13 +37,11 @@ export class TheaterService {
         //  { $limit: 2 },
       ])
       .exec();
-    console.log(theaterSearch);
     return theaterSearch;
   }
 
   async create(theater: Theater) {
     const createdTheater = new this.theaterModel(theater);
-    console.log(createdTheater);
     return await createdTheater.save();
   }
 

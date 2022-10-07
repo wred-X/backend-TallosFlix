@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Coordinates } from './model/coordinates';
+import { updateTheater } from './model/updateTheater';
 import { Theater } from './shared/theater';
 import { TheaterService } from './shared/theater.service';
 
@@ -38,14 +39,13 @@ export class TheatersController {
 
   @Post()
   async create(@Body() theater: Theater): Promise<Theater> {
-    console.log(theater);
     return await this.theaterService.create(theater);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() theater: Theater
+    @Body() theater: updateTheater
   ): Promise<Theater> {
     return this.theaterService.update(id, theater);
   }

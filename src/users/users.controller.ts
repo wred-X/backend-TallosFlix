@@ -6,13 +6,15 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger/dist';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger/dist';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
 import { CurrentUser } from '../autentications/decorators/current-user.decorator';
 import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 import { Update } from './model/update';
+import { Pages } from './model/pages';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
@@ -38,6 +40,12 @@ export class UsersController {
   @Post()
   async create(@Body() user: User): Promise<User> {
     return await this.userService.create(user);
+  }
+
+  @ApiBody({ type: Pages })
+  @Post('/paginate')
+  async findAndPaginate(@Body() pages: { limit: number; skip: number }) {
+    return this.userService.findAndPaginate(pages.limit, pages.skip);
   }
 
   @Put(':id')

@@ -21,25 +21,27 @@ export class UserService {
     return await this.userModel.findById(id).exec();
   }
 
+  async findAndPaginate(limit: number, skip: number) {
+    const skipValue = limit * (skip - 1);
+    return this.userModel.find().limit(limit).skip(skipValue);
+  }
+
   async findByEmail(email: string): Promise<User> {
     const usuarioEncontrado = this.userModel.findOne({ email });
     return usuarioEncontrado;
   }
 
   async create(user: User) {
-    console.log(user);
     const data = {
       ...user,
       password: await bcrypt.hash(user.password, 10),
     };
-    console.log(data);
     const createdUser = new this.userModel(data);
     return await createdUser.save();
   }
 
   async update(id: string, user: Update) {
     const data = user;
-    console.log(data);
     if (user.password) {
       const data = {
         ...user,
