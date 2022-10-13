@@ -22,7 +22,7 @@ import { SessionsModule } from 'src/sessions/sessions.module';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '2d' },
+      signOptions: { expiresIn: '30d' },
     }),
   ],
   controllers: [AutenticationsController],
