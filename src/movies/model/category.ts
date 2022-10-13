@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export class Category {
   @ApiProperty({
     example: 'Short',
-    description: `Categoria para busca de filmes.`,
+    description: `Busca filmes por categoria.`,
   })
   category: string;
 }

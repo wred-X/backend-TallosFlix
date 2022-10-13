@@ -29,6 +29,8 @@ export class CommentService {
     return commentsMovie;
   }
 
+  //criar paginação de comentarios do filme
+
   async getByEmail(mail: string) {
     const commentsMovie = await this.commentsModel
       .find({ email: mail })

@@ -82,7 +82,7 @@ export class MoviesController {
 
   @ApiBody({ type: Year })
   @Post('/year')
-  async getByYear(@Body() findYear: { year: number }) {
+  async getByYear(@Body() findYear: { year: number }): Promise<Movie[]> {
     return this.movieService.getByYear(findYear.year);
   }
 
