@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Cast {
   @ApiProperty({
     example: 'Leonardo DiCaprio',
-    description: `Categoria para busca de Atores.`,
+    description: `Busca por Atores.`,
   })
   actor: string;
 }

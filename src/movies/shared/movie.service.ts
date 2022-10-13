@@ -8,7 +8,19 @@ export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
   async getAll() {
-    return await this.movieModel.find().limit(500).sort({ year: -1 }).exec();
+    return await this.movieModel
+      .find({ type: 'movie' })
+      .limit(500)
+      .sort({ year: -1 })
+      .exec();
+  }
+
+  async getAllSeries() {
+    return await this.movieModel
+      .find({ type: 'series' })
+      .limit(500)
+      .sort({ year: -1 })
+      .exec();
   }
 
   async getById(id: string) {
@@ -20,29 +32,51 @@ export class MovieService {
     return await createdMovie.save();
   }
 
-  async getCategory(genre: string) {
-    const genero = genre;
-    const category = await this.movieModel
+  async getCategory(value: string) {
+    const genre = value;
+    const findMovies = await this.movieModel
       .find({
-        genres: { $all: [genero] },
+        genres: { $regex: genre, $options: 'i' },
       })
-      .limit(500);
-    return category;
+      .limit(500)
+      .sort({ year: -1 });
+    return findMovies;
   }
 
-  async getCast(actor: string) {
-    const atores = actor;
-    const ator = await this.movieModel.find({
-      cast: { $all: [atores] },
+  async getCast(value: string) {
+    const actors = value;
+    const findMovies = await this.movieModel.find({
+      cast: { $regex: actors, $options: 'i' },
     });
-    return ator;
+    return findMovies;
   }
-  async getDirectors(director: string) {
-    const directores = director;
-    const diretor = await this.movieModel.find({
-      directors: { $all: [directores] },
+
+  async getDirectors(value: string) {
+    const director = value;
+    const findMovies = await this.movieModel.find({
+      directors: { $regex: director, $options: 'i' },
     });
-    return diretor;
+    return findMovies;
+  }
+
+  async getLetter(value: string) {
+    const letter = value;
+    const letters = await this.movieModel
+      .find({
+        title: { $regex: '^' + letter, $options: 'i' },
+        type: 'movie',
+      })
+      .limit(500)
+      .sort({ year: -1 });
+    return letters;
+  }
+
+  async getByYear(value: number) {
+    const year = value;
+    const findYear = await this.movieModel.find({
+      year: year,
+    });
+    return findYear;
   }
 
   async findAndCount() {
