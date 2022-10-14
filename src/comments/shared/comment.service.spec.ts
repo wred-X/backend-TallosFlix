@@ -23,7 +23,8 @@ describe('CommentService', () => {
         provide: CommentService,
         useValue: {
           getAll: jest.fn().mockResolvedValue(CommentsList),
-          create: jest.fn().mockRejectedValue(comment)
+          create: jest.fn().mockRejectedValue(comment),
+          getByEmail: jest.fn().mockRejectedValue(comment)
         }
       }],
     }).compile();
@@ -67,4 +68,15 @@ describe('CommentService', () => {
       expect(commentsService.create(body)).rejects.toThrowError();
     })
   });
+  describe('getByEmail',()=>{
+    it('Pesquisar', async()=>{
+      try {
+        const result = await commentsService.getByEmail('lucas@gmail.com');
+        expect(result).toEqual(CommentsList[0].email);
+        expect(result).toEqual(CommentsList[0]);
+      } catch (error) {
+       console.log('Error >>>>>>>',error) 
+      }
+    })
+  })
 });
