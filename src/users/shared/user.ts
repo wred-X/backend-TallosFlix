@@ -50,4 +50,11 @@ export class User {
     message: 'A senha está fraca',
   })
   password: string;
+
+  constructor(todo?: Partial<User>) {
+    this._id = todo?._id;
+    this.name = todo?.name;
+    this.email = todo?.email;
+    this.password = todo?.password;
+  }
 }
