@@ -38,7 +38,7 @@ export class CommentService {
     return commentsMovie;
   }
 
-  async create(comments: Comment) {
+  async create(comments: Comment): Promise<Comment> {
     const createdComment = new this.commentsModel(comments);
     return await createdComment.save();
   }
