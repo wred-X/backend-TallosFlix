@@ -25,7 +25,7 @@ export class updateTheater {
     };
     geo: {
       type: string;
-      coordinates: [number];
+      coordinates: number[];
     };
   };
 }
