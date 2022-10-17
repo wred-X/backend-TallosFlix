@@ -27,7 +27,7 @@ const user: User[] = [
 
 const newUser: User = {
   _id: '1',
-  name: 'Vina',
+  name: 'Neymar Jr.',
   email: 'testeJest@gmail.com',
   password: 'Abc@12345',
 };
@@ -98,7 +98,7 @@ describe('UsersController', () => {
       const body: User = {
         email: 'testeJest@gmail.com',
         password: 'Abc@12345',
-        name: 'Vina',
+        name: 'Neymar Jr.',
         _id: '62e9116f63a31dc1d1c90707',
       };
 
