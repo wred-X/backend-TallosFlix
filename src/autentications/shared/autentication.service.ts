@@ -34,6 +34,7 @@ export class AutenticationService {
     const access = this.jwtService.sign(payload);
 
     const session: UserSession = {
+      _id: '',
       user_id: userInfo,
       jwt: access,
     };
