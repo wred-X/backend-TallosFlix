@@ -24,7 +24,8 @@ describe('CommentService', () => {
         useValue: {
           getAll: jest.fn().mockResolvedValue(CommentsList),
           create: jest.fn().mockRejectedValue(comment),
-          getByEmail: jest.fn().mockRejectedValue(comment)
+          getByEmail: jest.fn().mockRejectedValue(comment),
+          delete: jest.fn().mockRejectedValue(comment)
         }
       }],
     }).compile();
@@ -78,5 +79,18 @@ describe('CommentService', () => {
        console.log('Error >>>>>>>',error) 
       }
     })
+  });
+  describe('delete',()=>{
+    it('Deve deletar o comentário', async()=>{
+      try {
+        const _id = '1AA33578B'
+      const result = await commentsService.delete(_id)
+      expect(result).toEqual(true)
+      expect(commentsService.delete).toHaveBeenCalledTimes(1)
+      } catch (error) {
+        console.log('Error >>>>>',error)
+      }
+      
+    });
   })
 });
