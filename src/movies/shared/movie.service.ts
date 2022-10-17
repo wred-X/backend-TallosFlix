@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { updateMovie } from '../model/update';
 import { Movie } from './movie';
 
 @Injectable()
@@ -88,7 +89,7 @@ export class MovieService {
     return this.movieModel.find().limit(limit).skip(skipValue);
   }
 
-  async update(id: string, movie: Movie) {
+  async update(id: string, movie: updateMovie) {
     return await this.movieModel.findByIdAndUpdate(id, movie, {
       new: true,
     });

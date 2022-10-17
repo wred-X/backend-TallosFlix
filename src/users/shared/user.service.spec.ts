@@ -98,6 +98,39 @@ describe('UserService', () => {
     });
   });
 
+  describe('create', () => {
+    it('Deve criar um usuario com sucesso!', async () => {
+      // Arrange
+      const body: User = {
+        email: 'testeJest@gmail.com',
+        password: 'Abc@12345',
+        name: 'Vina',
+        _id: '',
+      };
+
+      // Act
+      const result = await userService.create(body);
+      // Assert
+      expect(result).toEqual(newUser);
+      expect(userService.create).toHaveBeenCalledTimes(1);
+      expect(userService.create).toHaveBeenCalledWith(body);
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      const body: User = {
+        email: 'teste2@gmail.com',
+        password: '*Lumia710',
+        name: 'Neymar3333 Jr.',
+        _id: '',
+      };
+
+      jest.spyOn(userService, 'create').mockRejectedValueOnce(new Error());
+      // Assert
+      expect(userService.create(body)).rejects.toThrowError();
+    });
+  });
+
   describe('getById', () => {
     it('Deve retornar um usuario pelo ID', async () => {
       // Act
