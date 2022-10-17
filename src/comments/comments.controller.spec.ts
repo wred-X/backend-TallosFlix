@@ -120,7 +120,7 @@ describe('CommentsController', () => {
   });
 
   describe('getAll', () => {
-    it('Deve retornar lista de usuarios logados', async () => {
+    it('Deve retornar lista de comentarios', async () => {
       // Act
       const result = await commentController.getAll();
 
@@ -160,7 +160,7 @@ describe('CommentsController', () => {
   });
 
   describe('create', () => {
-    it('Deve criar uma nova sessão com sucesso', async () => {
+    it('Deve criar uma novo comentario com sucesso', async () => {
       // Arrange
       const body: Comment = {
         _id: '',
@@ -295,7 +295,7 @@ describe('CommentsController', () => {
   });
 
   describe('getByMovieId', () => {
-    it('Pesquisar a que filme esta atribuido o comentario', async () => {
+    it('Pesquisar comentarios de um filme', async () => {
       const body = {
         movie: '573a1390f29313caabcd41b1',
       };
