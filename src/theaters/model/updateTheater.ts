@@ -4,6 +4,11 @@ import { Document } from 'mongoose';
 
 export class updateTheater {
   @ApiProperty({
+    example: '1d2sds2d1s5',
+    description: `id unico do teatro`,
+  })
+  _id?: string;
+  @ApiProperty({
     example: 20000,
     description: `ID do teatro`,
   })

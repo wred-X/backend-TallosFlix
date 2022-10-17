@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
-import { Document } from 'mongoose';
+import { IsNotEmpty, IsOptional, IsString, IsNumber, IsNumberString} from 'class-validator';
 
 export class Theater {
   constructor(Theater?: Partial<Theater>) {
@@ -22,11 +21,16 @@ export class Theater {
     example: '1232fkk5',
     description: `_id do teatro`,
   })
+  @IsOptional()
+  @IsString()
   _id?: string;
   @ApiProperty({
     example: 20000,
     description: `ID do teatro`,
   })
+
+  @IsNotEmpty()
+  @IsNumber()
   theaterId: number;
 
   @ApiProperty({
@@ -34,6 +38,9 @@ export class Theater {
       'location: {address: { street1: 1400 Coral Ridge Avenue, city: Coralville, state: IA, zipcode: 52241 }, geo: { type: Point, coordinates: [ -91.602524, 41.692726 ]}}',
     description: `Endereço completo para localização do teatro`,
   })
+
+  @IsNotEmpty()
+  @IsNumberString()
   location: {
     address: {
       street1: string;
@@ -41,6 +48,7 @@ export class Theater {
       state: string;
       zipcode: string;
     };
+    
     geo: {
       type: string;
       coordinates: number[];

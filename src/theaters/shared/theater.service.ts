@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Theater } from './theater';
@@ -10,17 +10,25 @@ export class TheaterService {
   ) {}
 
   async getAll() {
-    return await this.theaterModel.find();
+    try {
+      return await this.theaterModel.find();
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async getById(id: string) {
-    return await this.theaterModel.findById(id);
+    try {
+      return await this.theaterModel.findById(id);
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async getByLocation(coordinates1: number, coordinates2: number) {
-    const teste = [coordinates1, coordinates2];
-    const theaterSearch = await this.theaterModel
-      .aggregate([
+    try {
+      const teste = [coordinates1, coordinates2];
+      const theaterSearch = await this.theaterModel.aggregate([
         {
           $geoNear: {
             near: {
@@ -35,22 +43,40 @@ export class TheaterService {
         },
         //  { $skip: 0 },
         //  { $limit: 2 },
-      ])
-    return theaterSearch;
-  }
+      ]);
 
+      return theaterSearch;
+    } catch {
+      throw new HttpException(
+        'Coordinates type of numbers',
+        HttpStatus.FORBIDDEN
+      );
+    }
+  }
   async create(theater: Theater) {
-    const createdTheater = this.theaterModel.create(theater);
-    return await createdTheater
+    try {
+      const createdTheater = this.theaterModel.create(theater);
+      return await createdTheater;
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async update(id: string, theater: Theater) {
-    return await this.theaterModel.findByIdAndUpdate(id, theater, {
-      new: true,
-    });
+    try {
+      return await this.theaterModel.findByIdAndUpdate(id, theater, {
+        new: true,
+      });
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async delete(id: string) {
-    return await this.theaterModel.findByIdAndDelete({ _id: id })
+    try {
+      return await this.theaterModel.findByIdAndDelete({ _id: id });
+    } catch {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
   }
 }
