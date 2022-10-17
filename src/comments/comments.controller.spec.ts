@@ -263,23 +263,26 @@ describe('CommentsController', () => {
   });
 
   describe('getByEmail', () => {
-    it('Pesquisar', async () => {
-      const body = {
-        mail: 'lucas@gmail.com',
-      };
+    it('Retorna lista de comentarios de usuario pelo email', async () => {
+      try {
+        // Arrange
+        const body = { mail: 'lucas@gmail.com' };
 
-      const result = await commentController.getByEmail(body);
+        // Act
+        const result = await commentController.getByEmail(body);
 
-      expect(result).toEqual(commentMail);
-      expect(commentService.getByEmail).toHaveBeenCalledTimes(1);
-      expect(commentService.getByEmail).toHaveBeenCalledWith(body.mail);
+        // Assert
+        expect(result).toEqual(commentMail);
+        expect(commentService.getByEmail).toHaveBeenCalledTimes(1);
+        expect(commentService.getByEmail).toHaveBeenCalledWith(body.mail);
+      } catch (error) {
+        console.log('Error >>>>>>>', error);
+      }
     });
 
     it('should throw an exception', () => {
       // Arrange
-      const body = {
-        mail: 'lucas@gmail.com',
-      };
+      const body = { mail: 'lucas@gmail.com' };
 
       // Arrange
       jest
