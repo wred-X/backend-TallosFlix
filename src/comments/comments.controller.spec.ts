@@ -57,4 +57,16 @@ describe('CommentsController', () => {
       }
     });
   });
+  describe('delete',()=>{
+    it('Deve deletar comentário', async ()=>{
+      try {
+        const _id = '1AA33578B'
+        const result = await commentsController.delete(_id)
+        expect(result).toEqual(true)
+        expect(commentsController.delete).toHaveBeenCalledTimes(1)
+      } catch (error) {
+        console.log('Error >>>>>', error)
+      }
+    })
+  })
 });
