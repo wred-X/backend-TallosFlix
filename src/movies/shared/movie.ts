@@ -16,7 +16,7 @@ export class Movie {
   @IsNotEmpty({
     message: 'Genero do filme é obrigatório.',
   })
-  genres: [string];
+  genres: string[];
 
   @ApiProperty({
     example: 120,
@@ -32,7 +32,7 @@ export class Movie {
   @IsNotEmpty({
     message: 'Parte do elenco principal do filme é obrigatório.',
   })
-  cast: [string];
+  cast: string[];
 
   @ApiProperty({
     example: 5,
@@ -78,14 +78,14 @@ export class Movie {
   @IsNotEmpty({
     message: 'Idiomas disponiveis para assistir o filme é obrigatório.',
   })
-  languages: [string];
+  languages: string[];
 
   @ApiProperty({
     example: ['Brazil'],
     description: `País da produção do filme.`,
   })
   @IsOptional()
-  countries: [string];
+  countries: string[];
 
   @ApiProperty({
     example: '2020-07-11T00:00:00.000+00:00',
@@ -101,7 +101,7 @@ export class Movie {
   @IsNotEmpty({
     message: 'Diretor(es) do filme é obrigatório.',
   })
-  directors: [string];
+  directors: string[];
 
   @ApiProperty({
     example: 'Good',
@@ -228,5 +228,41 @@ export class Movie {
     description: 'Roteirista(s) do filme.',
   })
   @IsOptional()
-  writers: [string];
+  writers: string[];
+
+  @IsOptional()
+  _id: string;
+
+  constructor(todo?: Partial<Movie>) {
+    this._id = todo?._id;
+    this.plot = todo?.plot;
+    this.genres = todo?.genres;
+    this.runtime = todo?.runtime;
+    this.num_mflix_comments = todo?.num_mflix_comments;
+    this.poster = todo?.poster;
+    this.title = todo?.title;
+    this.fullplot = todo?.fullplot;
+    this.metacritic = todo?.metacritic;
+    this.cast = todo?.cast;
+    this.languages = todo?.languages;
+    this.countries = todo?.countries;
+    this.realeased = todo?.realeased;
+    this.directors = todo?.directors;
+    this.awards = todo?.awards;
+    this.plot = todo?.plot;
+    this.rated = todo?.rated;
+    this.awards = todo?.awards;
+    this.lastupdadted = todo?.lastupdadted;
+    this.year = todo?.year;
+    this.imdb = todo?.imdb;
+    this.type = todo?.type;
+    this.tomatoes = todo?.tomatoes;
+    this.dvd = todo?.dvd;
+    this.fresh = todo?.fresh;
+    this.production = todo?.production;
+    this.rotten = todo?.rotten;
+    this.lastUpdated = todo?.lastUpdated;
+    this.website = todo?.website;
+    this.writers = todo?.writers;
+  }
 }
