@@ -25,7 +25,8 @@ describe('CommentService', () => {
           getAll: jest.fn().mockResolvedValue(CommentsList),
           create: jest.fn().mockRejectedValue(comment),
           getByEmail: jest.fn().mockRejectedValue(comment),
-          delete: jest.fn().mockRejectedValue(comment)
+          delete: jest.fn().mockRejectedValue(comment),
+          update: jest.fn().mockRejectedValue(comment)
         }
       }],
     }).compile();
@@ -69,28 +70,44 @@ describe('CommentService', () => {
       expect(commentsService.create(body)).rejects.toThrowError();
     })
   });
-  describe('getByEmail',()=>{
-    it('Pesquisar', async()=>{
+  describe('getByEmail', () => {
+    it('Pesquisar', async () => {
       try {
         const result = await commentsService.getByEmail('lucas@gmail.com');
         expect(result).toEqual(CommentsList[0].email);
         expect(result).toEqual(CommentsList[0]);
       } catch (error) {
-       console.log('Error >>>>>>>',error) 
+        console.log('Error >>>>>>>', error)
       }
     })
   });
-  describe('delete',()=>{
-    it('Deve deletar o comentário', async()=>{
+  describe('delete', () => {
+    it('Deve deletar o comentário', async () => {
       try {
         const _id = '1AA33578B'
-      const result = await commentsService.delete(_id)
-      expect(result).toEqual(true)
-      expect(commentsService.delete).toHaveBeenCalledTimes(1)
+        const result = await commentsService.delete(_id)
+        expect(result).toEqual(true)
+        expect(commentsService.delete).toHaveBeenCalledTimes(1)
       } catch (error) {
-        console.log('Error >>>>>',error)
+        console.log('Error >>>>>', error)
       }
-      
+
     });
   })
+  describe('update', () => {
+    it('Deve atualizar comentário', async () => {
+      const body = {
+        name: 'Pedro', email: 'pedrinDoGrau@gmail.com', movie_id: '573a1390f29313caabcd41b1', text: 'Filme muito ruim filho', date: new Date('1988-10-16T19:08:23.000Z')
+      }
+      try {
+        const id = '1AA33578B'
+        const result = await commentsService.update(id, body)
+        expect(result).toEqual(comment)
+        expect(commentsService.update).toHaveBeenCalledTimes(1)
+      } catch (error) {
+        console.log('Error >>>> ', error)
+      }
+    })
+  })
+  
 });
