@@ -90,7 +90,7 @@ describe('TheatersController', () => {
   });
 
   describe('Get Theaters', () => {
-    it('Return a theater array', async () => {
+    it('Retorna lista de teatros', async () => {
       const result = await controller.getAll();
       console.log(result);
       expect(result).toEqual(theaterList);
@@ -102,7 +102,7 @@ describe('TheatersController', () => {
   });
 
   describe('Get Theater by id', () => {
-    it('Return a theater find by id', async () => {
+    it('Retorna um teatro pelo ID', async () => {
       const result = await controller.getById('teste2');
       console.log(result);
       expect(result).toEqual(theaterList[1]);
@@ -114,7 +114,7 @@ describe('TheatersController', () => {
   });
 
   describe('findDistance', () => {
-    it('Return a theater nearby', async () => {
+    it('Retorna teatros proximos em um raio de 20km', async () => {
       const body = {
         lat: 657,
         long: 898,
@@ -131,7 +131,7 @@ describe('TheatersController', () => {
   });
 
   describe('Create a new Theater ', () => {
-    it('Create', async () => {
+    it('Adiciona um novo teatro ao nosso sistema', async () => {
       const body: Theater = {
         _id: '2d5asd5as',
         theaterId: 103,
@@ -158,7 +158,7 @@ describe('TheatersController', () => {
   });
 
   describe('Update a Theater ', () => {
-    it('Update', async () => {
+    it('Atualiza as informações de teatro', async () => {
       const bodyUpdate = {
         _id: '2d5asd5as',
         theaterId: 103,
@@ -177,7 +177,6 @@ describe('TheatersController', () => {
       };
       const result = await controller.update('2d5asd5as', bodyUpdate);
       expect(result).toEqual(TheaterCreated);
-
     });
     it('Should be return Error', () => {
       jest.spyOn(controller, 'update');
@@ -203,12 +202,9 @@ describe('TheatersController', () => {
       },
     };
 
-    it('Delete', async () => {
+    it('Deleta um teatro do nosso sistema', async () => {
       const result = await controller.delete(data._id);
       expect(result).toBeUndefined();
-
-
-      
     });
     it('Should be return Error', () => {
       jest.spyOn(controller, 'delete');
