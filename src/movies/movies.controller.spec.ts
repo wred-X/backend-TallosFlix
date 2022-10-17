@@ -214,7 +214,7 @@ describe('MoviesController', () => {
             getAllSeries: jest.fn().mockResolvedValue(series),
             findAndPaginate: jest.fn().mockResolvedValue(movie),
             findAndCount: jest.fn().mockResolvedValue(count),
-            getById: jest.fn().mockResolvedValue(movie[0]),
+            findOne: jest.fn().mockResolvedValue(movie[0]),
             create: jest.fn().mockResolvedValue(newMovie),
             update: jest.fn().mockResolvedValue(updatedMovie),
             delete: jest.fn().mockResolvedValue(undefined),
@@ -376,23 +376,23 @@ describe('MoviesController', () => {
     });
   });
 
-  describe('getById', () => {
+  describe('findOne', () => {
     it('Deve retornar um movie com sucesso pelo ID', async () => {
       // Act
-      const result = await moviesController.getById('1');
+      const result = await moviesController.findOne('1');
 
       // Assert
       expect(result).toEqual(movie[0]);
-      expect(movieService.getById).toHaveBeenCalledTimes(1);
-      expect(movieService.getById).toHaveBeenCalledWith('1');
+      expect(movieService.getMovies).toHaveBeenCalledTimes(1);
+      expect(movieService.getMovies).toHaveBeenCalledWith('1');
     });
 
     it('should throw an exception', () => {
       // Arrange
-      jest.spyOn(movieService, 'getById').mockRejectedValueOnce(new Error());
+      jest.spyOn(movieService, 'getMovies').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(moviesController.getById('1')).rejects.toThrowError();
+      expect(moviesController.findOne('1')).rejects.toThrowError();
     });
   });
 

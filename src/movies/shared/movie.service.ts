@@ -8,85 +8,44 @@ import { Movie } from './movie';
 export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
-  async getAll() {
-    return await this.movieModel
-      .find({ type: 'movie' })
-      .limit(500)
-      .sort({ year: -1 })
-      .exec();
-  }
+  async getMovies(movies: Movie, pagination) {
+    try {
+      const limit = pagination.limit || 10;
+      const currentPage = pagination.page || 1;
+      const skip = limit * (currentPage-1);
 
-  async getAllSeries() {
-    return await this.movieModel
-      .find({ type: 'series' })
-      .limit(500)
-      .sort({ year: -1 })
-      .exec();
-  }
+      const total = await this.movieModel.countDocuments(movies);
+      const qtdPages =  Math.floor(total / pagination.limit) + 1;
 
-  async getById(id: string) {
-    return await this.movieModel.findById(id).exec();
+
+      const content = await this.movieModel.find(movies).limit(limit).skip(skip);
+
+      return {
+        content,
+        numberOfElements: total,
+        pagesTotal: qtdPages,
+        page: pagination.page || 1
+      }
+    } catch {
+      new Error('Bad Request');
+    }
   }
+  ///////////finds movies///////////////////
+  async findByMovieId(query: { search: string, type: string, page: number, limit: number}){
+
+    const type = query.type || 'title'
+
+    const queryMongo = {
+      [type]: {$regex: query.search || '', $options: 'i'}
+    } as unknown as Movie
+    return this.getMovies(queryMongo, {page: query.page || 1, limit: query.limit || 10})
+  
+  }
+ 
 
   async create(movie: Movie) {
     const createdMovie = new this.movieModel(movie);
     return await createdMovie.save();
-  }
-
-  async getCategory(value: string) {
-    const genre = value;
-    const findMovies = await this.movieModel
-      .find({
-        genres: { $regex: genre, $options: 'i' },
-      })
-      .limit(500)
-      .sort({ year: -1 });
-    return findMovies;
-  }
-
-  async getCast(value: string) {
-    const actors = value;
-    const findMovies = await this.movieModel.find({
-      cast: { $regex: actors, $options: 'i' },
-    });
-    return findMovies;
-  }
-
-  async getDirectors(value: string) {
-    const director = value;
-    const findMovies = await this.movieModel.find({
-      directors: { $regex: director, $options: 'i' },
-    });
-    return findMovies;
-  }
-
-  async getLetter(value: string) {
-    const letter = value;
-    const letters = await this.movieModel
-      .find({
-        title: { $regex: '^' + letter, $options: 'i' },
-        type: 'movie',
-      })
-      .limit(500)
-      .sort({ year: -1 });
-    return letters;
-  }
-
-  async getByYear(value: number) {
-    const year = value;
-    const findYear = await this.movieModel.find({
-      year: year,
-    });
-    return findYear;
-  }
-
-  async findAndCount() {
-    return await this.movieModel.find().count();
-  }
-
-  async findAndPaginate(limit: number, skip: number) {
-    const skipValue = limit * (skip - 1);
-    return this.movieModel.find().limit(limit).skip(skipValue);
   }
 
   async update(id: string, movie: updateMovie) {
