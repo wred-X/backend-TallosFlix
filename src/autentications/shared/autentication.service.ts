@@ -18,8 +18,7 @@ export class AutenticationService {
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
     private readonly configService: ConfigService,
-    private readonly socketId: SocketGateway,
-
+    private readonly socketId: SocketGateway
   ) {}
 
   async login(user: User): Promise<UserToken> {
@@ -51,7 +50,6 @@ export class AutenticationService {
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
-      
       if (isPasswordValid) {
         this.socketId.emitUserLogged(user);
         return user;
