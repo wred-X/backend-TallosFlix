@@ -47,4 +47,11 @@ export class Comment {
     message: 'A data precisa ser passada para armazenamento',
   })
   date: Date;
+  constructor(comment?: Partial<Comment>) {
+    this.name = comment?.name;
+    this.email = comment?.email;
+    this.movie_id = comment?.movie_id;
+    this.text = comment?.text;
+    this.date = comment?.date;
+}
 }
