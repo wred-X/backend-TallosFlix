@@ -44,4 +44,17 @@ describe('CommentsController', () => {
       }
       })
   })
+  describe('create', () => {
+    it('Deve retornar que o comentário do usuáiro foi criado', async () => {
+      const body: Comment = {
+        name: 'Pedro', email: 'pedrinDoGrau@gmail.com', movie_id: '573a1390f29313caabcd41b1', text: 'Filme muito ruim filho', date: new Date('1988-10-16T19:08:23.000Z')
+      }
+      try {
+        const result = await commentsController.create(body);
+        expect(result).toEqual(Comment)
+      } catch (error) {
+        console.log('Error >>>>>', error)
+      }
+    });
+  });
 });
