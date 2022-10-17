@@ -14,19 +14,22 @@ import { AutenticationsController } from './autentications.controller';
 import { AutenticationService } from './shared/autentication.service';
 import { ConfigService } from '@nestjs/config/dist';
 import { SessionsModule } from 'src/sessions/sessions.module';
+import { SocketGateway } from 'src/socket/socket.gateway';
+import { SocketTestModule } from 'src/socket/socket.module';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
     forwardRef(() => SessionsModule),
     PassportModule,
+    SocketTestModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '30d' },
     }),
   ],
   controllers: [AutenticationsController],
-  providers: [AutenticationService, LocalStrategy, ConfigService, JwtStrategy],
+  providers: [AutenticationService, LocalStrategy, ConfigService, JwtStrategy, SocketGateway],
 })
 export class AutenticationsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

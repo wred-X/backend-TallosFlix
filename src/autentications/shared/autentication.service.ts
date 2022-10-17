@@ -9,6 +9,7 @@ import { UnauthorizedError } from '../errors/unauthorized.error';
 import { UserPayload } from '../models/userPayload';
 import { UserSession } from '../models/userSession';
 import { UserToken } from '../models/userToken';
+import { SocketGateway } from 'src/socket/socket.gateway';
 
 @Injectable()
 export class AutenticationService {
@@ -16,7 +17,8 @@ export class AutenticationService {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly socketId: SocketGateway
   ) {}
 
   async login(user: User): Promise<UserToken> {
@@ -50,6 +52,7 @@ export class AutenticationService {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (isPasswordValid) {
+        this.socketId.emitUserLogged(user);
         return user;
       }
     }

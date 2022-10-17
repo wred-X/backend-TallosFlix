@@ -10,11 +10,11 @@ export class TheaterService {
   ) {}
 
   async getAll() {
-    return await this.theaterModel.find().exec();
+    return await this.theaterModel.find();
   }
 
   async getById(id: string) {
-    return await this.theaterModel.findById(id).exec();
+    return await this.theaterModel.findById(id);
   }
 
   async getByLocation(coordinates1: number, coordinates2: number) {
@@ -36,13 +36,12 @@ export class TheaterService {
         //  { $skip: 0 },
         //  { $limit: 2 },
       ])
-      .exec();
     return theaterSearch;
   }
 
   async create(theater: Theater) {
-    const createdTheater = new this.theaterModel(theater);
-    return await createdTheater.save();
+    const createdTheater = this.theaterModel.create(theater);
+    return await createdTheater
   }
 
   async update(id: string, theater: Theater) {
@@ -52,6 +51,6 @@ export class TheaterService {
   }
 
   async delete(id: string) {
-    return await this.theaterModel.findByIdAndDelete({ _id: id }).exec();
+    return await this.theaterModel.findByIdAndDelete({ _id: id })
   }
 }
