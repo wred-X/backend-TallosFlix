@@ -3,7 +3,8 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class Session {
   @IsOptional()
-  _id: string;
+  _id?: string;
+
   @ApiProperty({
     example: 'ID1234',
     description: `ID do user que entrou em sessão`,
