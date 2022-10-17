@@ -48,7 +48,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     }
 
     emitUserLogged(_id: User) {
-      console.log('emiti o evento no login')
+      console.log('emiti o evento no login', {_id})
       this.server.emit('is-logged', { _id });
     }
 

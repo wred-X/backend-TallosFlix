@@ -50,8 +50,10 @@ export class AutenticationService {
 
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      this.socketId.emitUserLogged(user);
+
+      
       if (isPasswordValid) {
+        this.socketId.emitUserLogged(user);
         return user;
       }
     }

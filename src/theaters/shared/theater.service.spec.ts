@@ -98,6 +98,10 @@ describe('TheaterService', () => {
       const result = await theaterService.getAll();
       expect(result).toBe(theaterList);
     });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'getAll');
+      expect(theaterService.getAll).rejects.toThrowError();
+    });
   });
 
   describe('Test getById', () => {
@@ -106,12 +110,20 @@ describe('TheaterService', () => {
       expect(result._id).toEqual(theaterList[0]._id);
       expect(result).toEqual(theaterList[0]);
     });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'getById');
+      expect(theaterService.getById).rejects.toThrowError();
+    });
   });
 
   describe('findDistance ', () => {
     it('findDistance- Return nearbys', async () => {
       const result = await theaterService.getByLocation(123, 321);
       expect(result).toEqual(theaterList[0]);
+    });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'getByLocation');
+      expect(theaterService.getByLocation).rejects.toThrowError();
     });
   });
   describe('Create a new Theater ', () => {
@@ -134,6 +146,10 @@ describe('TheaterService', () => {
       };
       const result = await theaterService.create(body);
       expect(result).toEqual(TheaterCreated);
+    });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'create');
+      expect(theaterService.create).rejects.toThrowError();
     });
   });
 
@@ -158,6 +174,10 @@ describe('TheaterService', () => {
       const result = await theaterService.update('2d5asd5as', bodyUpdate);
       expect(result).toEqual(TheaterCreated);
     });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'update');
+      expect(theaterService.update).rejects.toThrowError();
+    });
   });
 
   describe('Delete a Theater ', () => {
@@ -181,6 +201,10 @@ describe('TheaterService', () => {
     it('Delete', async () => {
       const result = await theaterService.delete(data._id);
       expect(result).toBeUndefined();
+    });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'delete');
+      expect(theaterService.create).rejects.toThrowError();
     });
   });
 });
