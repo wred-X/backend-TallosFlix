@@ -21,7 +21,10 @@ describe('CommentsController', () => {
       providers:[{
         provide: CommentService,
         useValue:{
-          getAll: jest.fn().mockRejectedValue(CommentsList)
+          getAll: jest.fn().mockRejectedValue(CommentsList),
+          create: jest.fn().mockRejectedValue(comment),
+          delete: jest.fn().mockRejectedValue(comment),
+          update: jest.fn().mockRejectedValue(comment)
         }
       }]
     }).compile();
@@ -66,6 +69,21 @@ describe('CommentsController', () => {
         expect(commentsController.delete).toHaveBeenCalledTimes(1)
       } catch (error) {
         console.log('Error >>>>>', error)
+      }
+    })
+  })
+  describe('update',()=>{
+    it('Deve atualizar comentário', async () => {
+      const body = {
+        name: 'Pedro', email: 'pedrinDoGrau@gmail.com', movie_id: '573a1390f29313caabcd41b1', text: 'Filme muito ruim filho', date: new Date('1988-10-16T19:08:23.000Z')
+      }
+      try {
+        const id = '1AA33578B'
+        const result = await commentsController.update(id, body)
+        expect(result).toEqual(comment)
+        expect(commentsController.update).toHaveBeenCalledTimes(1)
+      } catch (error) {
+        console.log('Error >>>> ', error)
       }
     })
   })
