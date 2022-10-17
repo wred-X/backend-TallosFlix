@@ -18,7 +18,7 @@ export class AutenticationService {
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
     private readonly configService: ConfigService,
-    private readonly socketId: SocketGateway,
+    private readonly socket: SocketGateway,
 
   ) {}
 
@@ -54,7 +54,7 @@ export class AutenticationService {
 
       
       if (isPasswordValid) {
-        this.socketId.emitUserLogged(user);
+        this.socket.emitUserLogged(user);
         return user;
       }
     }

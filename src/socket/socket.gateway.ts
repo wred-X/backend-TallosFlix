@@ -52,8 +52,9 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
       this.server.emit('is-logged', { _id });
     }
 
-    emitNewComment(comment: Comment, movie:Movie){
-      this.server.emit('new-comment', {comment, movie})
+    emitNewComment(comment: Comment){
+      console.log('emiti o evento de comment', {comment})
+      this.server.emit('new-comment', {comment})
     }
 
     emitNewFavorite(movie: Movie, _id:User){

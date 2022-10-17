@@ -10,7 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // import { Expose } from 'class-transformer';
 
 export class User {
-  _id: string;
+  _id?: string;
   // @Expose({ name: 'Nome' })
   @ApiProperty({
     example: 'Wesley Romão',

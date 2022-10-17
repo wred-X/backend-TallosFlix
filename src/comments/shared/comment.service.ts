@@ -3,10 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
+import { SocketGateway } from 'src/socket/socket.gateway';
 
 @Injectable()
 export class CommentService {
-  @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
+  @InjectModel('Comment') private readonly commentsModel: Model<Comment> ;
+  constructor(
+    private readonly socket: SocketGateway,
+
+  ) {}
 
   async getAll() {
     return await this.commentsModel.find().exec();
@@ -40,6 +45,7 @@ export class CommentService {
 
   async create(comments: Comment): Promise<Comment> {
     const createdComment = new this.commentsModel(comments);
+    this.socket.emitNewComment(createdComment)
     return await createdComment.save();
   }
 
