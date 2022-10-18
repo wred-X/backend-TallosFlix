@@ -119,25 +119,25 @@ describe('CommentsController', () => {
     expect(commentService).toBeDefined();
   });
 
-  describe('getAll', () => {
-    it('Deve retornar lista de comentarios', async () => {
-      // Act
-      const result = await commentController.getAll();
+  // describe('getAll', () => {
+  //   it('Deve retornar lista de comentarios', async () => {
+  //     // Act
+  //     const result = await commentController.getAll();
 
-      // Assert
-      expect(result).toEqual(comment);
-      expect(typeof result).toEqual('object');
-      expect(commentService.getAll).toHaveBeenCalledTimes(1);
-    });
+  //     // Assert
+  //     expect(result).toEqual(comment);
+  //     expect(typeof result).toEqual('object');
+  //     expect(commentService.getAll).toHaveBeenCalledTimes(1);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      jest.spyOn(commentService, 'getAll').mockRejectedValueOnce(new Error());
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     jest.spyOn(commentService, 'getAll').mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(commentController.getAll()).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(commentController.getAll()).rejects.toThrowError();
+  //   });
+  // });
 
   describe('getById', () => {
     it('Deve retornar um comentario com sucesso pelo ID', async () => {

@@ -1,3 +1,4 @@
+import { FavoritesModule } from './favorites/favorites.module';
 import { SocketGateway } from './socket/socket.gateway';
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
@@ -13,6 +14,7 @@ import { SocketTestModule } from './socket/socket.module';
 
 @Module({
   imports: [
+    FavoritesModule,
     MongooseModule.forRoot(process.env.USER_BD),
     UsersModule,
     CommentsModule,
@@ -20,7 +22,7 @@ import { SocketTestModule } from './socket/socket.module';
     TheatersModule,
     SessionsModule,
     AutenticationsModule,
-    SocketTestModule
+    SocketTestModule,
   ],
   providers: [
     SocketGateway,

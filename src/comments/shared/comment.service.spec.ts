@@ -4,6 +4,7 @@ import { Comment } from './comment';
 import { CommentService } from './comment.service';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import { CommentGetDto } from './PaginationParams';
 
 const comment: Comment[] = [
   {
@@ -130,7 +131,11 @@ describe('CommentService', () => {
   describe('getAll', () => {
     it('Deve retornar lista de comentarios', async () => {
       // Act
-      const result = await commentService.getAll();
+      const pagination = 1;
+      const result = await commentService.getAll(
+        pagination,
+        new CommentGetDto()
+      );
 
       // Assert
       expect(result).toEqual(comment);
@@ -141,9 +146,11 @@ describe('CommentService', () => {
     it('should throw an exception', () => {
       // Arrange
       jest.spyOn(commentService, 'getAll').mockRejectedValueOnce(new Error());
-
+      const pagination = 1;
       // Assert
-      expect(commentService.getAll()).rejects.toThrowError();
+      expect(
+        commentService.getAll(pagination, new CommentGetDto())
+      ).rejects.toThrowError();
     });
   });
 
