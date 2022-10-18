@@ -1,4 +1,4 @@
-import { Comment } from 'src/comments/shared/comment';
+import { Comment } from './shared/comment';
 import {
   Body,
   Controller,
