@@ -9,7 +9,7 @@ import { UnauthorizedError } from '../errors/unauthorized.error';
 import { UserPayload } from '../models/userPayload';
 import { UserSession } from '../models/userSession';
 import { UserToken } from '../models/userToken';
-import { SocketGateway } from 'src/socket/socket.gateway';
+import { SocketGateway } from '../../socket/socket.gateway';
 
 @Injectable()
 export class AutenticationService {

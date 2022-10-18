@@ -1,9 +1,7 @@
 import { AutenticationsController } from './autentications.controller';
 import { AutenticationService } from './shared/autentication.service';
-import { LoginRequestBody } from './models/LoginRequestBody';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserToken } from './models/userToken';
-import { AuthRequest } from './models/AuthRequest';
+import { AuthRequest } from './models/authRequest';
 
 const newLog = {
   access_token:

@@ -4,7 +4,45 @@ import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 import { MoviesController } from './movies.controller';
 
-const movie: Movie[] = [
+const movie: Movie = {
+  _id: '1',
+  plot: 'era uma vez uma vez...',
+  genres: ['Ação', 'Aventura'],
+  runtime: 120,
+  cast: ['Brad Pitt', 'Tom Cruise', 'Jennifer Lawrence'],
+  num_mflix_comments: 5,
+  poster: 'poster.png',
+  title: 'Tome Bala',
+  fullplot: 'Max que matou o Nilo.',
+  metacritic: 5,
+  languages: ['Portuguese', 'English'],
+  countries: ['Brazil'],
+  realeased: new Date('2020-07-11T00:00:00.000+00:00'),
+  directors: ['Tarantino', 'Christhofer Nolan'],
+  rated: 'Good',
+  awards: { wins: 1, nominations: 4, text: '1 win and 4 nominations' },
+  lastupdadted: '2021-07-11T00:00:00.000+00:00',
+  year: 2020,
+  imdb: { rating: 6, votes: 200, id: 1111 },
+  type: 'Movie',
+  tomatoes: {
+    viewer: { rating: 6, numReviews: 150, meter: 83 },
+    dvd: new Date('2021-10-11T00:00:00.000+00:00'),
+    lastUpdated: new Date('2022-07-11T00:00:00.000+00:00'),
+    rotten: 1,
+    fresh: 12,
+    critic: { rating: 7.2, numReviews: 13, meter: 92 },
+  },
+  dvd: new Date('2021-10-11T00:00:00.000+00:00'),
+  fresh: 12,
+  production: 'Warner Brothers',
+  rotten: 1,
+  lastUpdated: new Date('2022-8-11T00:00:00.000+00:00'),
+  website: 'www.filme.com',
+  writers: ['Tarantino'],
+};
+
+const movies: Movie[] = [
   {
     _id: '1',
     plot: 'era uma vez uma vez...',
@@ -63,6 +101,43 @@ const movie: Movie[] = [
     year: 2020,
     imdb: { rating: 6, votes: 200, id: 1111 },
     type: 'Movie',
+    tomatoes: {
+      viewer: { rating: 6, numReviews: 150, meter: 83 },
+      dvd: new Date('2021-10-11T00:00:00.000+00:00'),
+      lastUpdated: new Date('2022-07-11T00:00:00.000+00:00'),
+      rotten: 1,
+      fresh: 12,
+      critic: { rating: 7.2, numReviews: 13, meter: 92 },
+    },
+    dvd: new Date('2021-10-11T00:00:00.000+00:00'),
+    fresh: 12,
+    production: 'Warner Brothers',
+    rotten: 1,
+    lastUpdated: new Date('2022-8-11T00:00:00.000+00:00'),
+    website: 'www.filme.com',
+    writers: ['Tarantino'],
+  },
+  {
+    _id: '3',
+    plot: 'era uma vez uma vez...',
+    genres: ['Ação', 'Aventura'],
+    runtime: 120,
+    cast: ['Brad Pitt', 'Tom Cruise', 'Jennifer Lawrence'],
+    num_mflix_comments: 5,
+    poster: 'poster.png',
+    title: 'Tome Bala',
+    fullplot: 'Max que matou o Nilo.',
+    metacritic: 5,
+    languages: ['Portuguese', 'English'],
+    countries: ['Brazil'],
+    realeased: new Date('2020-07-11T00:00:00.000+00:00'),
+    directors: ['Tarantino', 'Christhofer Nolan'],
+    rated: 'Good',
+    awards: { wins: 1, nominations: 4, text: '1 win and 4 nominations' },
+    lastupdadted: '2021-07-11T00:00:00.000+00:00',
+    year: 2020,
+    imdb: { rating: 6, votes: 200, id: 1111 },
+    type: 'Series',
     tomatoes: {
       viewer: { rating: 6, numReviews: 150, meter: 83 },
       dvd: new Date('2021-10-11T00:00:00.000+00:00'),
@@ -210,19 +285,18 @@ describe('MoviesController', () => {
         {
           provide: MovieService,
           useValue: {
-            getAll: jest.fn().mockResolvedValue(movie),
-            getAllSeries: jest.fn().mockResolvedValue(series),
-            findAndPaginate: jest.fn().mockResolvedValue(movie),
-            findAndCount: jest.fn().mockResolvedValue(count),
-            findOne: jest.fn().mockResolvedValue(movie[0]),
+            getAll: jest.fn().mockResolvedValue(movies),
+            findOne: jest.fn().mockResolvedValue(movies),
+            getMovies: jest.fn().mockResolvedValue(movies),
+            findByMovieId: jest.fn().mockResolvedValue(movie),
             create: jest.fn().mockResolvedValue(newMovie),
             update: jest.fn().mockResolvedValue(updatedMovie),
             delete: jest.fn().mockResolvedValue(undefined),
-            getCategory: jest.fn().mockResolvedValue(movie),
-            getDirectors: jest.fn().mockResolvedValue(movie),
-            getCast: jest.fn().mockResolvedValue(movie),
-            getLetter: jest.fn().mockResolvedValue(movie),
-            getByYear: jest.fn().mockResolvedValue(movie),
+            // getCategory: jest.fn().mockResolvedValue(movie),
+            // getDirectors: jest.fn().mockResolvedValue(movie),
+            // getCast: jest.fn().mockResolvedValue(movie),
+            // getLetter: jest.fn().mockResolvedValue(movie),
+            // getByYear: jest.fn().mockResolvedValue(movie),
           },
         },
       ],
@@ -240,151 +314,67 @@ describe('MoviesController', () => {
   describe('getAll', () => {
     it('Deve retornar catalogo completo da tallosflix', async () => {
       // Act
-      const result = await moviesController.getAll();
+      const result = await moviesController.getAll(movie);
+      // Assert
+      expect(result).toBe(movies);
+      expect(typeof result).toEqual('object');
+      expect(movieService.getMovies).toHaveBeenCalledTimes(1);
+    });
 
+    it('Deve retornar catalogo de filmes de acordo com o type de busca ano', async () => {
+      // Act
+      const result = await moviesController.findOne({ year: 2020 });
+      // Assert
+      expect(result).toBe(movie);
+      // expect(typeof result).toEqual('object');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve retornar catalogo de filmes de acordo com o type de busca diretores', async () => {
+      // Act
+      const result = await moviesController.findOne({
+        directors: ['Tarantino'],
+      });
+      // Assert
+      expect(result).toBe(movie);
+      // expect(typeof result).toEqual('object');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve retornar catalogo de filmes de acordo com o type de busca genero', async () => {
+      // Act
+      const result = await moviesController.findOne({ genres: ['Aventura'] });
+      // Assert
+      expect(result).toBe(movie);
+      // expect(typeof result).toEqual('object');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve retornar catalogo de filmes de acordo com o type de busca escritores', async () => {
+      // Act
+      const result = await moviesController.findOne({ writers: ['Tarantino'] });
+      // Assert
+      expect(result).toBe(movie);
+      // expect(typeof result).toEqual('object');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve retornar catalogo de filmes de acordo com o type de busca elenco', async () => {
+      // Act
+      const result = await moviesController.findOne({ cast: ['Tom Cruise'] });
+      // Assert
+      expect(result).toBe(movie);
+      // expect(typeof result).toEqual('object');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve retornar catalogo de filmes de acordo com o type de busca serie ou movie', async () => {
+      // Act
+      const result = await moviesController.findOne({ type: 'movie' });
       // Assert
       expect(result).toEqual(movie);
-      expect(typeof result).toEqual('object');
-      expect(movieService.getAll).toHaveBeenCalledTimes(1);
-    });
 
-    it('should throw an exception', () => {
-      // Arrange
-      jest.spyOn(movieService, 'getAll').mockRejectedValueOnce(new Error());
-
-      // Assert
-      expect(moviesController.getAll()).rejects.toThrowError();
-    });
-  });
-
-  describe('getAllSeries', () => {
-    it('Deve retornar lista de series', async () => {
-      // Act
-      const result = await moviesController.getAllSeries();
-
-      // Assert
-      expect(result).toEqual(series);
-      expect(typeof result).toEqual('object');
-      expect(movieService.getAllSeries).toHaveBeenCalledTimes(1);
-    });
-
-    it('should throw an exception', () => {
-      // Arrange
-      jest
-        .spyOn(movieService, 'getAllSeries')
-        .mockRejectedValueOnce(new Error());
-
-      // Assert
-      expect(moviesController.getAllSeries()).rejects.toThrowError();
-    });
-  });
-
-  describe('create', () => {
-    it('Deve criar um novo movie com sucesso', async () => {
-      // Arrange
-      const body: Movie = {
-        _id: '1',
-        plot: 'era uma vez uma vez...',
-        genres: ['Ação', 'Aventura'],
-        runtime: 120,
-        cast: ['Brad Pitt', 'Tom Cruise', 'Jennifer Lawrence'],
-        num_mflix_comments: 5,
-        poster: 'poster.png',
-        title: 'Tome Bala',
-        fullplot: 'Max que matou o Nilo.',
-        metacritic: 5,
-        languages: ['Portuguese', 'English'],
-        countries: ['Brazil'],
-        realeased: new Date('2020-07-11T00:00:00.000+00:00'),
-        directors: ['Tarantino', 'Christhofer Nolan'],
-        rated: 'Good',
-        awards: { wins: 1, nominations: 4, text: '1 win and 4 nominations' },
-        lastupdadted: '2021-07-11T00:00:00.000+00:00',
-        year: 2020,
-        imdb: { rating: 6, votes: 200, id: 1111 },
-        type: 'Movie',
-        tomatoes: {
-          viewer: { rating: 6, numReviews: 150, meter: 83 },
-          dvd: new Date('2021-10-11T00:00:00.000+00:00'),
-          lastUpdated: new Date('2022-07-11T00:00:00.000+00:00'),
-          rotten: 1,
-          fresh: 12,
-          critic: { rating: 7.2, numReviews: 13, meter: 92 },
-        },
-        dvd: new Date('2021-10-11T00:00:00.000+00:00'),
-        fresh: 12,
-        production: 'Warner Brothers',
-        rotten: 1,
-        lastUpdated: new Date('2022-8-11T00:00:00.000+00:00'),
-        website: 'www.filme.com',
-        writers: ['Tarantino'],
-      };
-
-      // Act
-      const result = await moviesController.create(body);
-
-      // Assert
-      expect(result).toEqual(newMovie);
-      expect(movieService.create).toHaveBeenCalledTimes(1);
-      expect(movieService.create).toHaveBeenCalledWith(body);
-    });
-
-    it('should throw an exception', () => {
-      // Arrange
-      const body: Movie = {
-        _id: '1',
-        plot: 'era uma vez uma vez...',
-        genres: ['Ação', 'Aventura'],
-        runtime: 120,
-        cast: ['Brad Pitt', 'Tom Cruise', 'Jennifer Lawrence'],
-        num_mflix_comments: 5,
-        poster: 'poster.png',
-        title: 'Tome Bala',
-        fullplot: 'Max que matou o Nilo.',
-        metacritic: 5,
-        languages: ['Portuguese', 'English'],
-        countries: ['Brazil'],
-        realeased: new Date('2020-07-11T00:00:00.000+00:00'),
-        directors: ['Tarantino', 'Christhofer Nolan'],
-        rated: 'Good',
-        awards: { wins: 1, nominations: 4, text: '1 win and 4 nominations' },
-        lastupdadted: '2021-07-11T00:00:00.000+00:00',
-        year: 2020,
-        imdb: { rating: 6, votes: 200, id: 1111 },
-        type: 'Movie',
-        tomatoes: {
-          viewer: { rating: 6, numReviews: 150, meter: 83 },
-          dvd: new Date('2021-10-11T00:00:00.000+00:00'),
-          lastUpdated: new Date('2022-07-11T00:00:00.000+00:00'),
-          rotten: 1,
-          fresh: 12,
-          critic: { rating: 7.2, numReviews: 13, meter: 92 },
-        },
-        dvd: new Date('2021-10-11T00:00:00.000+00:00'),
-        fresh: 12,
-        production: 'Warner Brothers',
-        rotten: 1,
-        lastUpdated: new Date('2022-8-11T00:00:00.000+00:00'),
-        website: 'www.filme.com',
-        writers: ['Tarantino'],
-      };
-
-      jest.spyOn(movieService, 'create').mockRejectedValueOnce(new Error());
-
-      // Assert
-      expect(moviesController.create(body)).rejects.toThrowError();
-    });
-  });
-
-  describe('findOne', () => {
-    it('Deve retornar um movie com sucesso pelo ID', async () => {
-      // Act
-      const result = await moviesController.findOne('1');
-
-      // Assert
-      expect(result).toEqual(movie[0]);
-      expect(movieService.getMovies).toHaveBeenCalledTimes(1);
-      expect(movieService.getMovies).toHaveBeenCalledWith('1');
+      expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an exception', () => {
@@ -392,7 +382,7 @@ describe('MoviesController', () => {
       jest.spyOn(movieService, 'getMovies').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(moviesController.findOne('1')).rejects.toThrowError();
+      expect(moviesController.getAll(movie)).rejects.toThrowError();
     });
   });
 
@@ -520,198 +510,198 @@ describe('MoviesController', () => {
     });
   });
 
-  describe('findAndPaginate', () => {
-    it('Retorna lista de filmes paginada', async () => {
-      // Arrange
-      const body = {
-        limit: 3,
-        skip: 1,
-      };
+  // describe('findAndPaginate', () => {
+  //   it('Retorna lista de filmes paginada', async () => {
+  //     // Arrange
+  //     const body = {
+  //       limit: 3,
+  //       skip: 1,
+  //     };
 
-      // Act
-      const result = await moviesController.findAndPaginate(body);
+  //     // Act
+  //     const result = await moviesController.findAndPaginate(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.findAndPaginate).toHaveBeenCalledTimes(1);
-      expect(movieService.findAndPaginate).toHaveBeenCalledWith(
-        body.limit,
-        body.skip
-      );
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.findAndPaginate).toHaveBeenCalledTimes(1);
+  //     expect(movieService.findAndPaginate).toHaveBeenCalledWith(
+  //       body.limit,
+  //       body.skip
+  //     );
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body: Pages = {
-        limit: 15,
-        skip: 1,
-      };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body: Pages = {
+  //       limit: 15,
+  //       skip: 1,
+  //     };
 
-      // Arrange
-      jest
-        .spyOn(movieService, 'findAndPaginate')
-        .mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest
+  //       .spyOn(movieService, 'findAndPaginate')
+  //       .mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.findAndPaginate(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.findAndPaginate(body)).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('findAndCount', () => {
-    it('Retorna numero de filmes cadastrados no nosso sistema', async () => {
-      // Arrange
+  // describe('findAndCount', () => {
+  //   it('Retorna numero de filmes cadastrados no nosso sistema', async () => {
+  //     // Arrange
 
-      // Act
-      const result = await moviesController.findAndCount();
+  //     // Act
+  //     const result = await moviesController.findAndCount();
 
-      // Assert
-      expect(typeof result).toEqual('number');
-      expect(movieService.findAndCount).toHaveBeenCalledTimes(1);
-      expect(movieService.findAndCount).toHaveBeenCalledWith();
-    });
+  //     // Assert
+  //     expect(typeof result).toEqual('number');
+  //     expect(movieService.findAndCount).toHaveBeenCalledTimes(1);
+  //     expect(movieService.findAndCount).toHaveBeenCalledWith();
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      jest
-        .spyOn(movieService, 'findAndCount')
-        .mockRejectedValueOnce(new Error());
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     jest
+  //       .spyOn(movieService, 'findAndCount')
+  //       .mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.findAndCount()).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.findAndCount()).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('getCategory', () => {
-    it('Retorna lista de filmes por categoria', async () => {
-      // Arrange
-      const body = { category: 'Aventura' };
+  // describe('getCategory', () => {
+  //   it('Retorna lista de filmes por categoria', async () => {
+  //     // Arrange
+  //     const body = { category: 'Aventura' };
 
-      // Act
-      const result = await moviesController.getCategory(body);
+  //     // Act
+  //     const result = await moviesController.getCategory(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.getCategory).toHaveBeenCalledTimes(1);
-      expect(movieService.getCategory).toHaveBeenCalledWith(body.category);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.getCategory).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getCategory).toHaveBeenCalledWith(body.category);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body = { category: 'Aventura' };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body = { category: 'Aventura' };
 
-      // Arrange
-      jest
-        .spyOn(movieService, 'getCategory')
-        .mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest
+  //       .spyOn(movieService, 'getCategory')
+  //       .mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.getCategory(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.getCategory(body)).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('getDirectors', () => {
-    it('Retorna lista de filmes de um diretor', async () => {
-      // Arrange
-      const body = { director: 'Tarantino' };
+  // describe('getDirectors', () => {
+  //   it('Retorna lista de filmes de um diretor', async () => {
+  //     // Arrange
+  //     const body = { director: 'Tarantino' };
 
-      // Act
-      const result = await moviesController.getDirectors(body);
+  //     // Act
+  //     const result = await moviesController.getDirectors(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.getDirectors).toHaveBeenCalledTimes(1);
-      expect(movieService.getDirectors).toHaveBeenCalledWith(body.director);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.getDirectors).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getDirectors).toHaveBeenCalledWith(body.director);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body = { director: 'Tarantino' };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body = { director: 'Tarantino' };
 
-      // Arrange
-      jest
-        .spyOn(movieService, 'getDirectors')
-        .mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest
+  //       .spyOn(movieService, 'getDirectors')
+  //       .mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.getDirectors(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.getDirectors(body)).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('getCast', () => {
-    it('Retorna lista de filmes de um ator', async () => {
-      // Arrange
-      const body = { actor: 'Brad Pitt' };
+  // describe('getCast', () => {
+  //   it('Retorna lista de filmes de um ator', async () => {
+  //     // Arrange
+  //     const body = { actor: 'Brad Pitt' };
 
-      // Act
-      const result = await moviesController.getCast(body);
+  //     // Act
+  //     const result = await moviesController.getCast(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.getCast).toHaveBeenCalledTimes(1);
-      expect(movieService.getCast).toHaveBeenCalledWith(body.actor);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.getCast).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getCast).toHaveBeenCalledWith(body.actor);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body = { actor: 'Brad Pitt' };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body = { actor: 'Brad Pitt' };
 
-      // Arrange
-      jest.spyOn(movieService, 'getCast').mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest.spyOn(movieService, 'getCast').mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.getCast(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.getCast(body)).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('getLetter', () => {
-    it('Retorna lista de filmes pela letra de busca', async () => {
-      // Arrange
-      const body = { letter: 'E' };
+  // describe('getLetter', () => {
+  //   it('Retorna lista de filmes pela letra de busca', async () => {
+  //     // Arrange
+  //     const body = { letter: 'E' };
 
-      // Act
-      const result = await moviesController.getLetter(body);
+  //     // Act
+  //     const result = await moviesController.getLetter(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.getLetter).toHaveBeenCalledTimes(1);
-      expect(movieService.getLetter).toHaveBeenCalledWith(body.letter);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.getLetter).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getLetter).toHaveBeenCalledWith(body.letter);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body = { letter: 'E' };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body = { letter: 'E' };
 
-      // Arrange
-      jest.spyOn(movieService, 'getLetter').mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest.spyOn(movieService, 'getLetter').mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.getLetter(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.getLetter(body)).rejects.toThrowError();
+  //   });
+  // });
 
-  describe('getByYear', () => {
-    it('Retorna lista de filmes pelo ano de lançamento', async () => {
-      // Arrange
-      const body = { year: 2020 };
+  // describe('getByYear', () => {
+  //   it('Retorna lista de filmes pelo ano de lançamento', async () => {
+  //     // Arrange
+  //     const body = { year: 2020 };
 
-      // Act
-      const result = await moviesController.getByYear(body);
+  //     // Act
+  //     const result = await moviesController.getByYear(body);
 
-      // Assert
-      expect(result).toEqual(movie);
-      expect(movieService.getByYear).toHaveBeenCalledTimes(1);
-      expect(movieService.getByYear).toHaveBeenCalledWith(body.year);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie);
+  //     expect(movieService.getByYear).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getByYear).toHaveBeenCalledWith(body.year);
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      const body = { year: 2020 };
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     const body = { year: 2020 };
 
-      // Arrange
-      jest.spyOn(movieService, 'getByYear').mockRejectedValueOnce(new Error());
+  //     // Arrange
+  //     jest.spyOn(movieService, 'getByYear').mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(moviesController.getByYear(body)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(moviesController.getByYear(body)).rejects.toThrowError();
+  //   });
+  // });
 });
