@@ -2,6 +2,7 @@ import { Document } from 'mongoose';
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   Matches,
   MaxLength,
   MinLength,
@@ -10,6 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // import { Expose } from 'class-transformer';
 
 export class User {
+  @IsOptional()
   _id?: string;
   // @Expose({ name: 'Nome' })
   @ApiProperty({

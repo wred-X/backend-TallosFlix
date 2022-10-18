@@ -3,18 +3,31 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
-import { SocketGateway } from 'src/socket/socket.gateway';
+import { SocketGateway } from '../../socket/socket.gateway';
+import { CommentGetDto } from './PaginationParams';
 
 @Injectable()
 export class CommentService {
-  @InjectModel('Comment') private readonly commentsModel: Model<Comment> ;
-  constructor(
-    private readonly socket: SocketGateway,
+  @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
+  constructor(private readonly socket: SocketGateway) {}
 
-  ) {}
+  async getAll(pagination, comment: CommentGetDto) {
+    const limit = pagination.limit || 10;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+    const total = await this.commentsModel.countDocuments(comment);
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
 
-  async getAll() {
-    return await this.commentsModel.find().exec();
+    const response = await this.commentsModel
+      .find(comment)
+      .limit(limit)
+      .skip(skip);
+    return {
+      response,
+      numberOfElements: total,
+      pagesTotal: qtdPages,
+      page: pagination.page || 1,
+    };
   }
 
   async getById(id: string) {
@@ -45,7 +58,7 @@ export class CommentService {
 
   async create(comments: Comment): Promise<Comment> {
     const createdComment = new this.commentsModel(comments);
-    this.socket.emitNewComment(createdComment)
+    this.socket.emitNewComment(createdComment);
     return await createdComment.save();
   }
 
