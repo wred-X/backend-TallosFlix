@@ -1,3 +1,4 @@
+import { Comment } from 'src/comments/shared/comment';
 import {
   Body,
   Controller,
@@ -6,12 +7,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { eComment } from './model/emailComment';
 import { MovieId } from './model/movieId';
-import { Comment } from './shared/comment';
 import { CommentService } from './shared/comment.service';
+import {CommentGetDto} from './shared/PaginationParams'
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')
@@ -20,8 +22,9 @@ export class CommentsController {
   constructor(private commentService: CommentService) {}
 
   @Get()
-  async getAll(): Promise<Comment[]> {
-    return await this.commentService.getAll();
+  async getAll(@Query() comment: CommentGetDto, pagination){
+
+    return await this.commentService.getAll(comment, pagination);
   }
 
   @Get(':id')
