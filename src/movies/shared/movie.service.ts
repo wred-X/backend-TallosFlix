@@ -8,40 +8,49 @@ import { Movie } from './movie';
 export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
-  async getMovies(movies: Movie, pagination) {
+  async getMovies(movies: Movie, pagination){
     try {
       const limit = pagination.limit || 10;
       const currentPage = pagination.page || 1;
-      const skip = limit * (currentPage-1);
+      const skip = limit * (currentPage - 1);
 
       const total = await this.movieModel.countDocuments(movies);
-      const qtdPages =  Math.floor(total / pagination.limit) + 1;
+      const qtdPages = Math.floor(total / pagination.limit) + 1;
 
-
-      const content = await this.movieModel.find(movies).limit(limit).skip(skip);
-
+      const content = await this.movieModel
+        .find(movies)
+        .limit(limit)
+        .skip(skip);
       return {
         content,
         numberOfElements: total,
         pagesTotal: qtdPages,
-        page: pagination.page || 1
-      }
+        page: pagination.page || 1,
+      };
     } catch {
       new Error('Bad Request');
     }
   }
-  ///////////finds movies///////////////////
-  async findByMovieId(query: { search: string, type: string, page: number, limit: number}){
-
-    const type = query.type || 'title'
+  async findByMovieId(query: {
+    search: string | number;
+    type: string;
+    page: number;
+    limit: number;
+  }) {
+    const type = query.type || 'title';
 
     const queryMongo = {
-      [type]: {$regex: query.search || '', $options: 'i'}
-    } as unknown as Movie
-    return this.getMovies(queryMongo, {page: query.page || 1, limit: query.limit || 10})
-  
+      [type]:
+        query.type === 'year'
+          ? Number(query.search)
+          : { $regex: query.search || '', $options: 'i' },
+    } as unknown as Movie;
+
+    return this.getMovies(queryMongo, {
+      page: query.page || 1,
+      limit: query.limit || 10,
+    });
   }
- 
 
   async create(movie: Movie) {
     const createdMovie = new this.movieModel(movie);

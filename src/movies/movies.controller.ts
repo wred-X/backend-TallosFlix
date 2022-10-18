@@ -8,14 +8,8 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { Cast } from './model/cast';
-import { Category } from './model/category';
-import { Directors } from './model/directors';
-import { Letter } from './model/letter';
-import { Pages } from './model/pages';
+import { ApiBearerAuth,  ApiTags } from '@nestjs/swagger';
 import { updateMovie } from './model/update';
-import { Year } from './model/year';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 @ApiTags('movies')
@@ -25,7 +19,7 @@ export class MoviesController {
   constructor(private movieService: MovieService) {}
 
   @Get()
-  async getAll(movies: Movie) {
+  async getAll(movies: Movie){
     return await this.movieService.getMovies(movies, {});
   }
   @Get('/search')
@@ -34,7 +28,7 @@ export class MoviesController {
       return findOne;
   
   }
-
+  
   @Post()
   async create(@Body() movie: Movie): Promise<Movie> {
     return await this.movieService.create(movie);
