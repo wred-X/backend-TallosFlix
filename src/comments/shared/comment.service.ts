@@ -1,15 +1,31 @@
+import { Comment } from 'src/comments/shared/comment';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
+import { CommentGetDto } from './PaginationParams';
 
 @Injectable()
 export class CommentService {
   @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
 
-  async getAll() {
-    return await this.commentsModel.find().exec();
+  async getAll(pagination, comment:CommentGetDto) {
+    const limit = pagination.limit || 10;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+    const total = await this.commentsModel.countDocuments(comment);
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
+
+    const response = await this.commentsModel
+        .find(comment)
+        .limit(limit)
+        .skip(skip);
+      return {
+        response,
+        numberOfElements: total,
+        pagesTotal: qtdPages,
+        page: pagination.page || 1,
+      };
   }
 
   async getById(id: string) {
