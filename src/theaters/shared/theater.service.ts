@@ -19,29 +19,28 @@ export class TheaterService {
 
   async getByLocation(coordinates1: number, coordinates2: number) {
     const teste = [coordinates1, coordinates2];
-    const theaterSearch = await this.theaterModel
-      .aggregate([
-        {
-          $geoNear: {
-            near: {
-              type: 'Point',
-              coordinates: [coordinates1, coordinates2],
-            },
-            spherical: true,
-            distanceField: 'Distance',
-            maxDistance: 20000,
-            minDistance: 0,
+    const theaterSearch = await this.theaterModel.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: [coordinates1, coordinates2],
           },
+          spherical: true,
+          distanceField: 'Distance',
+          maxDistance: 20000,
+          minDistance: 0,
         },
-        //  { $skip: 0 },
-        //  { $limit: 2 },
-      ])
+      },
+      //  { $skip: 0 },
+      //  { $limit: 2 },
+    ]);
     return theaterSearch;
   }
 
   async create(theater: Theater) {
     const createdTheater = this.theaterModel.create(theater);
-    return await createdTheater
+    return await createdTheater;
   }
 
   async update(id: string, theater: Theater) {
@@ -51,6 +50,6 @@ export class TheaterService {
   }
 
   async delete(id: string) {
-    return await this.theaterModel.findByIdAndDelete({ _id: id })
+    return await this.theaterModel.findByIdAndDelete({ _id: id });
   }
 }
