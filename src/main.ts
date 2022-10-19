@@ -38,7 +38,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Pipes
-  // app.useGlobalPipes(new ValidationPipe({}));
+  app.useGlobalPipes(new ValidationPipe());
   // useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   await app.listen(4000);

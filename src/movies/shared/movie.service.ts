@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { updateMovie } from '../model/update';
@@ -40,34 +40,53 @@ export class MovieService {
     },
     type: string = 'movie'
   ) {
-    const field = query.field || 'title';
+    try {
+      const field = query.field || 'title';
 
-    const queryMongo = {
-      type,
-      [field]:
-        field === 'year'
-          ? Number(query.search)
-          : { $regex: query.search || '', $options: 'i' },
-    } as unknown as Movie;
+      const queryMongo = {
+        type,
+        [field]:
+          field === 'year'
+            ? Number(query.search)
+            : { $regex: query.search || '', $options: 'i' },
+      } as unknown as Movie;
 
-    return this.getMovies(queryMongo, {
-      page: query.page || 1,
-      limit: query.limit || 10,
-    });
+      return this.getMovies(queryMongo, {
+        page: query.page || 1,
+        limit: query.limit || 10,
+      });
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async create(movie: Movie) {
-    const createdMovie = new this.movieModel(movie);
-    return await createdMovie.save();
+    try {
+      const createdMovie = new this.movieModel(movie);
+      return await createdMovie.save();
+    } catch {
+      throw new HttpException(
+        'Bad Request, Check datas',
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   async update(id: string, movie: updateMovie) {
-    return await this.movieModel.findByIdAndUpdate(id, movie, {
-      new: true,
-    });
+    try {
+      return await this.movieModel.findByIdAndUpdate(id, movie, {
+        new: true,
+      });
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 
   async delete(id: string) {
-    return await this.movieModel.findByIdAndDelete({ _id: id }).exec();
+    try {
+      return await this.movieModel.findByIdAndDelete({ _id: id }).exec();
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 }
