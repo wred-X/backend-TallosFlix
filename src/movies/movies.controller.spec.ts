@@ -287,6 +287,7 @@ describe('MoviesController', () => {
           useValue: {
             getAll: jest.fn().mockResolvedValue(movies),
             findOne: jest.fn().mockResolvedValue(movies),
+            findSeries: jest.fn().mockResolvedValue(series),
             getMovies: jest.fn().mockResolvedValue(movies),
             findByMovieId: jest.fn().mockResolvedValue(movie),
             create: jest.fn().mockResolvedValue(newMovie),
@@ -368,21 +369,13 @@ describe('MoviesController', () => {
       expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
     });
 
-    it('Deve retornar catalogo de filmes de acordo com o type de busca serie ou movie', async () => {
+    it('Deve retornar catalogo de filmes de acordo com o type de busca movie', async () => {
       // Act
       const result = await moviesController.findOne({ type: 'movie' });
       // Assert
       expect(result).toEqual(movie);
 
       expect(movieService.findByMovieId).toHaveBeenCalledTimes(1);
-    });
-
-    it('should throw an exception', () => {
-      // Arrange
-      jest.spyOn(movieService, 'getMovies').mockRejectedValueOnce(new Error());
-
-      // Assert
-      expect(moviesController.getAll(movie)).rejects.toThrowError();
     });
   });
 

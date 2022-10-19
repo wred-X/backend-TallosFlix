@@ -8,7 +8,7 @@ import { Movie } from './movie';
 export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
-  async getMovies(movies: Movie, pagination){
+  async getMovies(movies: Movie, pagination) {
     try {
       const limit = pagination.limit || 10;
       const currentPage = pagination.page || 1;
@@ -31,17 +31,21 @@ export class MovieService {
       new Error('Bad Request');
     }
   }
-  async findByMovieId(query: {
-    search: string | number;
-    type: string;
-    page: number;
-    limit: number;
-  }) {
-    const type = query.type || 'title';
+  async findByMovieId(
+    query: {
+      search: string | number;
+      field: string;
+      page: number;
+      limit: number;
+    },
+    type: string = 'movie'
+  ) {
+    const field = query.field || 'title';
 
     const queryMongo = {
-      [type]:
-        query.type === 'year'
+      type,
+      [field]:
+        field === 'year'
           ? Number(query.search)
           : { $regex: query.search || '', $options: 'i' },
     } as unknown as Movie;
