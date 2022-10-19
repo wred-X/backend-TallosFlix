@@ -7,7 +7,7 @@ import { Update } from '../model/update';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async getAll() {
     try {
@@ -39,7 +39,6 @@ export class UserService {
       return this.userModel.find().limit(limit).skip(skipValue);
     } catch (error) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-
     }
   }
 
@@ -84,7 +83,6 @@ export class UserService {
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
-
   }
 
   async delete(id: string) {
