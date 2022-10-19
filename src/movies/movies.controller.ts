@@ -22,11 +22,19 @@ export class MoviesController {
   async getAll(movies: Movie){
     return await this.movieService.getMovies(movies, {});
   }
+
+
   @Get('/search')
   async findOne(@Query() query) {
       const findOne = await this.movieService.findByMovieId(query);
       return findOne;
   
+  }
+
+  @Get('/search/series')
+  async findSeries(@Query() querySeries){
+    const findSerie = await this.movieService.findByMovieId(querySeries, 'series')
+    return findSerie;
   }
   
   @Post()
