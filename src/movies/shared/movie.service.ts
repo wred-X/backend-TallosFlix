@@ -8,7 +8,7 @@ import { Movie } from './movie';
 export class MovieService {
   @InjectModel('Movie') private readonly movieModel: Model<Movie>;
 
-  async getMovies(movies: Movie, pagination){
+  async getMovies(movies: Movie, pagination) {
     try {
       const limit = pagination.limit || 10;
       const currentPage = pagination.page || 1;
