@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { Document } from 'mongoose';
 export class Movie {
   @ApiProperty({
     example: 'era uma vez uma vez...',
@@ -13,6 +12,8 @@ export class Movie {
     example: ['Ação', 'Aventura'],
     description: `Genero do filme.`,
   })
+
+  
   @IsNotEmpty({
     message: 'Genero do filme é obrigatório.',
   })
