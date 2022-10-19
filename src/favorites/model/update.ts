@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class Update {
+export class UpdateFavorite {
   @IsOptional()
   _id?: string;
 
   @ApiProperty({
-    example: 'email@email.com',
+    example: 'id123defilme123',
     description: `Id dos filmes adicionado aos favoritos desse usuario.`,
   })
   @IsNotEmpty({

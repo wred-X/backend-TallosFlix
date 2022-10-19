@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Update } from '../model/update';
+import { UpdateFavorite } from '../model/update';
 import { Favorite } from './favorite';
 import { ObjectId } from 'mongodb';
 
@@ -26,7 +26,7 @@ export class FavoriteService {
     return await createdTheater;
   }
 
-  async update(id: string, favorite: Update) {
+  async update(id: string, favorite: UpdateFavorite) {
     return await this.favoriteModel.findByIdAndUpdate(
       { _id: id },
       {
@@ -38,7 +38,7 @@ export class FavoriteService {
     );
   }
 
-  async delete(id: string, favorite: Update) {
+  async delete(id: string, favorite: UpdateFavorite) {
     return await this.favoriteModel.findByIdAndUpdate(
       { _id: id },
       {

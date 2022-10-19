@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FavoriteService } from './favorite.service';
 import { Favorite } from './favorite';
-import { Update } from '../model/update';
+import { UpdateFavorite } from '../model/update';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 
@@ -156,7 +156,7 @@ describe('FavoriteService', () => {
   describe('update', () => {
     it('Deve remover um comentário com sucesso', async () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a13bff29313caabd5e99e',
       };
 
@@ -171,7 +171,7 @@ describe('FavoriteService', () => {
 
     it('should throw an exception', () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a13bff29313caabd5e99e',
       };
 
@@ -185,7 +185,7 @@ describe('FavoriteService', () => {
   describe('delete', () => {
     it('Deve remover um comentário com sucesso', async () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a139ef29313caabcfd114',
       };
 
@@ -200,7 +200,7 @@ describe('FavoriteService', () => {
 
     it('should throw an exception', () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a139ef29313caabcfd114',
       };
 
