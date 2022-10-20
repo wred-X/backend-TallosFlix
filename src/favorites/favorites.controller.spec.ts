@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FavoritesController } from './favorites.controller';
 import { FavoriteService } from './shared/favorite.service';
 import { Favorite } from './shared/favorite';
-import { Update } from './model/update';
+import { UpdateFavorite } from './model/update';
 
 const favorite: Favorite[] = [
   {
@@ -150,7 +150,7 @@ describe('FavoritesController', () => {
   describe('update', () => {
     it('Deve remover um comentário com sucesso', async () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a13bff29313caabd5e99e',
       };
 
@@ -165,7 +165,7 @@ describe('FavoritesController', () => {
 
     it('should throw an exception', () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a13bff29313caabd5e99e',
       };
 
@@ -179,7 +179,7 @@ describe('FavoritesController', () => {
   describe('delete', () => {
     it('Deve remover um comentário com sucesso', async () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a139ef29313caabcfd114',
       };
 
@@ -194,7 +194,7 @@ describe('FavoritesController', () => {
 
     it('should throw an exception', () => {
       // Arrange
-      const body: Update = {
+      const body: UpdateFavorite = {
         movie_Id: '573a139ef29313caabcfd114',
       };
 
