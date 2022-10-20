@@ -12,8 +12,6 @@ export class Movie {
     example: ['Ação', 'Aventura'],
     description: `Genero do filme.`,
   })
-
-  
   @IsNotEmpty({
     message: 'Genero do filme é obrigatório.',
   })

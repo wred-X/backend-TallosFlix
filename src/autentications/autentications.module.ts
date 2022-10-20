@@ -29,7 +29,13 @@ import { SocketTestModule } from 'src/socket/socket.module';
     }),
   ],
   controllers: [AutenticationsController],
-  providers: [AutenticationService, LocalStrategy, ConfigService, JwtStrategy, SocketGateway],
+  providers: [
+    AutenticationService,
+    LocalStrategy,
+    ConfigService,
+    JwtStrategy,
+    SocketGateway,
+  ],
 })
 export class AutenticationsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
