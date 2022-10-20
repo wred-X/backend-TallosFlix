@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -18,8 +18,7 @@ export class AutenticationService {
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
     private readonly configService: ConfigService,
-    private readonly socket: SocketGateway,
-
+    private readonly socket: SocketGateway
   ) {}
 
   async login(user: User): Promise<UserToken> {
@@ -30,20 +29,23 @@ export class AutenticationService {
     };
 
     const userInfo = user._id;
+    try {
+      const access = this.jwtService.sign(payload);
 
-    const access = this.jwtService.sign(payload);
+      const session: UserSession = {
+        _id: null,
+        user_id: userInfo,
+        jwt: access,
+      };
 
-    const session: UserSession = {
-      _id: null,
-      user_id: userInfo,
-      jwt: access,
-    };
+      await this.sessionService.create(session);
 
-    await this.sessionService.create(session);
-
-    return {
-      access_token: access,
-    };
+      return {
+        access_token: access,
+      };
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async validateUser(email: string, password: string): Promise<User> {
@@ -64,11 +66,15 @@ export class AutenticationService {
   }
 
   public async getUserFromAuthToken(token: string) {
-    const payload: UserPayload = this.jwtService.verify(token, {
-      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-    });
-    if (payload.sub) {
-      return this.userService.getById(payload.sub);
+    try {
+      const payload: UserPayload = this.jwtService.verify(token, {
+        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      });
+      if (payload.sub) {
+        return this.userService.getById(payload.sub);
+      }
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 }
