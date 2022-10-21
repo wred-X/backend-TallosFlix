@@ -11,18 +11,21 @@ const user: User[] = [
     name: 'Vina',
     email: 'testeJest@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '2',
     name: 'Neymar Jr.',
     email: 'testeJest2@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '3',
     name: 'Romário',
     email: 'testeJest3@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
 ];
 
@@ -31,6 +34,7 @@ const newUser: User = {
   name: 'Neymar Jr.',
   email: 'testeJest@gmail.com',
   password: 'Abc@12345',
+  avatar: '',
 };
 
 const updatedUser = {
@@ -38,6 +42,7 @@ const updatedUser = {
   name: 'Vina',
   email: 'testeJest@gmail.com',
   password: 'Abc@12345',
+  avatar: '',
 };
 
 describe('UsersController', () => {

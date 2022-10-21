@@ -124,7 +124,9 @@ describe('CommentsController', () => {
       // Act
       const pagination = 1;
       const result = await commentController.getAll(
-        new CommentGetDto(), pagination);
+        new CommentGetDto(),
+        pagination
+      );
 
       // Assert
       expect(result).toEqual(comment);
@@ -138,7 +140,9 @@ describe('CommentsController', () => {
 
       // Assert
       const pagination = 1;
-      expect(commentController.getAll( new CommentGetDto(),pagination)).rejects.toThrowError();
+      expect(
+        commentController.getAll(new CommentGetDto(), pagination)
+      ).rejects.toThrowError();
     });
   });
 

@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'http';
 
 @Injectable()
@@ -10,5 +7,4 @@ import { Server } from 'http';
 export class SocketService {
   @WebSocketServer()
   server: Server;
-
 }

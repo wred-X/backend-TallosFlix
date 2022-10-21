@@ -38,6 +38,7 @@ export class UsersController {
 
   @Post()
   async create(@Body() user: User): Promise<User> {
+    user.avatar = '';
     return await this.userService.create(user);
   }
 

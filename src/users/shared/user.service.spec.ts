@@ -11,18 +11,21 @@ const user: User[] = [
     email: 'testeJest@gmail.com',
     name: 'Vina',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '2',
     email: 'testeJest@gmail.com',
     name: 'Vina',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '3',
     email: 'testeJest@gmail.com',
     name: 'Vina',
     password: 'Abc@12345',
+    avatar: '',
   },
 ];
 
@@ -30,6 +33,7 @@ const newUser: User = {
   email: 'testeJest@gmail.com',
   name: 'Vina',
   password: 'Abc@12345',
+  avatar: '',
   _id: '1',
 };
 
@@ -37,6 +41,7 @@ const updatedUser = {
   email: 'testeJest@gmail.com',
   name: 'Vina',
   password: 'Abc@12345',
+  avatar: '',
   _id: '1',
 };
 
