@@ -1,21 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+//import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class CommentGetDto {
-
   name: string;
 
-
-  
   email: string;
-
 
   movie_id: string;
 
-
   text: string;
-
-  
 
   date: Date;
 
