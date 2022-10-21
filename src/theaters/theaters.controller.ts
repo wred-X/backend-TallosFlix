@@ -46,7 +46,7 @@ export class TheatersController {
   async update(
     @Param('id') id: string,
     @Body() theater: updateTheater
-  ): Promise<Theater> {
+  ): Promise<updateTheater> {
     return this.theaterService.update(id, theater);
   }
 
