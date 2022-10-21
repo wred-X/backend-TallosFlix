@@ -53,6 +53,9 @@ export class User {
   })
   password: string;
 
+  @IsOptional()
+  avatar?: string;
+
   constructor(todo?: Partial<User>) {
     this._id = todo?._id;
     this.name = todo?.name;
