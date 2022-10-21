@@ -3,11 +3,12 @@ import { CommentsController } from './comments.controller';
 import { CommentService } from './shared/comment.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommentSchema } from './schemas/comment.schema';
+import { SocketGateway } from 'src/socket/socket.gateway';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Comment', schema: CommentSchema }]),
   ],
   controllers: [CommentsController],
-  providers: [CommentService],
+  providers: [CommentService, SocketGateway],
 })
 export class CommentsModule {}

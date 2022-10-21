@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class Comment {
   @ApiProperty({
@@ -47,4 +47,16 @@ export class Comment {
     message: 'A data precisa ser passada para armazenamento',
   })
   date: Date;
+
+  @IsOptional()
+  _id: string;
+
+  constructor(comment?: Partial<Comment>) {
+    this._id = comment?._id;
+    this.name = comment?.name;
+    this.email = comment?.email;
+    this.movie_id = comment?.movie_id;
+    this.text = comment?.text;
+    this.date = comment?.date;
+  }
 }

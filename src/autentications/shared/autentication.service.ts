@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/users/shared/user';
-import { UserService } from 'src/users/shared/user.service';
-import { SessionService } from 'src/sessions/shared/session.service';
+import { User } from '../../users/shared/user';
+import { UserService } from '../../users/shared/user.service';
+import { SessionService } from '../../sessions/shared/session.service';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 import { UserPayload } from '../models/userPayload';
 import { UserSession } from '../models/userSession';
 import { UserToken } from '../models/userToken';
+import { SocketGateway } from '../../socket/socket.gateway';
 
 @Injectable()
 export class AutenticationService {
@@ -16,7 +17,8 @@ export class AutenticationService {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly socket: SocketGateway
   ) {}
 
   async login(user: User): Promise<UserToken> {
@@ -27,19 +29,23 @@ export class AutenticationService {
     };
 
     const userInfo = user._id;
+    try {
+      const access = this.jwtService.sign(payload);
 
-    const access = this.jwtService.sign(payload);
+      const session: UserSession = {
+        _id: null,
+        user_id: userInfo,
+        jwt: access,
+      };
 
-    const session: UserSession = {
-      user_id: userInfo,
-      jwt: access,
-    };
+      await this.sessionService.create(session);
 
-    await this.sessionService.create(session);
-
-    return {
-      access_token: access,
-    };
+      return {
+        access_token: access,
+      };
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async validateUser(email: string, password: string): Promise<User> {
@@ -49,6 +55,7 @@ export class AutenticationService {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (isPasswordValid) {
+        this.socket.emitUserLogged(user);
         return user;
       }
     }
@@ -59,11 +66,15 @@ export class AutenticationService {
   }
 
   public async getUserFromAuthToken(token: string) {
-    const payload: UserPayload = this.jwtService.verify(token, {
-      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-    });
-    if (payload.sub) {
-      return this.userService.getById(payload.sub);
+    try {
+      const payload: UserPayload = this.jwtService.verify(token, {
+        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      });
+      if (payload.sub) {
+        return this.userService.getById(payload.sub);
+      }
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 }

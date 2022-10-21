@@ -6,15 +6,10 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { Cast } from './model/cast';
-import { Category } from './model/category';
-import { Directors } from './model/directors';
-import { Letter } from './model/letter';
-import { Pages } from './model/pages';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { updateMovie } from './model/update';
-import { Year } from './model/year';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 @ApiTags('movies')
@@ -24,66 +19,28 @@ export class MoviesController {
   constructor(private movieService: MovieService) {}
 
   @Get()
-  async getAll(): Promise<Movie[]> {
-    return await this.movieService.getAll();
+  async getAll(movies: Movie) {
+    return await this.movieService.getMovies(movies, {});
   }
 
-  @Get('/series')
-  async getAllSeries(): Promise<Movie[]> {
-    return await this.movieService.getAllSeries();
+  @Get('/search')
+  async findOne(@Query() query) {
+    const findOne = await this.movieService.findByMovieId(query);
+    return findOne;
   }
 
-  @Get('/count')
-  async findAndCount() {
-    return this.movieService.findAndCount();
-  }
-
-  @Get(':id')
-  async getById(@Param('id') id: string): Promise<Movie> {
-    return await this.movieService.getById(id);
+  @Get('/search/series')
+  async findSeries(@Query() querySeries) {
+    const findSerie = await this.movieService.findByMovieId(
+      querySeries,
+      'series'
+    );
+    return findSerie;
   }
 
   @Post()
   async create(@Body() movie: Movie): Promise<Movie> {
     return await this.movieService.create(movie);
-  }
-
-  @ApiBody({ type: Category })
-  @Post('/category')
-  async getCategory(@Body() genres: { category: string }): Promise<Movie[]> {
-    return await this.movieService.getCategory(genres.category);
-  }
-
-  @ApiBody({ type: Directors })
-  @Post('/directors')
-  async getDirectors(
-    @Body() directors: { director: string }
-  ): Promise<Movie[]> {
-    return await this.movieService.getDirectors(directors.director);
-  }
-
-  @ApiBody({ type: Cast })
-  @Post('/cast')
-  async getCast(@Body() cast: { actor: string }): Promise<Movie[]> {
-    return await this.movieService.getCast(cast.actor);
-  }
-
-  @ApiBody({ type: Letter })
-  @Post('/letter')
-  async getLetter(@Body() letters: { letter: string }): Promise<Movie[]> {
-    return await this.movieService.getLetter(letters.letter);
-  }
-
-  @ApiBody({ type: Pages })
-  @Post('/paginates')
-  async findAndPaginate(@Body() pages: { limit: number; skip: number }) {
-    return this.movieService.findAndPaginate(pages.limit, pages.skip);
-  }
-
-  @ApiBody({ type: Year })
-  @Post('/year')
-  async getByYear(@Body() findYear: { year: number }): Promise<Movie[]> {
-    return this.movieService.getByYear(findYear.year);
   }
 
   @Put(':id')

@@ -15,7 +15,7 @@ export class updateMovie {
     description: `Genero do filme.`,
   })
   @IsOptional()
-  genres: [string];
+  genres: string[];
 
   @ApiProperty({
     example: 120,
@@ -29,7 +29,7 @@ export class updateMovie {
     description: `Parte do elenco principal do filme.`,
   })
   @IsOptional()
-  cast: [string];
+  cast: string[];
 
   @ApiProperty({
     example: 5,
@@ -71,14 +71,14 @@ export class updateMovie {
     description: `Idiomas disponiveis para assistir o filme.`,
   })
   @IsOptional()
-  languages: [string];
+  languages: string[];
 
   @ApiProperty({
     example: ['Brazil'],
     description: `País da produção do filme.`,
   })
   @IsOptional()
-  countries: [string];
+  countries: string[];
 
   @ApiProperty({
     example: '2020-07-11T00:00:00.000+00:00',
@@ -92,7 +92,7 @@ export class updateMovie {
     description: `Diretor(es) do filme.`,
   })
   @IsOptional()
-  directors: [string];
+  directors: string[];
 
   @ApiProperty({
     example: 'Good',
@@ -216,5 +216,5 @@ export class updateMovie {
     description: 'Roteirista(s) do filme.',
   })
   @IsOptional()
-  writers: [string];
+  writers: string[];
 }

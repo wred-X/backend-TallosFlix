@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { STATUS_CODES } from 'http';
 import { Pages } from './model/pages';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
@@ -10,26 +11,30 @@ const user: User[] = [
     name: 'Vina',
     email: 'testeJest@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '2',
     name: 'Neymar Jr.',
     email: 'testeJest2@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
   {
     _id: '3',
     name: 'Romário',
     email: 'testeJest3@gmail.com',
     password: 'Abc@12345',
+    avatar: '',
   },
 ];
 
 const newUser: User = {
   _id: '1',
-  name: 'Vina',
+  name: 'Neymar Jr.',
   email: 'testeJest@gmail.com',
   password: 'Abc@12345',
+  avatar: '',
 };
 
 const updatedUser = {
@@ -37,6 +42,7 @@ const updatedUser = {
   name: 'Vina',
   email: 'testeJest@gmail.com',
   password: 'Abc@12345',
+  avatar: '',
 };
 
 describe('UsersController', () => {
@@ -98,7 +104,7 @@ describe('UsersController', () => {
       const body: User = {
         email: 'testeJest@gmail.com',
         password: 'Abc@12345',
-        name: 'Vina',
+        name: 'Neymar Jr.',
         _id: '62e9116f63a31dc1d1c90707',
       };
 

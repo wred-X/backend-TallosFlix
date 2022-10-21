@@ -11,15 +11,16 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addServer('/')
     .addServer('/we')
-    .setTitle('Documentação com Swagger - Desafio movie API')
-    .setDescription('Api mflix, com os cruds pedidos.')
+    .setTitle('Documentação TallosFlix - API completa')
+    .setDescription('Api completa + schemas de requisições usados.')
     .setVersion('1.0')
+    .addTag('login')
     .addTag('users')
     .addTag('theaters')
     .addTag('movies')
     .addTag('comments')
-    .addTag('login')
     .addTag('sessions')
+    .addTag('favorites')
     .addBearerAuth(
       {
         type: 'http',

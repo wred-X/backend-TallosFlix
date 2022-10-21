@@ -2,16 +2,16 @@ import { Document } from 'mongoose';
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-// import { Expose } from 'class-transformer';
 
 export class User {
-  _id: string;
-  // @Expose({ name: 'Nome' })
+  @IsOptional()
+  _id?: string;
   @ApiProperty({
     example: 'Wesley Romão',
     description: `O nome será utilizado para qualquer coisa (Perfil, Home Page, etc) que precise exibir informações da pessoa conectada.`,
@@ -21,9 +21,6 @@ export class User {
   })
   name: string;
 
-  // @Expose({
-  //   name: 'Email',
-  // })
   @ApiProperty({
     example: 'email@email.com',
     description: `O e-mail é necessário para o login.`,
@@ -34,9 +31,6 @@ export class User {
   })
   email: string;
 
-  // @Expose({
-  //   name: 'Senha',
-  // })
   @ApiProperty({
     example: '1234@Abc',
     description: `Para login usando o e-mail diretamente é necessário informar uma senha.`,
@@ -50,4 +44,15 @@ export class User {
     message: 'A senha está fraca',
   })
   password: string;
+
+  @IsOptional()
+  avatar?: string;
+
+  constructor(todo?: Partial<User>) {
+    this._id = todo?._id;
+    this.avatar = todo?.avatar;
+    this.name = todo?.name;
+    this.email = todo?.email;
+    this.password = todo?.password;
+  }
 }
