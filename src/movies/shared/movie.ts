@@ -232,6 +232,9 @@ export class Movie {
   @IsOptional()
   _id: string;
 
+  @IsOptional()
+  trailer?: string;
+  
   constructor(todo?: Partial<Movie>) {
     this._id = todo?._id;
     this.plot = todo?.plot;
@@ -263,5 +266,6 @@ export class Movie {
     this.lastUpdated = todo?.lastUpdated;
     this.website = todo?.website;
     this.writers = todo?.writers;
+    this.trailer = todo?.trailer;
   }
 }
