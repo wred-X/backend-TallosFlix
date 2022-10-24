@@ -45,6 +45,13 @@ export class CommentsController {
     return comments;
   }
 
+  //reply  
+  // @Post('reply')
+  // async replyComment(@Body() _id_comment:String,reply: Comment){
+  //   console.log('tentando responder um comentário')
+  //   return await this.commentService.replyComment(reply)
+  // }
+
   @Post()
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);

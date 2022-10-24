@@ -5,6 +5,8 @@ import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
 import { SocketGateway } from '../../socket/socket.gateway';
 import { CommentGetDto } from './PaginationParams';
+import { Reply } from './reply';
+import { find } from 'rxjs';
 
 @Injectable()
 export class CommentService {
@@ -72,6 +74,21 @@ export class CommentService {
     }
   }
 
+//   async replyComment(comment: Comment) {
+//     // const _id = new ObjectId(comment_id);
+//     // const findComment = await this.commentsModel.findById(comment_id);
+
+//     const createComment = await this.commentsModel.create(comment)
+// const insertReply = ;
+//     return createComment;
+//     // console.log(newComment);
+//     // try {
+//     //   // const insertReply = await this.commentsModel.create(findComment);
+//     //   return insertReply;
+//     // } catch {
+//     //   throw new HttpException('Not Found Reply', HttpStatus.NOT_FOUND);
+//     // }
+//   }
   async create(comments: Comment): Promise<Comment> {
     try {
       const createdComment = new this.commentsModel(comments);
