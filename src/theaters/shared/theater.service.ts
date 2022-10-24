@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { updateTheater } from '../model/updateTheater';
 import { Theater } from './theater';
 
 @Injectable()
@@ -53,7 +54,7 @@ export class TheaterService {
       );
     }
   }
-  async create(theater: Theater) {
+  async create(theater: updateTheater) {
     try {
       const createdTheater = this.theaterModel.create(theater);
       return await createdTheater;
@@ -62,7 +63,7 @@ export class TheaterService {
     }
   }
 
-  async update(id: string, theater: Theater) {
+  async update(id: string, theater: updateTheater){
     try {
       return await this.theaterModel.findByIdAndUpdate(id, theater, {
         new: true,
