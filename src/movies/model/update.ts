@@ -217,4 +217,7 @@ export class updateMovie {
   })
   @IsOptional()
   writers: string[];
+
+  @IsOptional()
+  trailer?: string;
 }
