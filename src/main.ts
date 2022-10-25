@@ -21,6 +21,7 @@ async function bootstrap() {
     .addTag('comments')
     .addTag('sessions')
     .addTag('favorites')
+    .addTag('ratings')
     .addBearerAuth(
       {
         type: 'http',

@@ -11,13 +11,13 @@ export class Theater {
   constructor(Theater?: Partial<Theater>) {
     (this.theaterId = Theater?.theaterId),
       (this.location = Theater?.location),
-      (this.location.address = Theater?.location.address),
-      (this.location.address.street1 = Theater?.location.address.street1),
-      (this.location.address.city = Theater?.location.address.city),
-      (this.location.address.state = Theater?.location.address.state),
-      (this.location.address.zipcode = Theater?.location.address.zipcode),
-      (this.location.geo.type = Theater?.location.geo.type),
-      (this.location.geo.coordinates = Theater?.location.geo.coordinates),
+      // (this.location.address = Theater?.location.address),
+      // (this.location.address.street1 = Theater?.location.address.street1),
+      // (this.location.address.city = Theater?.location.address.city),
+      // (this.location.address.state = Theater?.location.address.state),
+      // (this.location.address.zipcode = Theater?.location.address.zipcode),
+      // (this.location.geo.type = Theater?.location.geo.type),
+      // (this.location.geo.coordinates = Theater?.location.geo.coordinates),
       (this._id = Theater?._id);
   }
 
@@ -42,7 +42,6 @@ export class Theater {
     description: `Endereço completo para localização do teatro`,
   })
   @IsNotEmpty()
-  @IsNumberString()
   location: {
     address: {
       street1: string;
