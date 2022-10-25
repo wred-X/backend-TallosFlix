@@ -45,12 +45,12 @@ export class CommentsController {
     return comments;
   }
 
-  //reply  
-  // @Post('reply')
-  // async replyComment(@Body() _id_comment:String,reply: Comment){
-  //   console.log('tentando responder um comentário')
-  //   return await this.commentService.replyComment(reply)
-  // }
+  //reply
+  @Put('/reply/:id')
+  async replyComment(@Param('id') id: string, @Body() comment: Comment) {
+    console.log('id deve ser o do comentario q to respondendo', id)
+    return await this.commentService.updateReply(id, comment);
+  }
 
   @Post()
   async create(@Body() comment: Comment): Promise<Comment> {

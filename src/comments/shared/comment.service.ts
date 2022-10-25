@@ -74,26 +74,38 @@ export class CommentService {
     }
   }
 
-//   async replyComment(comment: Comment) {
-//     // const _id = new ObjectId(comment_id);
-//     // const findComment = await this.commentsModel.findById(comment_id);
-
-//     const createComment = await this.commentsModel.create(comment)
-// const insertReply = ;
-//     return createComment;
-//     // console.log(newComment);
-//     // try {
-//     //   // const insertReply = await this.commentsModel.create(findComment);
-//     //   return insertReply;
-//     // } catch {
-//     //   throw new HttpException('Not Found Reply', HttpStatus.NOT_FOUND);
-//     // }
-//   }
+  async replyComment(id: string, comment: Comment) {
+    console.log('id do comentario que eu vou responder', id);
+    console.log('comment no service:', comment);
+    // try {
+    //   // const insertReply = await this.commentsModel.create(findComment);
+    //   return insertReply;
+    // } catch {
+    //   throw new HttpException('Not Found Reply', HttpStatus.NOT_FOUND);
+    // }
+  }
   async create(comments: Comment): Promise<Comment> {
     try {
       const createdComment = new this.commentsModel(comments);
       this.socket.emitNewComment(createdComment);
       return await createdComment.save();
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+  async updateReply(id: string, comment: Comment) {
+    try {
+      const createNewComment = this.create(comment);
+      const replyComment = await this.commentsModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          $push: { comments: (await createNewComment)._id },
+        },
+        {
+          new: true,
+        }
+      );
+      return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
