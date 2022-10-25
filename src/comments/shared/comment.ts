@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsObject, IsOptional } from 'class-validator';
+import { ObjectId } from 'mongoose';
 
 export class Comment {
   @ApiProperty({
@@ -40,9 +41,44 @@ export class Comment {
   text: string;
 
   @ApiProperty({
+    example: '20 likes, 2 unlikes',
+    description:
+      'Numeros de Likes e Unlikes que um comentário ou resposta terá',
+  })
+
+ @IsOptional({
+  message: 'Likes e unlikes de uma resposta ou comentario',
+})
+  likes: {
+    like: Number;
+    unlike: Number;
+  };
+
+  @ApiProperty({
+    example: 'Is Reply: True. Is reply: false',
+    description:
+      ' Resposta de um comentário caso IsReply: True. Comentário principal caso IsReply: false',
+  })
+  
+  @IsBoolean({
+    message: 'Define se é resposta ou comentario principal',
+  })
+  isReply: Boolean;
+
+  @ApiProperty({
+    example: 'Eu não concordei com seu comentário',
+    description: 'Array de resposta aos comentários',
+  })
+  @IsArray({
+    message: 'Array de respostas'
+  })
+  comments: ObjectId[];
+
+  @ApiProperty({
     example: '1988-10-16T19:08:23.000Z',
     description: `Data em que o comentario foi realizado`,
   })
+
   @IsNotEmpty({
     message: 'A data precisa ser passada para armazenamento',
   })
@@ -58,5 +94,8 @@ export class Comment {
     this.movie_id = comment?.movie_id;
     this.text = comment?.text;
     this.date = comment?.date;
+    this.isReply = comment?.isReply;
+    this.likes = comment?.likes;
+    this.comments = comment?.comments;
   }
 }

@@ -53,6 +53,12 @@ export class CommentsController {
     return comments;
   }
 
+  //reply
+  @Put('/reply/:id')
+  async replyComment(@Param('id') id: string, @Body() comment: Comment) {
+    return await this.commentService.updateReply(id, comment);
+  }
+
   @Post()
   @Roles(Role.ADMIN,Role.USER)
   @UseGuards(RolesGuard)

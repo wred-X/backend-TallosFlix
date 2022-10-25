@@ -5,6 +5,8 @@ import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
 import { SocketGateway } from '../../socket/socket.gateway';
 import { CommentGetDto } from './PaginationParams';
+import { Reply } from './reply';
+import { find } from 'rxjs';
 
 @Injectable()
 export class CommentService {
@@ -77,6 +79,25 @@ export class CommentService {
       const createdComment = new this.commentsModel(comments);
       this.socket.emitNewComment(createdComment);
       return await createdComment.save();
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+  async updateReply(id: string, comment: Comment) {
+    try {
+      const createNewComment = this.create(comment);
+      const replyComment = await this.commentsModel
+        .findByIdAndUpdate(
+          { _id: id },
+          {
+            $push: { comments: (await createNewComment)._id },
+          },
+          {
+            new: true,
+          }
+        )
+
+      return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
