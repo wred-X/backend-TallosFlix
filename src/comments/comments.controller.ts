@@ -1,4 +1,6 @@
+import { RolesGuard } from './../autentications/guards/role.guard';
 import { Comment } from './shared/comment';
+import { Role } from './../autentications/models/role.enum';
 import {
   Body,
   Controller,
@@ -8,12 +10,14 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { eComment } from './model/emailComment';
 import { MovieId } from './model/movieId';
 import { CommentService } from './shared/comment.service';
 import { CommentGetDto } from './shared/PaginationParams';
+import { Roles } from 'src/autentications/decorators/role-decorator';
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')
@@ -46,11 +50,15 @@ export class CommentsController {
   }
 
   @Post()
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async update(
     @Param('id') id: string,
     @Body() comment: Comment
@@ -59,6 +67,8 @@ export class CommentsController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async delete(@Param('id') id: string) {
     return await this.commentService.delete(id);
   }

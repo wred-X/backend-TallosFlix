@@ -1,3 +1,5 @@
+import { Role } from './../autentications/models/role.enum';
+import { RolesGuard } from './../autentications/guards/role.guard';
 import {
   Body,
   Controller,
@@ -7,11 +9,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { updateMovie } from './model/update';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
+import { Roles } from 'src/autentications/decorators/role-decorator';
 @ApiTags('movies')
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
@@ -39,6 +43,8 @@ export class MoviesController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   async create(@Body() movie: Movie): Promise<Movie> {
     return await this.movieService.create(movie);
   }
