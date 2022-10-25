@@ -156,6 +156,8 @@ describe('CommentService', () => {
     delete: jest.fn().mockResolvedValue(undefined),
     getByEmail: jest.fn().mockRejectedValue(commentMail),
     getByMovieId: jest.fn().mockResolvedValue(commentMovie),
+    updateReply: jest.fn().mockRejectedValue(newComment),
+
   };
 
   beforeEach(async () => {
@@ -274,6 +276,46 @@ describe('CommentService', () => {
 
       // Assert
       expect(commentService.create(body)).rejects.toThrowError();
+    });
+  });
+  describe('Criar respota a um comentário', () => {
+    it('Deve criar  respota a um comentário', () => {
+      // Arrange
+      const body = {
+        _id: '1',
+        name: 'eu',
+        email: 'eu@eu.com',
+        movie_id: 'abcde1234#',
+        text: 'asijdaisjdiajsdi',
+        date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: ['10'],
+      };
+
+      const resposta = {
+        _id: '10',
+        movie_id: 'abcde1234#',
+        name: 'Lucas',
+        email: 'lucas@gmail.com',
+        text: 'Essa é minha resposta',
+        date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: [],
+      };
+
+        // Assert
+      const response =   commentService.updateReply(body._id, resposta)
+      expect(response).toEqual(response)
+      expect(body.comments).toEqual([resposta._id])
+      // Assert
     });
   });
 
