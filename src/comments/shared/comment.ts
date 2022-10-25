@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsObject, IsOptional } from 'class-validator';
+import { ObjectId } from 'mongoose';
 
 export class Comment {
   @ApiProperty({
@@ -71,7 +72,7 @@ export class Comment {
   @IsArray({
     message: 'Array de respostas'
   })
-  comments: String[];
+  comments: ObjectId[];
 
   @ApiProperty({
     example: '1988-10-16T19:08:23.000Z',

@@ -13,7 +13,10 @@ export const CommentSchema = new mongoose.Schema(
       unlike:Number,
     },
     isReply: Boolean,
-    comments: [String],
+    comments: {
+      type: [mongoose.Schema.Types.ObjectId],
+      required:false,
+    },
   },
   
 

@@ -14,6 +14,12 @@ const comment: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -22,6 +28,12 @@ const comment: Comment[] = [
     movie_id: '573a1390f29313caabcd4218',
     text: 'Filme deixou a desejar',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
   {
     _id: '3',
@@ -30,6 +42,12 @@ const comment: Comment[] = [
     movie_id: '573a1390f29313caabcd432a',
     text: 'filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -40,6 +58,12 @@ const newComment: Comment = {
   movie_id: 'abcde1234#',
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
+  likes: {
+    like: 0,
+    unlike: 0,
+  },
+  isReply: false,
+  comments: [],
 };
 
 const updatedComment = {
@@ -49,6 +73,12 @@ const updatedComment = {
   movie_id: '573a1390f29313caabcd41b1',
   text: 'Filme muito ruim filho',
   date: new Date('1988-10-16T19:08:23.000Z'),
+  likes: {
+    like: 0,
+    unlike: 0,
+  },
+  isReply: false,
+  comments: [],
 };
 
 const commentMovie: Comment[] = [
@@ -59,6 +89,12 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -67,6 +103,12 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -78,6 +120,12 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -86,6 +134,12 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd432a',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    likes: {
+      like: 0,
+      unlike: 0,
+    },
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -184,6 +238,12 @@ describe('CommentService', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: [],
       };
       // Act
       const result = await commentService.create(body);
@@ -203,6 +263,12 @@ describe('CommentService', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: [],
       };
       jest.spyOn(commentService, 'create').mockRejectedValueOnce(new Error());
 
@@ -248,6 +314,12 @@ describe('CommentService', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: [],
       };
 
       // Act
@@ -268,6 +340,12 @@ describe('CommentService', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        likes: {
+          like: 0,
+          unlike: 0,
+        },
+        isReply: false,
+        comments: [],
       };
 
       jest.spyOn(commentService, 'update').mockRejectedValueOnce(new Error());

@@ -96,7 +96,7 @@ export class CommentService {
             new: true,
           }
         )
-        .exec();
+
       return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
