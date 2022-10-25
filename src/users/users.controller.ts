@@ -18,8 +18,8 @@ import { UserService } from './shared/user.service';
 import { CurrentUser } from '../autentications/decorators/current-user.decorator';
 import { Update } from './model/update';
 import { Pages } from './model/pages';
-import { Roles } from 'src/autentications/decorators/role-decorator';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import { Roles } from '../autentications/decorators/role-decorator';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
