@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { STATUS_CODES } from 'http';
+import { Role } from '../autentications/models/role.enum';
 import { Pages } from './model/pages';
 import { User } from './shared/user';
 import { UserService } from './shared/user.service';
@@ -62,6 +63,7 @@ describe('UsersController', () => {
             getById: jest.fn().mockResolvedValue(user[0]),
             getMe: jest.fn().mockResolvedValue(user[0]),
             create: jest.fn().mockResolvedValue(newUser),
+            createPub: jest.fn().mockRejectedValue(newUser),
             update: jest.fn().mockResolvedValue(updatedUser),
             delete: jest.fn().mockResolvedValue(undefined),
           },
@@ -132,7 +134,41 @@ describe('UsersController', () => {
       expect(userController.create(body)).rejects.toThrowError();
     });
   });
+  describe('createpub', () => {
+    it('Deve criar um novo user com sucesso', async () => {
+      // Arrange
+      const body: User = {
+        email: 'testeJest@gmail.com',
+        password: 'Abc@12345',
+        name: 'Neymar Jr.',
+        _id: '62e9116f63a31dc1d1c90707',
+        role: Role.USER
+      };
 
+      // Act
+      const result = await userController.create(body);
+
+      // Assert
+      expect(result).toEqual(newUser);
+      expect(userService.create).toHaveBeenCalledTimes(1);
+      expect(userService.create).toHaveBeenCalledWith(body);
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      const body: User = {
+        email: 'teste2@gmail.com',
+        password: '*Lumia710',
+        name: 'Neymar3333 Jr.',
+        _id: '',
+      };
+
+      jest.spyOn(userService, 'create').mockRejectedValueOnce(new Error());
+
+      // Assert
+      expect(userController.create(body)).rejects.toThrowError();
+    });
+  });
   describe('getById', () => {
     it('Deve retornar um user com sucesso pelo ID', async () => {
       // Act

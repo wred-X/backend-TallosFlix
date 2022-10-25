@@ -1,3 +1,4 @@
+import { RolesGuard } from './guards/role.guard';
 import {
   forwardRef,
   MiddlewareConsumer,
@@ -17,6 +18,7 @@ import { SessionsModule } from 'src/sessions/sessions.module';
 import { SocketGateway } from 'src/socket/socket.gateway';
 import { SocketTestModule } from 'src/socket/socket.module';
 
+
 @Module({
   imports: [
     forwardRef(() => UsersModule),
@@ -35,8 +37,9 @@ import { SocketTestModule } from 'src/socket/socket.module';
     ConfigService,
     JwtStrategy,
     SocketGateway,
+    RolesGuard
   ],
-})
+  })
 export class AutenticationsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoginValidationMiddleware).forRoutes('login');

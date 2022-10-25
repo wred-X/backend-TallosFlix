@@ -12,7 +12,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Prop } from '@nestjs/mongoose';
 // import { Expose } from 'class-transformer';
 
-export class User {
+export class UserPub {
   @IsOptional()
   _id?: string;
   @ApiProperty({
@@ -51,17 +51,9 @@ export class User {
   @IsOptional()
   avatar?: string;
 
-  @Prop({ required: true })
-    @ApiProperty({
-        description: 'Cargo do usuário',
-        type: String,
-        example:'admin'
-    })
-    @IsNotEmpty({
-        message: 'Informe o cargo do usuário'
-    })
-    role?: Role;
-  constructor(todo?: Partial<User>) {
+  @IsOptional()
+  role?: Role;
+  constructor(todo?: Partial<UserPub>) {
     this._id = todo?._id;
     this.avatar = todo?.avatar;
     this.name = todo?.name;

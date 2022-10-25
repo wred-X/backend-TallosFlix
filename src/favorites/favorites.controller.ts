@@ -1,12 +1,15 @@
+import { Role } from './../autentications/models/role.enum';
+import { RolesGuard } from './../autentications/guards/role.guard';
 /*
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { UpdateFavorite } from './model/update';
 import { Favorite } from './shared/favorite';
 import { FavoriteService } from './shared/favorite.service';
+import { Roles } from 'src/autentications/decorators/role-decorator';
 
 @ApiTags('favorites')
 @ApiBearerAuth('JWT-auth')
@@ -15,22 +18,30 @@ export class FavoritesController {
   constructor(private favoriteService: FavoriteService) {}
 
   @Get()
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async getAll(): Promise<Favorite[]> {
     return await this.favoriteService.getAll();
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async getById(@Param('id') user_Id: string): Promise<Favorite[]> {
     return await this.favoriteService.getById(user_Id);
   }
 
   @Post()
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async create(@Body() favorite: Favorite): Promise<Favorite> {
     return await this.favoriteService.create(favorite);
   }
 
   @ApiBody({ type: UpdateFavorite })
   @Put('/add/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async update(
     @Param('id') id: string,
     @Body() favorite: UpdateFavorite
@@ -40,6 +51,8 @@ export class FavoritesController {
 
   @ApiBody({ type: UpdateFavorite })
   @Put('/remove/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async delete(
     @Param('id') id: string,
     @Body() favorite: UpdateFavorite
