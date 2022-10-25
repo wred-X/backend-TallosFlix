@@ -16,6 +16,7 @@ import { updateTheater } from './model/updateTheater';
 import { Theater } from './shared/theater';
 import { TheaterService } from './shared/theater.service';
 import { Roles } from 'src/autentications/decorators/role-decorator';
+import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 
 @ApiTags('theaters')
 @ApiBearerAuth('JWT-auth')
@@ -23,16 +24,17 @@ import { Roles } from 'src/autentications/decorators/role-decorator';
 export class TheatersController {
   constructor(private theaterService: TheaterService) {}
 
+  @IsPublic()
   @Get()
   async getAll(): Promise<Theater[]> {
     return await this.theaterService.getAll();
   }
-
+  @IsPublic()
   @Get(':id')
   async getById(@Param('id') id: string): Promise<Theater> {
     return await this.theaterService.getById(id);
   }
-
+  @IsPublic()
   @ApiBody({ type: Coordinates })
   @Post('/geoSearch')
   async getByLocation(
@@ -40,7 +42,7 @@ export class TheatersController {
   ): Promise<Theater[]> {
     return await this.theaterService.getByLocation(cord.lat, cord.long);
   }
-
+  
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)

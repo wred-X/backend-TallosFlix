@@ -18,30 +18,34 @@ import { MovieId } from './model/movieId';
 import { CommentService } from './shared/comment.service';
 import { CommentGetDto } from './shared/PaginationParams';
 import { Roles } from 'src/autentications/decorators/role-decorator';
+import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')
 @Controller('comments')
 export class CommentsController {
   constructor(private commentService: CommentService) {}
-
+  
+  @IsPublic()
   @Get()
   async getAll(@Query() comment: CommentGetDto, pagination) {
     return await this.commentService.getAll(comment, pagination);
   }
 
+  @IsPublic()
   @Get(':id')
   async getById(@Param('id') id: string): Promise<Comment> {
     return await this.commentService.getById(id);
   }
-
+  
+  @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
   async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
     const comments = await this.commentService.getByMovieId(movie_id.movie);
     return comments;
   }
-
+  @IsPublic()
   @ApiBody({ type: eComment })
   @Post('mail')
   async getByEmail(@Body() email: { mail: string }): Promise<Comment[]> {

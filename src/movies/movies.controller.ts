@@ -16,23 +16,27 @@ import { updateMovie } from './model/update';
 import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 import { Roles } from 'src/autentications/decorators/role-decorator';
+import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 @ApiTags('movies')
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
 export class MoviesController {
   constructor(private movieService: MovieService) { }
 
+  @IsPublic()
   @Get()
   async getAll(movies: Movie) {
     return await this.movieService.getMovies(movies, {});
   }
 
+  @IsPublic()
   @Get('/search')
   async findOne(@Query() query) {
     const findOne = await this.movieService.findByMovieId(query);
     return findOne;
   }
-
+  
+  @IsPublic()
   @Get('/search/series')
   async findSeries(@Query() querySeries) {
     const findSerie = await this.movieService.findByMovieId(
