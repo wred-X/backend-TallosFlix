@@ -40,6 +40,7 @@ export class MoviesController {
 
   @Post()
   async create(@Body() movie: Movie): Promise<Movie> {
+    movie.trailer = '';
     return await this.movieService.create(movie);
   }
 
