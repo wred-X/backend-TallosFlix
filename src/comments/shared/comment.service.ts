@@ -86,15 +86,17 @@ export class CommentService {
   async updateReply(id: string, comment: Comment) {
     try {
       const createNewComment = this.create(comment);
-      const replyComment = await this.commentsModel.findByIdAndUpdate(
-        { _id: id },
-        {
-          $push: { comments: (await createNewComment)._id },
-        },
-        {
-          new: true,
-        }
-      );
+      const replyComment = await this.commentsModel
+        .findByIdAndUpdate(
+          { _id: id },
+          {
+            $push: { comments: (await createNewComment)._id },
+          },
+          {
+            new: true,
+          }
+        )
+        .exec();
       return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
