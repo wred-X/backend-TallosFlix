@@ -20,7 +20,7 @@ import { Roles } from 'src/autentications/decorators/role-decorator';
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
 export class MoviesController {
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService) { }
 
   @Get()
   async getAll(movies: Movie) {
@@ -49,7 +49,9 @@ export class MoviesController {
     return await this.movieService.create(movie);
   }
 
-  @Put(':id')
+  @Put(':id') 
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   async update(
     @Param('id') id: string,
     @Body() movie: updateMovie
@@ -58,6 +60,8 @@ export class MoviesController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   async delete(@Param('id') id: string) {
     return await this.movieService.delete(id);
   }

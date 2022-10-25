@@ -1,3 +1,5 @@
+import { Role } from './../autentications/models/role.enum';
+import { RolesGuard } from './../autentications/guards/role.guard';
 import {
   Body,
   Controller,
@@ -7,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger/dist';
 import { User } from './shared/user';
@@ -14,6 +17,7 @@ import { UserService } from './shared/user.service';
 import { CurrentUser } from '../autentications/decorators/current-user.decorator';
 import { Update } from './model/update';
 import { Pages } from './model/pages';
+import { Roles } from 'src/autentications/decorators/role-decorator';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
@@ -37,6 +41,8 @@ export class UsersController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   async create(@Body() user: User): Promise<User> {
     user.avatar = '';
     return await this.userService.create(user);
@@ -49,11 +55,15 @@ export class UsersController {
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(RolesGuard)
   async update(@Param('id') id: string, @Body() user: Update): Promise<User> {
     return this.userService.update(id, user);
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   async delete(@Param('id') id: string) {
     return await this.userService.delete(id);
   }
