@@ -1,4 +1,3 @@
-import { RatingService } from './ratings/shared/rating.service';
 import { FavoritesModule } from './favorites/favorites.module';
 import { SocketGateway } from './socket/socket.gateway';
 import { Module } from '@nestjs/common';
@@ -12,7 +11,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './autentications/guards/jwt-autentication.guard';
 import { SocketTestModule } from './socket/socket.module';
-import { RatingsModule } from './ratings/ratings.module';
 
 @Module({
   imports: [
@@ -25,7 +23,6 @@ import { RatingsModule } from './ratings/ratings.module';
     SessionsModule,
     AutenticationsModule,
     SocketTestModule,
-    RatingsModule,
   ],
   providers: [
     SocketGateway,

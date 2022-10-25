@@ -23,11 +23,6 @@ export class MoviesController {
     return await this.movieService.getMovies(movies, {});
   }
 
-  @Get(':id')
-  async getById(@Param('id') id: string): Promise<Movie> {
-    return await this.movieService.getById(id);
-  }
-
   @Get('/search')
   async findOne(@Query() query) {
     const findOne = await this.movieService.findByMovieId(query);

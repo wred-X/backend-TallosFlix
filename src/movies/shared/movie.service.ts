@@ -60,10 +60,6 @@ export class MovieService {
     }
   }
 
-  async getById(id: string) {
-    return await this.movieModel.findById(id);
-  }
-
   async create(movie: Movie) {
     try {
       const createdMovie = new this.movieModel(movie);

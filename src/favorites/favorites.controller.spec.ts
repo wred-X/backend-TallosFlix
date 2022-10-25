@@ -77,7 +77,7 @@ describe('FavoritesController', () => {
   });
 
   describe('getAll', () => {
-    it('Deve retornar lista de favoritos gerais', async () => {
+    it('Deve retornar lista de comentarios', async () => {
       // Act
       const result = await favoriteController.getAll();
 
@@ -97,7 +97,7 @@ describe('FavoritesController', () => {
   });
 
   describe('getById', () => {
-    it('Deve retornar lista de favoritos do user com sucesso pelo seu ID', async () => {
+    it('Deve retornar um comentario com sucesso pelo ID', async () => {
       // Act
       const result = await favoriteController.getById('1');
 
@@ -117,7 +117,7 @@ describe('FavoritesController', () => {
   });
 
   describe('create', () => {
-    it('Deve criar o primeiro favorito do user com sucesso', async () => {
+    it('Deve criar uma novo comentario com sucesso', async () => {
       // Arrange
       const body: Favorite = {
         _id: '',
@@ -148,7 +148,7 @@ describe('FavoritesController', () => {
   });
 
   describe('update', () => {
-    it('Deve adicionar filme ao favorito do user com sucesso', async () => {
+    it('Deve remover um comentário com sucesso', async () => {
       // Arrange
       const body: UpdateFavorite = {
         movie_Id: '573a13bff29313caabd5e99e',
@@ -177,7 +177,7 @@ describe('FavoritesController', () => {
   });
 
   describe('delete', () => {
-    it('Deve remover filme do favorito do user com sucesso', async () => {
+    it('Deve remover um comentário com sucesso', async () => {
       // Arrange
       const body: UpdateFavorite = {
         movie_Id: '573a139ef29313caabcfd114',
