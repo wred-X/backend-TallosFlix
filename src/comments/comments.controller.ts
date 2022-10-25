@@ -48,7 +48,6 @@ export class CommentsController {
   //reply
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
-    console.log('id deve ser o do comentario q to respondendo', id)
     return await this.commentService.updateReply(id, comment);
   }
 

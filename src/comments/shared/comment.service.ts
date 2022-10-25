@@ -74,16 +74,6 @@ export class CommentService {
     }
   }
 
-  async replyComment(id: string, comment: Comment) {
-    console.log('id do comentario que eu vou responder', id);
-    console.log('comment no service:', comment);
-    // try {
-    //   // const insertReply = await this.commentsModel.create(findComment);
-    //   return insertReply;
-    // } catch {
-    //   throw new HttpException('Not Found Reply', HttpStatus.NOT_FOUND);
-    // }
-  }
   async create(comments: Comment): Promise<Comment> {
     try {
       const createdComment = new this.commentsModel(comments);
