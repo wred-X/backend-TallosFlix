@@ -8,17 +8,14 @@ export const CommentSchema = new mongoose.Schema(
     },
     text: String,
     date: Date,
-    likes: {
-      like: Number,
-      unlike:Number,
-    },
     isReply: Boolean,
     comments: {
       type: [mongoose.Schema.Types.ObjectId],
-      required:false,
+      required: false,
     },
+    // likes: [mongoose.Schema.Types.ObjectId],
+    // unlikes:[mongoose.Schema.Types.ObjectId],
   },
-  
 
   { typeKey: '$type' }
 );
