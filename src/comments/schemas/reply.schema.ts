@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-export const CommentSchema = new mongoose.Schema(
+export const replySchema = new mongoose.Schema(
   {
     name: String,
     email: String,
@@ -13,10 +13,7 @@ export const CommentSchema = new mongoose.Schema(
       unlike:Number,
     },
     isReply: Boolean,
-    comments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      required:false,
-    },
+    comments: [String],
   },
   
 

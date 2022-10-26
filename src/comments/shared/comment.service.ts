@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
+import { Model } from 'mongoose';
 import { SocketGateway } from '../../socket/socket.gateway';
+import { Comment } from './comment';
 import { CommentGetDto } from './PaginationParams';
 
 @Injectable()
@@ -77,6 +77,25 @@ export class CommentService {
       const createdComment = new this.commentsModel(comments);
       this.socket.emitNewComment(createdComment);
       return await createdComment.save();
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+  async updateReply(id: string, comment: Comment) {
+    try {
+      const createNewComment = this.create(comment);
+      const replyComment = await this.commentsModel
+        .findByIdAndUpdate(
+          { _id: id },
+          {
+            $push: { comments: (await createNewComment)._id },
+          },
+          {
+            new: true,
+          }
+        )
+
+      return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
