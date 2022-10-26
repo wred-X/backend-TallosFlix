@@ -47,6 +47,7 @@ describe('RatingsSeratingService', () => {
   const mockFavorite = {
     getAll: jest.fn().mockResolvedValue(rating),
     getById: jest.fn().mockResolvedValue(rating[0]),
+    getRates: jest.fn().mockResolvedValue(rating[0]),
     getRating: jest.fn().mockResolvedValue(rate),
     create: jest.fn().mockResolvedValue(newRating),
     addRate: jest.fn().mockResolvedValue(updatedRating),
@@ -117,6 +118,26 @@ describe('RatingsSeratingService', () => {
       expect(
         ratingService.getById(rating[0].allRate[0].user_id)
       ).rejects.toThrowError();
+    });
+  });
+
+  describe('getRates', () => {
+    it('Deve retornar as card de notas feitas com sucesso pelo ID do filme', async () => {
+      // Act
+      const result = await ratingService.getById(rating[0].movie_id);
+
+      // Assert
+      expect(result).toEqual(rating[0]);
+      expect(ratingService.getRates).toHaveBeenCalledTimes(1);
+      expect(ratingService.getRates).toHaveBeenCalledWith(rating[0].movie_id);
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      jest.spyOn(ratingService, 'getRates').mockRejectedValueOnce(new Error());
+
+      // Assert
+      expect(ratingService.getRates(rating[0].movie_id)).rejects.toThrowError();
     });
   });
 

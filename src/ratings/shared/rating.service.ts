@@ -30,6 +30,17 @@ export class RatingService {
     }
   }
 
+  async getRates(movieId: string) {
+    try {
+      const rateInfo = await this.ratingModel.find({
+        movie_id: movieId,
+      });
+      return rateInfo;
+    } catch (error) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   async getRating(movieId: string) {
     try {
       const allRates = await this.ratingModel.find({
