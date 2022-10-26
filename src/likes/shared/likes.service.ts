@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Likes } from '../model/likes';
-import { userLiked } from '../model/userLiked';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class LikesService {
@@ -15,22 +15,51 @@ export class LikesService {
   }
 
   async likeComment(id: string, liked: Likes) {
-    const user = liked.userLike;
-    const validateLiked = await this.likesModel.findOne({
-      'userLike.userId': user.userId,
-      commentId: id,
-    });
-    return validateLiked;
-    //  (!validateLiked)
-    //   return await this.likesModel.create(liked);
+    const userLike = liked.userLike;
+    console.log(userLike);
 
-    //   return await this.likesModel.findOneAndUpdate(
-    //     { commentId: id },
-    //     { $push: { userLike: liked.userLike } },
-    //     { new: true }
-    //   )
-    // console.log(validateLiked);
+    //verifica se o userId ja deu like ou deslike nesse comentario especifico
+    const validateLiked = await this.likesModel.findOne({
+      commentId: id,
+      'userLike.userId': userLike.userId,
+    });
+
+    //caso tenha dado like ou unlike, ele fara o update do novo like ou unlike
+    if (validateLiked) {
+      console.log('sim');
+      await this.likesModel.findOneAndUpdate(
+        { commentId: id, 'userlike.userId': userLike.userId },
+        {
+          $pull: {
+            userLike: liked.userLike,
+          },
+          $push: { userLike: liked.userLike },
+        },
+        { new: true }
+      );
+    } else {
+      //caso n tenha dado like e nem unlike, n existe o objeto dentro do array de userLikes, então ele deve criar um novo objeto dentro do array do commentId
+      console.log('nao');
+      await this.likesModel.findOneAndUpdate(
+        { commentId: id },
+        { $push: { userLike: liked.userLike } },
+        { new: true }
+      );
+      //  await this.likesModel.create(liked);
+    }
+    return validateLiked;
+    // const finded =
+
+    // return finded;
+
+    //   : await this.likesModel.findOneAndUpdate(
+    //       { commentId: id },
+    //       { $push: { userLike: liked.userLike } },
+    //       { new: true }
+    //     );
     // return validateLiked;
+
+    // console.log(validateLiked);
     // console.log(validateLiked)
     // console.log(liked.userLike);
   }
