@@ -14,6 +14,7 @@ import { UserService } from './shared/user.service';
 import { CurrentUser } from '../autentications/decorators/current-user.decorator';
 import { Update } from './model/update';
 import { Pages } from './model/pages';
+import { mainModule } from 'process';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
@@ -34,6 +35,11 @@ export class UsersController {
   @Get(':id')
   async getById(@Param('id') id: string): Promise<User> {
     return await this.userService.getById(id);
+  }
+
+  @Get('/avatar/:mail')
+  async getPhoto(@Param('mail') mail: string) {
+    return await this.userService.getPhoto(mail);
   }
 
   @Post()
