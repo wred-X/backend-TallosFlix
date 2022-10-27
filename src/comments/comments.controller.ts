@@ -41,8 +41,8 @@ export class CommentsController {
   @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
-  async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
-    const comments = await this.commentService.getByMovieId(movie_id.movie);
+  async getByMovieId(@Query() pagination,@Body() movie_id: { movie: string }): Promise<Comment[]> {
+    const comments = await this.commentService.getByMovieId(pagination,movie_id.movie);
     return comments;
   }
   @IsPublic()
