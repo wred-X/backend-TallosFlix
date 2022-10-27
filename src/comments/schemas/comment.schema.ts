@@ -3,18 +3,12 @@ export const CommentSchema = new mongoose.Schema(
   {
     name: String,
     email: String,
-    movie_id: {
-      type: String,
-    },
+    movie_id: mongoose.Schema.Types.ObjectId,
     text: String,
     date: Date,
     isReply: Boolean,
-    comments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      required: false,
-    },
-    // likes: [mongoose.Schema.Types.ObjectId],
-    // unlikes:[mongoose.Schema.Types.ObjectId],
+    comments:  [mongoose.Schema.Types.ObjectId],
+  
   },
 
   { typeKey: '$type' }
