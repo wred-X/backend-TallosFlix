@@ -18,14 +18,13 @@ export class LikesService {
     const result = await this.likesModel.find({
       commentId: id,
     });
-    console.log(result, 'resulteeeeeeeeeeeeeeeeee');
-    let likes = 0;
-    let deslikes = 0;
+    let valueLikes = 0;
+    let valueDeslikes = 0;
     for (let i = 0; i < result[0].userLike.length; i++) {
-      if (result[0].userLike[i].like === true) likes++;
-      if (result[0].userLike[i].unlike === true) deslikes++;
+      if (result[0].userLike[i].like === true) valueLikes++;
+      if (result[0].userLike[i].unlike === true) valueDeslikes++;
     }
-    const likeNumbers = { likes, deslikes };
+    const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
     return likeNumbers;
   }
 
