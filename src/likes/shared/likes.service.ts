@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Likes } from '../model/likes';
 import { ObjectId } from 'mongodb';
+import { userLiked } from '../model/userLiked';
 
 @Injectable()
 export class LikesService {
@@ -14,53 +15,72 @@ export class LikesService {
     return result;
   }
 
-  async likeComment(id: string, liked: Likes) {
-    const userLike = liked.userLike;
-    console.log(userLike);
+  async allLikes(id: string) {
+    const result = await this.likesModel.find({
+      commentId: id,
+    });
+    console.log(result, 'resulteeeeeeeeeeeeeeeeee');
+    let likes = 0;
+    let deslikes = 0;
+    for (let i = 0; i < result[0].userLike.length; i++) {
+      if (result[0].userLike[i].like === true) likes++;
+      if (result[0].userLike[i].unlike === true) deslikes++;
+    }
+    const likeNumbers = { likes, deslikes };
+    return likeNumbers;
+  }
+
+  async create(newLike: Likes) {
+    // try {
+    const createdTheater = this.likesModel.create(newLike);
+    return await createdTheater;
+    // } catch (error) {
+    //   throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    // }
+  }
+
+  async likeComment(id: string, array: userLiked) {
+    const userLike = array;
 
     //verifica se o userId ja deu like ou deslike nesse comentario especifico
     const validateLiked = await this.likesModel.findOne({
       commentId: id,
-      'userLike.userId': userLike.userId,
+      userLike: { $elemMatch: { userId: userLike.userId } },
     });
 
     //caso tenha dado like ou unlike, ele fara o update do novo like ou unlike
     if (validateLiked) {
-      console.log('sim');
       await this.likesModel.findOneAndUpdate(
-        { commentId: id, 'userlike.userId': userLike.userId },
+        {
+          commentId: id,
+          userLike: { $elemMatch: { userId: userLike.userId } },
+        },
         {
           $pull: {
-            userLike: liked.userLike,
+            userLike: { userId: userLike.userId },
           },
-          $push: { userLike: liked.userLike },
         },
         { new: true }
       );
+      if (userLike.like === true || userLike.unlike === true) {
+        const newLike = this.pushFuction(id, userLike);
+        return newLike;
+      }
     } else {
       //caso n tenha dado like e nem unlike, n existe o objeto dentro do array de userLikes, então ele deve criar um novo objeto dentro do array do commentId
-      console.log('nao');
-      await this.likesModel.findOneAndUpdate(
-        { commentId: id },
-        { $push: { userLike: liked.userLike } },
-        { new: true }
-      );
-      //  await this.likesModel.create(liked);
+      const newLike = this.pushFuction(id, userLike);
+      return newLike;
     }
-    return validateLiked;
-    // const finded =
+  }
 
-    // return finded;
+  async pushFuction(id: string, liked: userLiked) {
+    //verifica se o userId ja deu like ou deslike nesse comentario especifico
+    const pushLike = await this.likesModel.findOneAndUpdate(
+      { commentId: id },
+      { $push: { userLike: liked } },
+      { new: true }
+    );
 
-    //   : await this.likesModel.findOneAndUpdate(
-    //       { commentId: id },
-    //       { $push: { userLike: liked.userLike } },
-    //       { new: true }
-    //     );
-    // return validateLiked;
-
-    // console.log(validateLiked);
-    // console.log(validateLiked)
-    // console.log(liked.userLike);
+    return pushLike;
   }
 }

@@ -8,6 +8,6 @@ import { LikesService } from './shared/likes.service';
   imports: [MongooseModule.forFeature([{ name: 'Likes', schema: likeSchema }])],
   controllers: [LikesController],
   providers: [LikesService],
-  exports: [LikesService]
+  exports: [LikesService],
 })
 export class LikesModule {}

@@ -3,5 +3,5 @@ import { userLiked } from './userLiked';
 
 export class Likes {
   commentId: ObjectId;
-  userLike: userLiked;
+  userLike: userLiked[];
 }
