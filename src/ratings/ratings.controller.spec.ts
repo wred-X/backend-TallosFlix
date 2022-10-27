@@ -120,7 +120,7 @@ describe('RatingsController', () => {
   describe('getRates', () => {
     it('Deve retornar as card de notas feitas com sucesso pelo ID do filme', async () => {
       // Act
-      const result = await ratingController.getById(rating[0].movie_id);
+      const result = await ratingController.getRates(rating[0].movie_id);
 
       // Assert
       expect(result).toEqual(rating[0]);

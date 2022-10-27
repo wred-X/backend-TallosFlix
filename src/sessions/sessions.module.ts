@@ -3,7 +3,7 @@ import { SessionsController } from './sessions.controller';
 import { SessionService } from './shared/session.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SessionSchema } from './schemas/session.schema';
-import { AutenticationsModule } from 'src/autentications/autentications.module';
+import { AutenticationsModule } from '../autentications/autentications.module';
 @Module({
   imports: [
     forwardRef(() => AutenticationsModule),

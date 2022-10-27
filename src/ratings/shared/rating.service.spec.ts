@@ -124,7 +124,7 @@ describe('RatingsSeratingService', () => {
   describe('getRates', () => {
     it('Deve retornar as card de notas feitas com sucesso pelo ID do filme', async () => {
       // Act
-      const result = await ratingService.getById(rating[0].movie_id);
+      const result = await ratingService.getRates(rating[0].movie_id);
 
       // Assert
       expect(result).toEqual(rating[0]);

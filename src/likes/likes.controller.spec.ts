@@ -54,6 +54,8 @@ const updatedLike: userLiked = {
   unlike: false,
 };
 
+const likeNumbers = { likes: 1, deslikes: 0 };
+
 describe('LikesController', () => {
   let likeController: LikesController;
   let likeService: LikesService;
@@ -65,10 +67,10 @@ describe('LikesController', () => {
         {
           provide: LikesService,
           useValue: {
-            getLikes: jest.fn().mockResolvedValue(like),
+            getAll: jest.fn().mockResolvedValue(like),
             likeComment: jest.fn().mockResolvedValue(like[0]),
             create: jest.fn().mockResolvedValue(newLike),
-            allLikes: jest.fn().mockResolvedValue(updatedLike),
+            allLikes: jest.fn().mockResolvedValue(likeNumbers),
             pushFuction: jest.fn().mockResolvedValue(newLike),
           },
         },
@@ -138,7 +140,7 @@ describe('LikesController', () => {
       const result = await likeController.allLikes(like[0].commentId);
 
       // Assert
-      expect(result).toEqual(like);
+      expect(result).toEqual(likeNumbers);
       expect(likeService.allLikes).toHaveBeenCalledTimes(1);
       expect(likeService.allLikes).toHaveBeenCalledWith(like[0].commentId);
     });

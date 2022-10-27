@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
 import { LikesService } from './shared/likes.service';
