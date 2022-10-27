@@ -42,6 +42,11 @@ export class UsersController {
     return await this.userService.getById(id);
   }
 
+  @Get('/avatar/:mail')
+  async getPhoto(@Param('mail') mail: string) {
+    return await this.userService.getPhoto(mail);
+  }
+
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
@@ -53,7 +58,7 @@ export class UsersController {
   @Post('public')
   async createpub(@Body() user: UserPub): Promise<User> {
     user.avatar = '';
-    user.role = Role.USER
+    user.role = Role.USER;
     return await this.userService.create(user);
   }
   @ApiBody({ type: Pages })
@@ -63,7 +68,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   async update(@Param('id') id: string, @Body() user: Update): Promise<User> {
     return this.userService.update(id, user);

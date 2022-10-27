@@ -33,6 +33,15 @@ export class UserService {
     }
   }
 
+  async getPhoto(mail: string) {
+    try {
+      const avatar = await this.userModel.find({ email: mail });
+      return avatar[0].avatar;
+    } catch (error) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   async findAndPaginate(limit: number, skip: number) {
     try {
       const skipValue = limit * (skip - 1);
