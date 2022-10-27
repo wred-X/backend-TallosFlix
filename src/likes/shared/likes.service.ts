@@ -25,19 +25,18 @@ export class LikesService {
     const result = await this.likesModel.find({
       commentId: id,
     });
-    let likes = 0;
-    let deslikes = 0;
+    let valueLikes = 0;
+    let valueDeslikes = 0;
     for (let i = 0; i < result[0].userLike.length; i++) {
-      if (result[0].userLike[i].like === true) likes++;
-      if (result[0].userLike[i].unlike === true) deslikes++;
+      if (result[0].userLike[i].like === true) valueLikes++;
+      if (result[0].userLike[i].unlike === true) valueDeslikes++;
     }
-    const likeNumbers = { likes, deslikes };
+    const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
     return likeNumbers;
   }
 
   async create(docLike: Likes) {
     try {
-      console.log('criando')
       const createdLikeDoc = this.likesModel.create(docLike);
       return await createdLikeDoc;
     } catch (error) {
@@ -47,7 +46,6 @@ export class LikesService {
 
   async likeComment(id: string, array: userLiked) {
     const userLike = array;
-    console.log('enviando joinha')
 
     //verifica se o userId ja deu like ou deslike nesse comentario especifico
     const validateLiked = await this.likesModel.findOne({

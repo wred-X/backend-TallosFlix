@@ -16,7 +16,7 @@ import { updateTheater } from './model/updateTheater';
 import { Theater } from './shared/theater';
 import { TheaterService } from './shared/theater.service';
 import { Roles } from 'src/autentications/decorators/role-decorator';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 
 @ApiTags('theaters')
 @ApiBearerAuth('JWT-auth')

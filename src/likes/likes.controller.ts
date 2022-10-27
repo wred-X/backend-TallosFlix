@@ -3,17 +3,13 @@ import {
   Controller,
   Get,
   Param,
-  Post,
-  Put,
-  Query,
-  UseGuards,
+  Post, Query,
+  UseGuards
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
-import { timeStamp } from 'console';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
-import { Roles } from 'src/autentications/decorators/role-decorator';
-import { RolesGuard } from 'src/autentications/guards/role.guard';
-import { Role } from 'src/autentications/models/role.enum';
+import { Roles } from '../autentications/decorators/role-decorator';
+import { RolesGuard } from '../autentications/guards/role.guard';
+import { Role } from '../autentications/models/role.enum';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
 import { LikesService } from './shared/likes.service';
