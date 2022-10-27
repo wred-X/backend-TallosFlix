@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Likes } from '../model/likes';
-import { ObjectId } from 'mongodb';
 import { userLiked } from '../model/userLiked';
 
 @Injectable()
@@ -13,29 +12,36 @@ export class LikesService {
     const result = await this.likesModel.find();
     return result;
   }
+  async byId(query: any) {
+    const result: Likes = await this.likesModel.findOne({
+      commentId: query.commentId,
+    });
+    (!result);
+   await this.create(query);
 
+    return result;
+  }
   async allLikes(id: string) {
     const result = await this.likesModel.find({
       commentId: id,
     });
-    console.log(result, 'resulteeeeeeeeeeeeeeeeee');
-    let likes = 0;
-    let deslikes = 0;
+    let valueLikes = 0;
+    let valueDeslikes = 0;
     for (let i = 0; i < result[0].userLike.length; i++) {
-      if (result[0].userLike[i].like === true) likes++;
-      if (result[0].userLike[i].unlike === true) deslikes++;
+      if (result[0].userLike[i].like === true) valueLikes++;
+      if (result[0].userLike[i].unlike === true) valueDeslikes++;
     }
-    const likeNumbers = { likes, deslikes };
+    const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
     return likeNumbers;
   }
 
-  async create(newLike: Likes) {
-    // try {
-    const createdTheater = this.likesModel.create(newLike);
-    return await createdTheater;
-    // } catch (error) {
-    //   throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
-    // }
+  async create(docLike: Likes) {
+    try {
+      const createdLikeDoc = this.likesModel.create(docLike);
+      return await createdLikeDoc;
+    } catch (error) {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async likeComment(id: string, array: userLiked) {
@@ -61,7 +67,8 @@ export class LikesService {
         },
         { new: true }
       );
-      if (userLike.like === true || userLike.unlike === true) {
+
+      if (userLike.like === true && userLike.unlike === true) {
         const newLike = this.pushFuction(id, userLike);
         return newLike;
       }

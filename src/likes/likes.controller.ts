@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { Roles } from '../autentications/decorators/role-decorator';
+import { RolesGuard } from '../autentications/guards/role.guard';
+import { Role } from '../autentications/models/role.enum';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
 import { LikesService } from './shared/likes.service';
@@ -16,6 +26,16 @@ export class LikesController {
     return findLikes;
   }
 
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
+  @Get('validate')
+  async getCommentId(@Query() query: any) {
+    console.log('control', query);
+    return await this.likesService.byId(query);
+  }
+
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
   @Post(':id')
   async likeComment(
     @Param('id') id: string,
@@ -25,11 +45,15 @@ export class LikesController {
     return addLike;
   }
 
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
   @Post()
   async create(@Body() liked: Likes): Promise<Likes> {
     return await this.likesService.create(liked);
   }
 
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
   @Get(':id')
   async allLikes(@Param('id') id: string): Promise<object> {
     const addLike = await this.likesService.allLikes(id);

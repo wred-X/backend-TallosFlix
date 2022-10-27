@@ -12,10 +12,6 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -26,10 +22,6 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -40,10 +32,6 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -56,10 +44,6 @@ const newComment: Comment = {
   movie_id: 'abcde1234#',
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
-  likes: {
-    like: 0,
-    unlike: 0,
-  },
   isReply: false,
   comments: [],
 };
@@ -81,10 +65,6 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -95,10 +75,6 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -112,10 +88,6 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -126,10 +98,6 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd432a',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
-    likes: {
-      like: 0,
-      unlike: 0,
-    },
     isReply: false,
     comments: [],
   },
@@ -225,10 +193,6 @@ describe('CommentsController', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: [],
       };
@@ -250,10 +214,6 @@ describe('CommentsController', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: [],
       };
@@ -324,11 +284,11 @@ describe('CommentsController', () => {
         comments: [],
       };
 
-        // Assert
-      const response =   commentController.replyComment(body._id, resposta);
-      console.log('REPLY',response)
-      expect(response).toEqual(response)
-      expect(body.comments).toEqual([resposta._id])
+      // Assert
+      const response = commentController.replyComment(body._id, resposta);
+      console.log('REPLY', response);
+      expect(response).toEqual(response);
+      expect(body.comments).toEqual([resposta._id]);
       // Assert
     });
   });
