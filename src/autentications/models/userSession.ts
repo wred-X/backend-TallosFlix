@@ -1,4 +1,4 @@
-import { User } from 'src/users/shared/user';
+import { User } from '../../users/shared/user';
 
 export class UserSession {
   _id?: string;
