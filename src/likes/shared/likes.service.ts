@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Likes } from '../model/likes';
 import { ObjectId } from 'mongodb';
 import { userLiked } from '../model/userLiked';
@@ -11,7 +11,6 @@ export class LikesService {
 
   async getAll() {
     const result = await this.likesModel.find();
-    console.log(result);
     return result;
   }
 
@@ -47,8 +46,8 @@ export class LikesService {
       commentId: id,
       userLike: { $elemMatch: { userId: userLike.userId } },
     });
-
     //caso tenha dado like ou unlike, ele fara o update do novo like ou unlike
+
     if (validateLiked) {
       await this.likesModel.findOneAndUpdate(
         {
