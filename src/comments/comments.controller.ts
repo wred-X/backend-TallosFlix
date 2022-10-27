@@ -17,8 +17,8 @@ import { eComment } from './model/emailComment';
 import { MovieId } from './model/movieId';
 import { CommentService } from './shared/comment.service';
 import { CommentGetDto } from './shared/PaginationParams';
-import { Roles } from 'src/autentications/decorators/role-decorator';
-import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
+import { Roles } from '../autentications/decorators/role-decorator';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')

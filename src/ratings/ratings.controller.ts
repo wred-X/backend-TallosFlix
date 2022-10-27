@@ -21,6 +21,11 @@ export class RatingsController {
   }
 
   @Get('movie/:id')
+  async getRates(@Param('id') movieId: string): Promise<Rating[]> {
+    return await this.ratingService.getRates(movieId);
+  }
+
+  @Get('rate/:id')
   async getRating(@Param('id') movieId: string): Promise<number> {
     return await this.ratingService.getRating(movieId);
   }

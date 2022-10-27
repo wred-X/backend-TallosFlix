@@ -9,7 +9,7 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { UpdateFavorite } from './model/update';
 import { Favorite } from './shared/favorite';
 import { FavoriteService } from './shared/favorite.service';
-import { Roles } from 'src/autentications/decorators/role-decorator';
+import { Roles } from '../autentications/decorators/role-decorator';
 
 @ApiTags('favorites')
 @ApiBearerAuth('JWT-auth')
