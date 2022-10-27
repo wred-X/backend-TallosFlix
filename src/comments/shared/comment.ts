@@ -40,19 +40,19 @@ export class Comment {
   })
   text: string;
 
-  @ApiProperty({
-    example: '20 likes, 2 unlikes',
-    description:
-      'Numeros de Likes e Unlikes que um comentário ou resposta terá',
-  })
+//   @ApiProperty({
+//     example: '20 likes, 2 unlikes',
+//     description:
+//       'Numeros de Likes e Unlikes que um comentário ou resposta terá',
+//   })
 
- @IsOptional({
-  message: 'Likes e unlikes de uma resposta ou comentario',
-})
-  likes: {
-    like: Number;
-    unlike: Number;
-  };
+//  @IsOptional({
+//   message: 'Likes e unlikes de uma resposta ou comentario',
+// })
+//   likes: {
+//     like: Number;
+//     unlike: Number;
+//   };
 
   @ApiProperty({
     example: 'Is Reply: True. Is reply: false',
@@ -95,7 +95,7 @@ export class Comment {
     this.text = comment?.text;
     this.date = comment?.date;
     this.isReply = comment?.isReply;
-    this.likes = comment?.likes;
+    // this.likes = comment?.likes;
     this.comments = comment?.comments;
   }
 }
