@@ -367,13 +367,16 @@ describe('CommentsController', () => {
       };
 
       const result = await commentController.getByMovieId(
-        { limit: 10, page: 1 },
+        { limit: 1, page: 1 },
         body
       );
 
       expect(result).toEqual(commentMovie);
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
-      expect(commentService.getByMovieId).toHaveBeenCalledWith(body.movie);
+      expect(commentService.getByMovieId).toHaveBeenCalledWith(
+        { limit: 1, page: 1 },
+        body.movie
+      );
     });
 
     it('should throw an exception', () => {
@@ -389,7 +392,7 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByMovieId({ limit: 10, page: 1 }, body)
+        commentController.getByMovieId({ limit: 1, page: 1 }, body)
       ).rejects.toThrowError();
     });
   });
