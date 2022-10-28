@@ -10,7 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { LoginValidationMiddleware } from './middlewares/login-validation.middleware';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { AutenticationsController } from './autentications.controller';
 import { AutenticationService } from './shared/autentication.service';
 import { ConfigService } from '@nestjs/config/dist';

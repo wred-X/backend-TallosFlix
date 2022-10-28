@@ -1,6 +1,3 @@
-import { RolesGuard } from './../autentications/guards/role.guard';
-import { Comment } from './shared/comment';
-import { Role } from './../autentications/models/role.enum';
 import {
   Body,
   Controller,
@@ -13,12 +10,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
+import { Roles } from '../autentications/decorators/role-decorator';
+import { RolesGuard } from './../autentications/guards/role.guard';
+import { Role } from './../autentications/models/role.enum';
 import { eComment } from './model/emailComment';
 import { MovieId } from './model/movieId';
+import { Comment } from './shared/comment';
 import { CommentService } from './shared/comment.service';
 import { CommentGetDto } from './shared/PaginationParams';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
+import { Reply } from './shared/reply';
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')
@@ -41,8 +42,8 @@ export class CommentsController {
   @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
-  async getByMovieId(@Body() movie_id: { movie: string }): Promise<Comment[]> {
-    const comments = await this.commentService.getByMovieId(movie_id.movie);
+  async getByMovieId(@Query() pagination,@Body() movie_id: { movie: string }): Promise<Comment[]> {
+    const comments = await this.commentService.getByMovieId(pagination,movie_id.movie);
     return comments;
   }
   @IsPublic()
@@ -54,8 +55,10 @@ export class CommentsController {
   }
 
   //reply
+  @ApiBody({ type: Reply })
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
+    console.log('oq mandei', comment);
     return await this.commentService.updateReply(id, comment);
   }
 

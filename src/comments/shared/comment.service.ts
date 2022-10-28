@@ -47,12 +47,13 @@ export class CommentService {
   //   return await this.commentsModel.findOne({ movie }).exec();
   // }
 
-  async getByMovieId(movie_id: string) {
+  async getByMovieId(pagination, movie_id: string) {
     const id = new ObjectId(movie_id);
+    const limit = pagination.limit || 10;
     try {
       const commentsMovie = await this.commentsModel
         .find({ movie_id: id })
-        .limit(50);
+        .limit(limit);
       return commentsMovie;
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -87,7 +88,7 @@ export class CommentService {
       const replyComment = await this.commentsModel.findByIdAndUpdate(
         { _id: id },
         {
-          $push: { comments: (await createNewComment)._id },
+          $push: { comments: await createNewComment },
         },
         {
           new: true,
