@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LikesController } from './likes.controller';
-import { LikesService } from './shared/likes.service';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
+import { LikesService } from './shared/likes.service';
 
 const like: Likes[] = [
   {
@@ -65,7 +65,7 @@ describe('LikesController', () => {
         {
           provide: LikesService,
           useValue: {
-            getLikes: jest.fn().mockResolvedValue(like),
+            getAll: jest.fn().mockResolvedValue(like),
             likeComment: jest.fn().mockResolvedValue(like[0]),
             create: jest.fn().mockResolvedValue(newLike),
             allLikes: jest.fn().mockResolvedValue(updatedLike),
