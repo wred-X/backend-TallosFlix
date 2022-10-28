@@ -3,7 +3,7 @@ import { UsersController } from './users.controller';
 import { UserSchema } from './schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { forwardRef, Module } from '@nestjs/common';
-import { AutenticationsModule } from 'src/autentications/autentications.module';
+import { AutenticationsModule } from '../autentications/autentications.module';
 @Module({
   imports: [
     forwardRef(() => AutenticationsModule),
