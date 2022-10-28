@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 import { People } from './shared/people';
 import { PeopleService } from './shared/people.service';
 
@@ -22,6 +23,7 @@ export class PeoplesController {
     return await this.peopleService.getAll();
   }
 
+  @IsPublic()
   @Get(':name')
   async getByName(@Param('name') name: string): Promise<People[]> {
     return await this.peopleService.getByName(name);
