@@ -42,7 +42,7 @@ export class TheatersController {
   ): Promise<Theater[]> {
     return await this.theaterService.getByLocation(cord.lat, cord.long);
   }
-  
+
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)

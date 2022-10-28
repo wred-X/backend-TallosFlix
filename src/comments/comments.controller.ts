@@ -25,7 +25,7 @@ import { IsPublic } from '../autentications/decorators/is-public-decorator';
 @Controller('comments')
 export class CommentsController {
   constructor(private commentService: CommentService) {}
-  
+
   @IsPublic()
   @Get()
   async getAll(@Query() comment: CommentGetDto, pagination) {
@@ -37,7 +37,7 @@ export class CommentsController {
   async getById(@Param('id') id: string): Promise<Comment> {
     return await this.commentService.getById(id);
   }
-  
+
   @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
@@ -60,14 +60,14 @@ export class CommentsController {
   }
 
   @Post()
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   async update(
     @Param('id') id: string,
@@ -77,7 +77,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   async delete(@Param('id') id: string) {
     return await this.commentService.delete(id);

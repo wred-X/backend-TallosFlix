@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmpty, IsNotEmpty, IsNotEmptyObject, IsOptional, ValidateNested } from 'class-validator';
-import { Document } from 'mongoose';
+import {
+  IsEmpty,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 
 export class updateTheater {
   @ApiProperty({
@@ -20,7 +25,6 @@ export class updateTheater {
       'location: {address: { street1: 1400 Coral Ridge Avenue, city: Coralville, state: IA, zipcode: 52241 }, geo: { type: Point, coordinates: [ -91.602524, 41.692726 ]}}',
     description: `Endereço completo para localização do teatro`,
   })
-
   location: {
     address: {
       street1: string;

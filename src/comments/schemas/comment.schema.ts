@@ -7,8 +7,7 @@ export const CommentSchema = new mongoose.Schema(
     text: String,
     date: Date,
     isReply: Boolean,
-    comments:  [mongoose.Schema.Types.ObjectId],
-  
+    comments: [mongoose.Schema.Types.ObjectId],
   },
 
   { typeKey: '$type' }

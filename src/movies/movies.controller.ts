@@ -21,7 +21,7 @@ import { IsPublic } from 'src/autentications/decorators/is-public-decorator';
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
 export class MoviesController {
-  constructor(private movieService: MovieService) { }
+  constructor(private movieService: MovieService) {}
 
   @IsPublic()
   @Get()
@@ -35,7 +35,7 @@ export class MoviesController {
     const findOne = await this.movieService.findByMovieId(query);
     return findOne;
   }
-  
+
   @IsPublic()
   @Get('/search/series')
   async findSeries(@Query() querySeries) {
@@ -54,7 +54,7 @@ export class MoviesController {
     return await this.movieService.create(movie);
   }
 
-  @Put(':id') 
+  @Put(':id')
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   async update(
