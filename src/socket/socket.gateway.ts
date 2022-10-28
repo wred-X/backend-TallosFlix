@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import {
   MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Comment } from 'src/comments/shared/comment';
-import { Movie } from 'src/movies/shared/movie';
-import { User } from 'src/users/shared/user';
+import { Comment } from '../comments/shared/comment';
+import { Movie } from '../movies/shared/movie';
+import { User } from '../users/shared/user';
 
 @Injectable()
 @WebSocketGateway(3008, {
@@ -60,5 +60,12 @@ export class SocketGateway
 
   emitNewFavorite(movie: Movie, _id: User) {
     this.server.emit('new-favorited', { movie, _id });
+  }
+
+  emitnewLike(liked: any) {
+    this.server.emit('new-liked', { liked });
+  }
+  emitAllLikes(liked: any) {
+    this.server.emit('all-likes', { liked });
   }
 }

@@ -38,7 +38,7 @@ export class Theater {
 
   @ApiProperty({
     example:
-      'location: {address: { street1: 1400 Coral Ridge Avenue, city: Coralville, state: IA, zipcode: 52241 }, geo: { type: Point, coordinates: [ -91.602524, 41.692726 ]}}',
+      'location: address: { street1: 1400 Coral Ridge Avenue, city: Coralville, state: IA, zipcode: 52241 }, geo: { type: Point, coordinates: [ -91.602524, 41.692726 ]}}',
     description: `Endereço completo para localização do teatro`,
   })
   @IsNotEmpty()

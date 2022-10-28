@@ -47,6 +47,7 @@ describe('RatingsSeratingService', () => {
   const mockFavorite = {
     getAll: jest.fn().mockResolvedValue(rating),
     getById: jest.fn().mockResolvedValue(rating[0]),
+    getRates: jest.fn().mockResolvedValue(rating[0]),
     getRating: jest.fn().mockResolvedValue(rate),
     create: jest.fn().mockResolvedValue(newRating),
     addRate: jest.fn().mockResolvedValue(updatedRating),
@@ -120,6 +121,26 @@ describe('RatingsSeratingService', () => {
     });
   });
 
+  describe('getRates', () => {
+    it('Deve retornar as card de notas feitas com sucesso pelo ID do filme', async () => {
+      // Act
+      const result = await ratingService.getRates(rating[0].movie_id);
+
+      // Assert
+      expect(result).toEqual(rating[0]);
+      expect(ratingService.getRates).toHaveBeenCalledTimes(1);
+      expect(ratingService.getRates).toHaveBeenCalledWith(rating[0].movie_id);
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      jest.spyOn(ratingService, 'getRates').mockRejectedValueOnce(new Error());
+
+      // Assert
+      expect(ratingService.getRates(rating[0].movie_id)).rejects.toThrowError();
+    });
+  });
+
   describe('getRating', () => {
     it('Deve retornar uma media da nota com sucesso pelo ID do filme', async () => {
       // Act
@@ -179,12 +200,12 @@ describe('RatingsSeratingService', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       // Act
-      const result = await ratingService.addRate(rating[0]._id, body);
+      const result = await ratingService.addRate('1', body);
 
       // Assert
       expect(result).toEqual(updatedRating);
       expect(ratingService.addRate).toHaveBeenCalledTimes(1);
-      expect(ratingService.addRate).toHaveBeenCalledWith(rating[0]._id, body);
+      expect(ratingService.addRate).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
@@ -194,7 +215,7 @@ describe('RatingsSeratingService', () => {
       jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingService.addRate(rating[0]._id, body)).rejects.toThrowError();
+      expect(ratingService.addRate('1', body)).rejects.toThrowError();
     });
   });
 
@@ -204,12 +225,12 @@ describe('RatingsSeratingService', () => {
       const body: Rate = { user_id: '1', rate: 2 };
 
       // Act
-      const result = await ratingService.delete(rating[0]._id, body);
+      const result = await ratingService.delete('1', body);
 
       // Assert
       expect(result).toEqual(updatedRating);
       expect(ratingService.delete).toHaveBeenCalledTimes(1);
-      expect(ratingService.delete).toHaveBeenCalledWith(rating[0]._id, body);
+      expect(ratingService.delete).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
@@ -219,7 +240,7 @@ describe('RatingsSeratingService', () => {
       jest.spyOn(ratingService, 'delete').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingService.delete(rating[0]._id, body)).rejects.toThrowError();
+      expect(ratingService.delete('1', body)).rejects.toThrowError();
     });
   });
 });

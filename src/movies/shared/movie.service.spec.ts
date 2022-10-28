@@ -250,7 +250,6 @@ describe('MovieService', () => {
   const mockMovie = {
     getMovies: jest.fn().mockResolvedValue(movies),
     findOne: jest.fn().mockResolvedValue(movies),
-    getById: jest.fn().mockResolvedValue(movies[0]),
     create: jest.fn().mockResolvedValue(newMovie),
     update: jest.fn().mockResolvedValue(updatedMovie),
     delete: jest.fn().mockResolvedValue(undefined),
@@ -426,25 +425,25 @@ describe('MovieService', () => {
     });
   });
 
-  describe('getById', () => {
-    it('Deve retornar o fime ou serie com sucesso pelo seu ID', async () => {
-      // Act
-      const result = await movieService.getById(movies[0]._id);
+  // describe('getById', () => {
+  //   it('Deve retornar um movie com sucesso pelo ID', async () => {
+  //     // Act
+  //     const result = await movieService.getById('1');
 
-      // Assert
-      expect(result).toEqual(movies[0]);
-      expect(movieService.getById).toHaveBeenCalledTimes(1);
-      expect(movieService.getById).toHaveBeenCalledWith(movies[0]._id);
-    });
+  //     // Assert
+  //     expect(result).toEqual(movie[0]);
+  //     expect(movieService.getById).toHaveBeenCalledTimes(1);
+  //     expect(movieService.getById).toHaveBeenCalledWith('1');
+  //   });
 
-    it('should throw an exception', () => {
-      // Arrange
-      jest.spyOn(movieService, 'getById').mockRejectedValueOnce(new Error());
+  //   it('should throw an exception', () => {
+  //     // Arrange
+  //     jest.spyOn(movieService, 'getById').mockRejectedValueOnce(new Error());
 
-      // Assert
-      expect(movieService.getById(movies[0]._id)).rejects.toThrowError();
-    });
-  });
+  //     // Assert
+  //     expect(movieService.getById('1')).rejects.toThrowError();
+  //   });
+  // });
 
   describe('update', () => {
     it('Deve alterar dados de um movie pelo ID', async () => {

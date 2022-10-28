@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Comment } from './comment';
 import { ObjectId } from 'mongodb';
+import { Model } from 'mongoose';
 import { SocketGateway } from '../../socket/socket.gateway';
+import { Comment } from './comment';
 import { CommentGetDto } from './PaginationParams';
 
 @Injectable()
@@ -47,12 +47,13 @@ export class CommentService {
   //   return await this.commentsModel.findOne({ movie }).exec();
   // }
 
-  async getByMovieId(movie_id: string) {
+  async getByMovieId(pagination, movie_id: string) {
     const id = new ObjectId(movie_id);
+    const limit = pagination.limit || 10;
     try {
       const commentsMovie = await this.commentsModel
         .find({ movie_id: id })
-        .limit(50);
+        .limit(limit);
       return commentsMovie;
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -77,6 +78,24 @@ export class CommentService {
       const createdComment = new this.commentsModel(comments);
       this.socket.emitNewComment(createdComment);
       return await createdComment.save();
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+  async updateReply(id: string, comment: Comment) {
+    try {
+      const createNewComment = this.create(comment);
+      const replyComment = await this.commentsModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          $push: { comments: await createNewComment },
+        },
+        {
+          new: true,
+        }
+      );
+
+      return replyComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }

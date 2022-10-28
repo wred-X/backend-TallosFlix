@@ -12,6 +12,8 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -20,6 +22,8 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
   {
     _id: '3',
@@ -28,6 +32,8 @@ const comment: Comment[] = [
     movie_id: 'abcde1234#',
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -38,6 +44,8 @@ const newComment: Comment = {
   movie_id: 'abcde1234#',
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
+  isReply: false,
+  comments: [],
 };
 
 const updatedComment = {
@@ -57,6 +65,8 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -65,6 +75,8 @@ const commentMovie: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -76,6 +88,8 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
   {
     _id: '2',
@@ -84,6 +98,8 @@ const commentMail: Comment[] = [
     movie_id: '573a1390f29313caabcd432a',
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    comments: [],
   },
 ];
 
@@ -105,6 +121,7 @@ describe('CommentsController', () => {
             delete: jest.fn().mockResolvedValue(undefined),
             getByEmail: jest.fn().mockRejectedValue(commentMail),
             getByMovieId: jest.fn().mockResolvedValue(commentMovie),
+            updateReply: jest.fn().mockRejectedValue(newComment),
           },
         },
       ],
@@ -176,6 +193,8 @@ describe('CommentsController', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: [],
       };
       // Act
       const result = await commentController.create(body);
@@ -195,6 +214,8 @@ describe('CommentsController', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: [],
       };
       jest.spyOn(commentService, 'create').mockRejectedValueOnce(new Error());
 
@@ -230,6 +251,40 @@ describe('CommentsController', () => {
     });
   });
 
+  describe('Criar respota a um comentário', () => {
+    it('Deve criar  respota a um comentário', () => {
+      // Arrange
+      const body = {
+        _id: '1',
+        name: 'eu',
+        email: 'eu@eu.com',
+        movie_id: 'abcde1234#',
+        text: 'asijdaisjdiajsdi',
+        date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: ['10'],
+      };
+
+      const resposta = {
+        _id: '10',
+        movie_id: 'abcde1234#',
+        name: 'Lucas',
+        email: 'lucas@gmail.com',
+        text: 'Essa é minha resposta',
+        date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: [],
+      };
+
+      // Assert
+      const response = commentController.replyComment(body._id, resposta);
+      console.log('REPLY', response);
+      expect(response).toEqual(response);
+      expect(body.comments).toEqual([resposta._id]);
+      // Assert
+    });
+  });
+
   describe('update', () => {
     it('Deve atualizar comentário', async () => {
       // Arrange
@@ -240,6 +295,8 @@ describe('CommentsController', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: [],
       };
 
       // Act
@@ -260,6 +317,8 @@ describe('CommentsController', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
+        isReply: false,
+        comments: [],
       };
 
       jest.spyOn(commentService, 'update').mockRejectedValueOnce(new Error());
