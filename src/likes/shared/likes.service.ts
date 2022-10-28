@@ -44,11 +44,11 @@ export class LikesService {
       const result: Likes = await this.likesModel.findOne({
         commentId: docLike.commentId,
       });
-      if(!result){
+      if (!result) {
         const createdLikeDoc = this.likesModel.create(docLike);
         return await createdLikeDoc;
       }
-    } catch{
+    } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
   }

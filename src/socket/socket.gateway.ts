@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import {
-  MessageBody, OnGatewayConnection,
+  MessageBody,
+  OnGatewayConnection,
   OnGatewayDisconnect,
-  OnGatewayInit, SubscribeMessage,
+  OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Comment } from '../comments/shared/comment';
@@ -60,11 +62,10 @@ export class SocketGateway
     this.server.emit('new-favorited', { movie, _id });
   }
 
-  emitnewLike(liked:any) {
-    this.server.emit('new-liked', { liked});
+  emitnewLike(liked: any) {
+    this.server.emit('new-liked', { liked });
   }
-  emitAllLikes(liked:any) {
-    this.server.emit('all-likes', { liked});
+  emitAllLikes(liked: any) {
+    this.server.emit('all-likes', { liked });
   }
 }
-
