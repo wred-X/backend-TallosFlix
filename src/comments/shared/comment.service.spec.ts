@@ -374,11 +374,10 @@ describe('CommentService', () => {
         movie: '573a1390f29313caabcd41b1',
       };
 
-      const result = await commentService.getByMovieId(body.movie);
-
+      const result = await commentService.getByMovieId({limit: 10, page:1},body.movie);
       expect(result).toEqual(commentMovie);
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
-      expect(commentService.getByMovieId).toHaveBeenCalledWith(body.movie);
+      expect(commentService.getByMovieId).toHaveBeenCalledWith({limit: 10, page: 1},body.movie);
     });
 
     it('should throw an exception', () => {
@@ -393,7 +392,7 @@ describe('CommentService', () => {
         .mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentService.getByMovieId(body.movie)).rejects.toThrowError();
+      expect(commentService.getByMovieId({limit: 10, page:1}, body.movie)).rejects.toThrowError();
     });
   });
 });
