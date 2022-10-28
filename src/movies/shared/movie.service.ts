@@ -10,6 +10,8 @@ export class MovieService {
 
   async getMovies(movies: Movie, pagination) {
     try {
+      const sortValue = pagination.sortValue || -1; 
+      console.log('sort Value', sortValue);
       const limit = pagination.limit || 10;
       const currentPage = pagination.page || 1;
       const skip = limit * (currentPage - 1);
@@ -20,7 +22,7 @@ export class MovieService {
       const content = await this.movieModel
         .find(movies)
         .limit(limit)
-        .sort({ year: -1 })
+        .sort({ year: sortValue })
         .skip(skip);
       return {
         content,
@@ -38,6 +40,7 @@ export class MovieService {
       field: string;
       page: number;
       limit: number;
+      sortValue: number;
     },
     type: string = 'movie'
   ) {
@@ -55,6 +58,7 @@ export class MovieService {
       return this.getMovies(queryMongo, {
         page: query.page || 1,
         limit: query.limit || 10,
+      sortValue: query.sortValue || -1
       });
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
