@@ -88,7 +88,7 @@ export class CommentService {
       const replyComment = await this.commentsModel.findByIdAndUpdate(
         { _id: id },
         {
-          $push: { comments: (await createNewComment)._id },
+          $push: { comments: await createNewComment },
         },
         {
           new: true,

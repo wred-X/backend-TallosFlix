@@ -7,10 +7,10 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Roles } from '../autentications/decorators/role-decorator';
 import { RolesGuard } from '../autentications/guards/role.guard';
 import { Role } from '../autentications/models/role.enum';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
 import { LikesService } from './shared/likes.service';
@@ -21,7 +21,6 @@ export class LikesController {
   @IsPublic()
   @Get()
   async getLikes() {
-    console.log('likes');
     const findLikes = await this.likesService.getAll();
     return findLikes;
   }
@@ -29,8 +28,7 @@ export class LikesController {
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   @Get('validate')
-  async getCommentId(@Query() query: any) {
-    console.log('control', query);
+  async getCommentId(@Query() query: Likes) {
     return await this.likesService.byId(query);
   }
 

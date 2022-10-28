@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsObject, IsOptional } from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class Comment {
@@ -39,20 +39,6 @@ export class Comment {
     message: 'O comentario precisar ter algum texto.',
   })
   text: string;
-
-//   @ApiProperty({
-//     example: '20 likes, 2 unlikes',
-//     description:
-//       'Numeros de Likes e Unlikes que um comentário ou resposta terá',
-//   })
-
-//  @IsOptional({
-//   message: 'Likes e unlikes de uma resposta ou comentario',
-// })
-//   likes: {
-//     like: Number;
-//     unlike: Number;
-//   };
 
   @ApiProperty({
     example: 'Is Reply: True. Is reply: false',
@@ -95,7 +81,6 @@ export class Comment {
     this.text = comment?.text;
     this.date = comment?.date;
     this.isReply = comment?.isReply;
-    // this.likes = comment?.likes;
     this.comments = comment?.comments;
   }
 }

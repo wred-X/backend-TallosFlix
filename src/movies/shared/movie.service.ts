@@ -20,6 +20,7 @@ export class MovieService {
       const content = await this.movieModel
         .find(movies)
         .limit(limit)
+        .sort({ year: -1 })
         .skip(skip);
       return {
         content,
