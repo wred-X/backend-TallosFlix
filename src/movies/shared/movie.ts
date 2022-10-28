@@ -234,7 +234,7 @@ export class Movie {
 
   @IsOptional()
   trailer?: string;
-  
+
   constructor(todo?: Partial<Movie>) {
     this._id = todo?._id;
     this.plot = todo?.plot;
