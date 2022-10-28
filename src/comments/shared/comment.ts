@@ -57,13 +57,12 @@ export class Comment {
   isReply: Boolean;
 
   @ApiProperty({
-    example: 'Eu não concordei com seu comentário',
-    description: 'Array de resposta aos comentários',
+    example: '123IDcomentarioRespondido123',
+    description:
+      'id a de reply existira somente se esse documento for uma resposta.',
   })
-  @IsArray({
-    message: 'Array de respostas',
-  })
-  comments: ObjectId[];
+  @IsOptional()
+  commentReply?: string;
 
   @ApiProperty({
     example: '1988-10-16T19:08:23.000Z',
@@ -75,7 +74,7 @@ export class Comment {
   date: Date;
 
   @IsOptional()
-  _id: string;
+  _id?: string;
 
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;
@@ -85,6 +84,6 @@ export class Comment {
     this.text = comment?.text;
     this.date = comment?.date;
     this.isReply = comment?.isReply;
-    this.comments = comment?.comments;
+    this.commentReply = comment?.commentReply;
   }
 }

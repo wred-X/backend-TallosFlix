@@ -42,6 +42,15 @@ export class CommentService {
     }
   }
 
+  async getByReply(id: string) {
+    const replyId = new ObjectId(id);
+    try {
+      return await this.commentsModel.find({ commentReply: replyId });
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   // async getByMovieId(movie_id: string) {
   //   const movie = movie_id;
   //   return await this.commentsModel.findOne({ movie }).exec();

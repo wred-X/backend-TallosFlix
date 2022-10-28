@@ -40,6 +40,12 @@ export class CommentsController {
   }
 
   @IsPublic()
+  @Get('/response/:id')
+  async getByReply(@Param('id') id: string): Promise<Comment[]> {
+    return await this.commentService.getByReply(id);
+  }
+
+  @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
   async getByMovieId(
@@ -69,8 +75,8 @@ export class CommentsController {
   }
 
   @Post()
-  @Roles(Role.ADMIN, Role.USER)
-  @UseGuards(RolesGuard)
+  //@Roles(Role.ADMIN, Role.USER)
+  //@UseGuards(RolesGuard)
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);
   }

@@ -15,7 +15,7 @@ const comment: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -25,7 +25,7 @@ const comment: Comment[] = [
     text: 'Filme deixou a desejar',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '3',
@@ -35,7 +35,7 @@ const comment: Comment[] = [
     text: 'filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -47,7 +47,7 @@ const newComment: Comment = {
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
   isReply: false,
-  comments: [],
+  commentReply: '1',
 };
 
 const updatedComment = {
@@ -58,7 +58,7 @@ const updatedComment = {
   text: 'Filme muito ruim filho',
   date: new Date('1988-10-16T19:08:23.000Z'),
   isReply: false,
-  comments: [],
+  commentReply: '1',
 };
 
 const commentMovie: Comment[] = [
@@ -70,7 +70,7 @@ const commentMovie: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -80,7 +80,7 @@ const commentMovie: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -93,7 +93,7 @@ const commentMail: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -103,7 +103,7 @@ const commentMail: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -204,7 +204,7 @@ describe('CommentService', () => {
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
       // Act
       const result = await commentService.create(body);
@@ -225,7 +225,7 @@ describe('CommentService', () => {
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
       jest.spyOn(commentService, 'create').mockRejectedValueOnce(new Error());
 
@@ -255,7 +255,7 @@ describe('CommentService', () => {
         text: 'Essa é minha resposta',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       // Assert
@@ -304,7 +304,7 @@ describe('CommentService', () => {
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       // Act
@@ -326,7 +326,7 @@ describe('CommentService', () => {
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       jest.spyOn(commentService, 'update').mockRejectedValueOnce(new Error());
@@ -374,10 +374,14 @@ describe('CommentService', () => {
         movie: '573a1390f29313caabcd41b1',
       };
 
-      const result = await commentService.getByMovieId({limit: 10, page:1},body.movie);
+      const result = await commentService.getByMovieId(
+        { limit: 10, page: 1 },
+        body.movie
+      );
+
       expect(result).toEqual(commentMovie);
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
-      expect(commentService.getByMovieId).toHaveBeenCalledWith({limit: 10, page: 1},body.movie);
+      expect(commentService.getByMovieId).toHaveBeenCalledWith(body.movie);
     });
 
     it('should throw an exception', () => {
@@ -392,7 +396,9 @@ describe('CommentService', () => {
         .mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentService.getByMovieId({limit: 10, page:1}, body.movie)).rejects.toThrowError();
+      expect(
+        commentService.getByMovieId({ limit: 10, page: 1 }, body.movie)
+      ).rejects.toThrowError();
     });
   });
 });

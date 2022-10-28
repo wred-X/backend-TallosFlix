@@ -13,7 +13,7 @@ const comment: Comment[] = [
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -23,7 +23,7 @@ const comment: Comment[] = [
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '3',
@@ -33,7 +33,7 @@ const comment: Comment[] = [
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -45,7 +45,7 @@ const newComment: Comment = {
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
   isReply: false,
-  comments: [],
+  commentReply: '1',
 };
 
 const updatedComment = {
@@ -66,7 +66,7 @@ const commentMovie: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -76,7 +76,7 @@ const commentMovie: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -89,7 +89,7 @@ const commentMail: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
   {
     _id: '2',
@@ -99,7 +99,7 @@ const commentMail: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    comments: [],
+    commentReply: '1',
   },
 ];
 
@@ -194,7 +194,7 @@ describe('CommentsController', () => {
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
       // Act
       const result = await commentController.create(body);
@@ -215,7 +215,7 @@ describe('CommentsController', () => {
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
       jest.spyOn(commentService, 'create').mockRejectedValueOnce(new Error());
 
@@ -273,7 +273,7 @@ describe('CommentsController', () => {
         text: 'Essa é minha resposta',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       // Assert
@@ -296,7 +296,7 @@ describe('CommentsController', () => {
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       // Act
@@ -318,7 +318,7 @@ describe('CommentsController', () => {
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
         isReply: false,
-        comments: [],
+        commentReply: '1',
       };
 
       jest.spyOn(commentService, 'update').mockRejectedValueOnce(new Error());
@@ -366,7 +366,10 @@ describe('CommentsController', () => {
         movie: '573a1390f29313caabcd41b1',
       };
 
-      const result = await commentController.getByMovieId(body);
+      const result = await commentController.getByMovieId(
+        { limit: 10, page: 1 },
+        body
+      );
 
       expect(result).toEqual(commentMovie);
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
@@ -385,7 +388,9 @@ describe('CommentsController', () => {
         .mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentController.getByMovieId(body)).rejects.toThrowError();
+      expect(
+        commentController.getByMovieId({ limit: 10, page: 1 }, body)
+      ).rejects.toThrowError();
     });
   });
 });
