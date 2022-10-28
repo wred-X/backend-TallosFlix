@@ -38,11 +38,17 @@ export class PeopleService {
     }
   }
 
-  async update(id: string, people: People) {
+  async update(nameKey: string, people: People) {
     try {
-      return await this.peopleModel.findByIdAndUpdate(id, people, {
-        new: true,
-      });
+      return await this.peopleModel.findByIdAndUpdate(
+        {
+          name: { $regex: nameKey, $options: 'i' },
+        },
+        people,
+        {
+          new: true,
+        }
+      );
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }

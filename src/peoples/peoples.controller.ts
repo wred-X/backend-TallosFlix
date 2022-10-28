@@ -23,7 +23,7 @@ export class PeoplesController {
   }
 
   @Get(':name')
-  async getById(@Param('name') name: string): Promise<People[]> {
+  async getByName(@Param('name') name: string): Promise<People[]> {
     return await this.peopleService.getByName(name);
   }
 
