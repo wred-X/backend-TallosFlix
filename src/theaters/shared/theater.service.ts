@@ -63,7 +63,7 @@ export class TheaterService {
     }
   }
 
-  async update(id: string, theater: updateTheater){
+  async update(id: string, theater: updateTheater) {
     try {
       return await this.theaterModel.findByIdAndUpdate(id, theater, {
         new: true,

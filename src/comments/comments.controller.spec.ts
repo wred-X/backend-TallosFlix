@@ -261,10 +261,6 @@ describe('CommentsController', () => {
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: ['10'],
       };
@@ -276,10 +272,6 @@ describe('CommentsController', () => {
         email: 'lucas@gmail.com',
         text: 'Essa é minha resposta',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: [],
       };
@@ -303,10 +295,6 @@ describe('CommentsController', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: [],
       };
@@ -329,10 +317,6 @@ describe('CommentsController', () => {
         movie_id: '573a1390f29313caabcd41b1',
         text: 'Filme muito ruim filho',
         date: new Date('1988-10-16T19:08:23.000Z'),
-        likes: {
-          like: 0,
-          unlike: 0,
-        },
         isReply: false,
         comments: [],
       };

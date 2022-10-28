@@ -66,5 +66,5 @@ export const MovieSchema = new mongoose.Schema({
   lastUpdated: Date,
   website: String,
   writers: [String],
-  trailer: String
+  trailer: String,
 });

@@ -52,15 +52,15 @@ export class User {
   avatar?: string;
 
   @Prop({ required: true })
-    @ApiProperty({
-        description: 'Cargo do usuário',
-        type: String,
-        example:'admin'
-    })
-    @IsNotEmpty({
-        message: 'Informe o cargo do usuário'
-    })
-    role?: Role;
+  @ApiProperty({
+    description: 'Cargo do usuário',
+    type: String,
+    example: 'admin',
+  })
+  @IsNotEmpty({
+    message: 'Informe o cargo do usuário',
+  })
+  role?: Role;
   constructor(todo?: Partial<User>) {
     this._id = todo?._id;
     this.avatar = todo?.avatar;

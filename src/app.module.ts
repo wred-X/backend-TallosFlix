@@ -1,3 +1,4 @@
+import { PeoplesModule } from './peoples/peoples.module';
 import { LikesModule } from './likes/likes.module';
 import { LikesService } from './likes/shared/likes.service';
 import { RatingService } from './ratings/shared/rating.service';
@@ -18,6 +19,7 @@ import { RatingsModule } from './ratings/ratings.module';
 
 @Module({
   imports: [
+    PeoplesModule,
     LikesModule,
     FavoritesModule,
     MongooseModule.forRoot(process.env.USER_BD),

@@ -23,6 +23,8 @@ async function bootstrap() {
     .addTag('sessions')
     .addTag('favorites')
     .addTag('ratings')
+    .addTag('likes')
+    .addTag('peoples')
     .addBearerAuth(
       {
         type: 'http',
@@ -42,7 +44,6 @@ async function bootstrap() {
   // Pipes
   app.useGlobalPipes(new ValidationPipe());
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
 
   await app.listen(4000);
 }
