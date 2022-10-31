@@ -381,15 +381,17 @@ describe('CommentService', () => {
       };
 
       const result = await commentService.getByMovieId(
-        { limit: 10, page: 1 },
-        body.movie
+        { limit: 1, page: 1 },
+        body.movie,
+        new CommentGetDto()
       );
 
       expect(result).toEqual(commentMovie);
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
       expect(commentService.getByMovieId).toHaveBeenCalledWith(
-        { limit: 10, page: 1 },
-        body.movie
+        { limit: 1, page: 1 },
+        body.movie,
+        new CommentGetDto()
       );
     });
 
@@ -406,7 +408,11 @@ describe('CommentService', () => {
 
       // Assert
       expect(
-        commentService.getByMovieId({ limit: 10, page: 1 }, body.movie)
+        commentService.getByMovieId(
+          { limit: 1, page: 1 },
+          body.movie,
+          new CommentGetDto()
+        )
       ).rejects.toThrowError();
     });
   });

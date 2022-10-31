@@ -370,6 +370,7 @@ describe('CommentsController', () => {
 
       const result = await commentController.getByMovieId(
         { limit: 1, page: 1 },
+        new CommentGetDto(),
         body
       );
 
@@ -377,7 +378,8 @@ describe('CommentsController', () => {
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
       expect(commentService.getByMovieId).toHaveBeenCalledWith(
         { limit: 1, page: 1 },
-        body.movie
+        body.movie,
+        new CommentGetDto()
       );
     });
 
@@ -394,7 +396,11 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByMovieId({ limit: 1, page: 1 }, body)
+        commentController.getByMovieId(
+          { limit: 1, page: 1 },
+          new CommentGetDto(),
+          body
+        )
       ).rejects.toThrowError();
     });
   });
