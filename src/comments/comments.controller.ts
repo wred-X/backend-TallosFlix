@@ -40,6 +40,7 @@ export class CommentsController {
   }
 
   @IsPublic()
+  @Roles(Role.ADMIN, Role.USER)
   @Get('/response/:id')
   async getByReply(@Param('id') id: string): Promise<Comment[]> {
     return await this.commentService.getByReply(id);
@@ -50,11 +51,13 @@ export class CommentsController {
   @Post('movie_id')
   async getByMovieId(
     @Query() pagination,
+    comment: CommentGetDto,
     @Body() movie_id: { movie: string }
-  ): Promise<Comment[]> {
+  ) {
     const comments = await this.commentService.getByMovieId(
       pagination,
-      movie_id.movie
+      movie_id.movie,
+      comment
     );
     return comments;
   }
@@ -74,7 +77,6 @@ export class CommentsController {
   }
 
   //reply
-  @ApiBody({ type: Reply })
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
     console.log('oq mandei', comment);
