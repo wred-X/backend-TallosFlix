@@ -58,11 +58,18 @@ export class CommentsController {
     );
     return comments;
   }
+
   @IsPublic()
   @ApiBody({ type: eComment })
-  @Post('mail')
-  async getByEmail(@Body() email: { mail: string }): Promise<Comment[]> {
-    const comments = await this.commentService.getByEmail(email.mail);
+  @Post('email')
+  async getByEmail(
+    @Query() pagination,
+    @Body() email: { mail: string }
+  ): Promise<Comment[]> {
+    const comments = await this.commentService.getByEmail(
+      pagination,
+      email.mail
+    );
     return comments;
   }
 
@@ -75,8 +82,8 @@ export class CommentsController {
   }
 
   @Post()
-  //@Roles(Role.ADMIN, Role.USER)
-  //@UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);
   }

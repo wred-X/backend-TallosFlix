@@ -71,14 +71,15 @@ export class CommentService {
 
   //criar paginação de comentarios do filme
 
-  async getByEmail(mail: string) {
+  async getByEmail(pagination, mail: string): Promise<Comment[]> {
+    const limit = pagination.limit || 10;
     try {
       const commentsMovie = await this.commentsModel
         .find({ email: mail })
-        .limit(50);
+        .limit(limit);
       return commentsMovie;
     } catch {
-      throw new HttpException('Check data -mail- ', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 

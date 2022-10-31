@@ -1,10 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsOptional
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class Reply {
   @ApiProperty({
@@ -46,7 +41,8 @@ export class Reply {
   isReply: Boolean;
 
   @ApiProperty({
-    description: 'Array de resposta aos comentários, deve ir totalmente vazio: comments:[]',
+    description:
+      'Array de resposta aos comentários, deve ir totalmente vazio: comments:[]',
   })
   comments: [];
 
@@ -61,6 +57,4 @@ export class Reply {
 
   @IsOptional()
   _id: string;
-
-
 }
