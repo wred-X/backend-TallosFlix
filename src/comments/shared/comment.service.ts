@@ -56,14 +56,25 @@ export class CommentService {
   //   return await this.commentsModel.findOne({ movie }).exec();
   // }
 
-  async getByMovieId(pagination, movie_id: string) {
+  async getByMovieId(pagination, movie_id: string, comment: CommentGetDto) {
     const id = new ObjectId(movie_id);
     const limit = pagination.limit || 10;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+    const total = await this.commentsModel.countDocuments(comment);
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
     try {
       const commentsMovie = await this.commentsModel
         .find({ movie_id: id })
-        .limit(limit);
-      return commentsMovie;
+        .limit(limit)
+        .skip(skip);
+      //return commentsMovie;
+      return {
+        commentsMovie,
+        numberOfElements: total,
+        pagesTotal: qtdPages,
+        page: pagination.page || 1,
+      };
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
@@ -71,14 +82,15 @@ export class CommentService {
 
   //criar paginação de comentarios do filme
 
-  async getByEmail(mail: string) {
+  async getByEmail(pagination, mail: string): Promise<Comment[]> {
+    const limit = pagination.limit || 10;
     try {
       const commentsMovie = await this.commentsModel
         .find({ email: mail })
-        .limit(50);
+        .limit(limit);
       return commentsMovie;
     } catch {
-      throw new HttpException('Check data -mail- ', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 

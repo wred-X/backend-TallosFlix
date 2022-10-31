@@ -40,6 +40,7 @@ export class CommentsController {
   }
 
   @IsPublic()
+  @Roles(Role.ADMIN, Role.USER)
   @Get('/response/:id')
   async getByReply(@Param('id') id: string): Promise<Comment[]> {
     return await this.commentService.getByReply(id);
@@ -50,24 +51,32 @@ export class CommentsController {
   @Post('movie_id')
   async getByMovieId(
     @Query() pagination,
+    comment: CommentGetDto,
     @Body() movie_id: { movie: string }
-  ): Promise<Comment[]> {
+  ) {
     const comments = await this.commentService.getByMovieId(
       pagination,
-      movie_id.movie
+      movie_id.movie,
+      comment
     );
     return comments;
   }
+
   @IsPublic()
   @ApiBody({ type: eComment })
-  @Post('mail')
-  async getByEmail(@Body() email: { mail: string }): Promise<Comment[]> {
-    const comments = await this.commentService.getByEmail(email.mail);
+  @Post('email')
+  async getByEmail(
+    @Query() pagination,
+    @Body() email: { mail: string }
+  ): Promise<Comment[]> {
+    const comments = await this.commentService.getByEmail(
+      pagination,
+      email.mail
+    );
     return comments;
   }
 
   //reply
-  @ApiBody({ type: Reply })
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
     console.log('oq mandei', comment);
@@ -75,8 +84,8 @@ export class CommentsController {
   }
 
   @Post()
-  //@Roles(Role.ADMIN, Role.USER)
-  //@UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(RolesGuard)
   async create(@Body() comment: Comment): Promise<Comment> {
     return await this.commentService.create(comment);
   }

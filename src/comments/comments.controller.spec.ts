@@ -3,6 +3,7 @@ import { CommentsController } from './comments.controller';
 import { CommentService } from './shared/comment.service';
 import { Comment } from './shared/comment';
 import { CommentGetDto } from './shared/PaginationParams';
+import { eComment } from './model/emailComment';
 
 const comment: Comment[] = [
   {
@@ -23,7 +24,7 @@ const comment: Comment[] = [
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '2',
   },
   {
     _id: '3',
@@ -33,7 +34,7 @@ const comment: Comment[] = [
     text: 'asijdaisjdiajsdi',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '3',
   },
 ];
 
@@ -76,7 +77,7 @@ const commentMovie: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '2',
   },
 ];
 
@@ -87,16 +88,6 @@ const commentMail: Comment[] = [
     email: 'lucas@gmail.com',
     movie_id: '573a1390f29313caabcd41b1',
     text: 'Nunca havia assistido,filme muito bom',
-    date: new Date('1988-10-16T19:08:23.000Z'),
-    isReply: false,
-    commentReply: '1',
-  },
-  {
-    _id: '2',
-    name: 'Lucas',
-    email: 'lucas@gmail.com',
-    movie_id: '573a1390f29313caabcd432a',
-    text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
     commentReply: '1',
@@ -119,7 +110,7 @@ describe('CommentsController', () => {
             create: jest.fn().mockResolvedValue(newComment),
             update: jest.fn().mockResolvedValue(updatedComment),
             delete: jest.fn().mockResolvedValue(undefined),
-            getByEmail: jest.fn().mockRejectedValue(commentMail),
+            getByEmail: jest.fn().mockRejectedValue(commentMail[0]),
             getByMovieId: jest.fn().mockResolvedValue(commentMovie),
             updateReply: jest.fn().mockRejectedValue(newComment),
           },
@@ -251,39 +242,38 @@ describe('CommentsController', () => {
     });
   });
 
-  describe('Criar respota a um comentário', () => {
-    it('Deve criar  respota a um comentário', () => {
-      // Arrange
-      const body = {
-        _id: '1',
-        name: 'eu',
-        email: 'eu@eu.com',
-        movie_id: 'abcde1234#',
-        text: 'asijdaisjdiajsdi',
-        date: new Date('1988-10-16T19:08:23.000Z'),
-        isReply: false,
-        comments: ['10'],
-      };
+  // describe('Criar respota a um comentário', () => {
+  //   it('Deve criar  respota a um comentário', () => {
+  //     // Arrange
+  //     const body = {
+  //       _id: '1',
+  //       name: 'eu',
+  //       email: 'eu@eu.com',
+  //       movie_id: 'abcde1234#',
+  //       text: 'asijdaisjdiajsdi',
+  //       date: new Date('1988-10-16T19:08:23.000Z'),
+  //       isReply: false,
+  //     };
 
-      const resposta = {
-        _id: '10',
-        movie_id: 'abcde1234#',
-        name: 'Lucas',
-        email: 'lucas@gmail.com',
-        text: 'Essa é minha resposta',
-        date: new Date('1988-10-16T19:08:23.000Z'),
-        isReply: false,
-        commentReply: '1',
-      };
+  //     const resposta = {
+  //       _id: '10',
+  //       movie_id: 'abcde1234#',
+  //       name: 'Lucas',
+  //       email: 'lucas@gmail.com',
+  //       text: 'Essa é minha resposta',
+  //       date: new Date('1988-10-16T19:08:23.000Z'),
+  //       isReply: false,
+  //       commentReply: '1',
+  //     };
 
-      // Assert
-      const response = commentController.replyComment(body._id, resposta);
-      console.log('REPLY', response);
-      expect(response).toEqual(response);
-      expect(body.comments).toEqual([resposta._id]);
-      // Assert
-    });
-  });
+  //     // Assert
+  //     const response = commentController.replyComment(body._id, resposta);
+  //     console.log('REPLY', response);
+  //     expect(response).toEqual(response);
+  //     expect(body._id).toEqual(resposta.commentReply);
+  //     // Assert
+  //   });
+  // });
 
   describe('update', () => {
     it('Deve atualizar comentário', async () => {
@@ -331,18 +321,28 @@ describe('CommentsController', () => {
   describe('getByEmail', () => {
     it('Retorna lista de comentarios de usuario pelo email', async () => {
       try {
-        // Arrange
-        const body = { mail: 'lucas@gmail.com' };
+        const body = 'lucas@gmail.com';
 
-        // Act
-        const result = await commentController.getByEmail(body);
+        console.log(
+          await commentController.getByEmail(
+            { limit: 1, page: 1 },
+            { mail: body }
+          )
+        );
 
-        // Assert
+        const result = await commentController.getByEmail(
+          { limit: 1, page: 1 },
+          { mail: body }
+        );
+
         expect(result).toEqual(commentMail);
         expect(commentService.getByEmail).toHaveBeenCalledTimes(1);
-        expect(commentService.getByEmail).toHaveBeenCalledWith(body.mail);
+        expect(commentService.getByEmail).toHaveBeenCalledWith(
+          { limit: 1, page: 1 },
+          { mail: body }
+        );
       } catch (error) {
-        console.log('Error >>>>>>>', error);
+        console.log('Error OADJOAISJDOIAJ >>>>>>>', error);
       }
     });
 
@@ -356,7 +356,9 @@ describe('CommentsController', () => {
         .mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentController.getByEmail(body)).rejects.toThrowError();
+      expect(
+        commentController.getByEmail({ limit: 1, page: 1 }, body)
+      ).rejects.toThrowError();
     });
   });
 
@@ -368,6 +370,7 @@ describe('CommentsController', () => {
 
       const result = await commentController.getByMovieId(
         { limit: 1, page: 1 },
+        new CommentGetDto(),
         body
       );
 
@@ -375,7 +378,8 @@ describe('CommentsController', () => {
       expect(commentService.getByMovieId).toHaveBeenCalledTimes(1);
       expect(commentService.getByMovieId).toHaveBeenCalledWith(
         { limit: 1, page: 1 },
-        body.movie
+        body.movie,
+        new CommentGetDto()
       );
     });
 
@@ -392,7 +396,11 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByMovieId({ limit: 1, page: 1 }, body)
+        commentController.getByMovieId(
+          { limit: 1, page: 1 },
+          new CommentGetDto(),
+          body
+        )
       ).rejects.toThrowError();
     });
   });
