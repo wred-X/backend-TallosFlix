@@ -120,6 +120,7 @@ describe('CommentService', () => {
     getByEmail: jest.fn().mockRejectedValue(commentMail),
     getByMovieId: jest.fn().mockResolvedValue(commentMovie),
     updateReply: jest.fn().mockRejectedValue(newComment),
+    getByReply: jest.fn().mockResolvedValue(comment),
   };
 
   beforeEach(async () => {
@@ -166,6 +167,34 @@ describe('CommentService', () => {
       // Assert
       expect(
         commentService.getAll(pagination, new CommentGetDto())
+      ).rejects.toThrowError();
+    });
+  });
+
+  describe('getByReply', () => {
+    it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
+      // Act
+      const result = await commentService.getByReply(
+        '5a9427648b0beebeb69579cf'
+      );
+
+      // Assert
+      expect(result).toEqual(comment);
+      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
+      expect(commentService.getByReply).toHaveBeenCalledWith(
+        '5a9427648b0beebeb69579cf'
+      );
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      jest
+        .spyOn(commentService, 'getByReply')
+        .mockRejectedValueOnce(new Error());
+
+      // Assert
+      expect(
+        commentService.getByReply('5a9427648b0beebeb69579cf')
       ).rejects.toThrowError();
     });
   });
