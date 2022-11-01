@@ -41,4 +41,11 @@ export class Update {
     message: 'A senha está fraca',
   })
   password: string;
+
+  @ApiProperty({
+    example: '',
+    description: `Enviar avatar vazio sempre na criação, e novo valor ao editar.`,
+  })
+  @IsOptional()
+  avatar?: string;
 }
