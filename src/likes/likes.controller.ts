@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Roles } from '../autentications/decorators/role-decorator';
 import { RolesGuard } from '../autentications/guards/role.guard';
@@ -15,6 +16,8 @@ import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
 import { LikesService } from './shared/likes.service';
 
+@ApiTags('likes')
+@ApiBearerAuth('JWT-auth')
 @Controller('Likes')
 export class LikesController {
   constructor(private likesService: LikesService) {}
