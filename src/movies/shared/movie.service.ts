@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Pages } from '../model/pages';
 import { updateMovie } from '../model/update';
 import { Movie } from './movie';
 
@@ -11,7 +12,6 @@ export class MovieService {
   async getMovies(movies: Movie, pagination) {
     try {
       const sortValue = pagination.sortValue || -1;
-      console.log('sort Value', sortValue);
       const limit = pagination.limit || 10;
       const currentPage = pagination.page || 1;
       const skip = limit * (currentPage - 1);
@@ -34,6 +34,7 @@ export class MovieService {
       new Error('Bad Request');
     }
   }
+
   async findByMovieId(
     query: {
       search: string | number;
@@ -63,6 +64,24 @@ export class MovieService {
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
+  }
+
+  async findById(pagination: Pages, id: string) {
+    const limit = pagination.limit || 5;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+
+    const total = await this.movieModel.countDocuments();
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
+
+    const result = await this.movieModel.findById(id).limit(limit).skip(skip);
+
+    return {
+      result,
+      numberOfElements: total,
+      pagesTotal: qtdPages,
+      page: pagination.page || 1,
+    };
   }
 
   async create(movie: Movie) {
