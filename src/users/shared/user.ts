@@ -48,6 +48,10 @@ export class User {
   })
   password: string;
 
+  @ApiProperty({
+    example: '',
+    description: `Enviar avatar vazio sempre na criação.`,
+  })
   @IsOptional()
   avatar?: string;
 
