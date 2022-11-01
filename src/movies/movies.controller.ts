@@ -6,6 +6,7 @@ import {
   Delete,
   Get,
   Param,
+  ParamData,
   Post,
   Put,
   Query,
@@ -45,7 +46,11 @@ export class MoviesController {
     );
     return findSerie;
   }
-
+  @Get('/search/:id')
+  async findMovieById(@Query() pagination: any, @Param('id') id:string) {
+    const findMovieById = await this.movieService.findById(pagination, id);
+    return findMovieById;
+  }
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)

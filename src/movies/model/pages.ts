@@ -13,4 +13,10 @@ export class Pages {
     description: `1 pagina`,
   })
   skip: number;
+  
+  @ApiProperty({
+    example: 1,
+    description: `1 - pagina atual` 
+  })
+  page?: number;
 }
