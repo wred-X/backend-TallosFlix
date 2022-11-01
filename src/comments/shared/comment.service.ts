@@ -63,19 +63,32 @@ export class CommentService {
     const skip = limit * (currentPage - 1);
     const total = await this.commentsModel.countDocuments(comment);
     const qtdPages = Math.floor(total / pagination.limit) + 1;
+
+    const countReplys = await this.commentsModel
+      .find({ movie_id: id, isReply: true })
+      .countDocuments();
+
+    const myReplys = await this.commentsModel.find({
+      movie_id: id,
+      isReply: true,
+    });
+
     try {
       const commentsMovie = await this.commentsModel
         .find({ movie_id: id })
         .limit(limit)
         .skip(skip);
-      //return commentsMovie;
+
       return {
         commentsMovie,
         numberOfElements: total,
         pagesTotal: qtdPages,
         page: pagination.page || 1,
+        totalReplys: countReplys,
+        replys: myReplys,
       };
-    } catch {
+    } catch (error) {
+      console.log(error);
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
