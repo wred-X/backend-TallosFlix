@@ -18,6 +18,7 @@ import { Movie } from './shared/movie';
 import { MovieService } from './shared/movie.service';
 import { Roles } from '../autentications/decorators/role-decorator';
 import { IsPublic } from '../autentications/decorators/is-public-decorator';
+import { Pages } from './model/pages';
 @ApiTags('movies')
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
@@ -47,7 +48,7 @@ export class MoviesController {
     return findSerie;
   }
   @Get('/search/:id')
-  async findMovieById(@Query() pagination: any, @Param('id') id:string) {
+  async findMovieById(@Query() pagination: Pages, @Param('id') id:string) {
     const findMovieById = await this.movieService.findById(pagination, id);
     return findMovieById;
   }
