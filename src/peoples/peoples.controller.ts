@@ -12,9 +12,9 @@ import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { People } from './shared/people';
 import { PeopleService } from './shared/people.service';
 
-@ApiTags('people')
+@ApiTags('peoples')
 @ApiBearerAuth('JWT-auth')
-@Controller('people')
+@Controller('peoples')
 export class PeoplesController {
   constructor(private peopleService: PeopleService) {}
 
