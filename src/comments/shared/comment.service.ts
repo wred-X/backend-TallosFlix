@@ -43,17 +43,16 @@ export class CommentService {
     }
   }
 
-  async getByReply(pagination: any, comment: CommentGetDto, id: string) {
+  async getByReply(pagination: any, id: string) {
     const replyId = new ObjectId(id);
     const limit = pagination.limit || 5;
     const currentPage = pagination.page || 1;
     const skip = limit * (currentPage - 1);
-    const total = await this.commentsModel.countDocuments(comment);
+    const total = await this.commentsModel.countDocuments()
     const qtdPages = Math.floor(total / pagination.limit) + 1;
     const totalResponse = await this.commentsModel
     .find( {commentReply: id})
     .count();
-    console.log(totalResponse)
     try {
       const response = await this.commentsModel
         .find({ commentReply: replyId })
@@ -109,7 +108,6 @@ export class CommentService {
         replys: myReplys,
       };
     } catch (error) {
-      console.log(error);
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }

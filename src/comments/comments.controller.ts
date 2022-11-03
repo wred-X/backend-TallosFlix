@@ -42,8 +42,8 @@ export class CommentsController {
   @IsPublic()
   @Roles(Role.ADMIN, Role.USER)
   @Get('/response/:id')
-  async getByReply(@Query() pagination: any,  comment: CommentGetDto, @Param('id') id: string) {
-    return await this.commentService.getByReply(pagination, comment, id);
+  async getByReply(@Query() pagination: any, @Param('id') id: string) {
+    return await this.commentService.getByReply(pagination, id);
   }
 
   @IsPublic()
