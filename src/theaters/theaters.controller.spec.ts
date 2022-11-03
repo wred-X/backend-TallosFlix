@@ -71,6 +71,7 @@ describe('TheatersController', () => {
           useValue: {
             getAll: jest.fn().mockResolvedValue(theaterList),
             getById: jest.fn().mockResolvedValue(theaterList[1]),
+            getAddress: jest.fn().mockResolvedValue(theaterList[0]),
             getByLocation: jest.fn().mockReturnValue(TheaterCreated),
             create: jest.fn().mockReturnValue(TheaterCreated),
             update: jest.fn().mockReturnValue(TheaterCreated),
@@ -110,6 +111,18 @@ describe('TheatersController', () => {
     it('Should be return Error', () => {
       jest.spyOn(controller, 'getById');
       expect(controller.getById).rejects.toThrowError();
+    });
+  });
+
+  describe('getAddress', () => {
+    it('Retorna um teatro pelo nome da cidade', async () => {
+      const result = await controller.getAddress('UT');
+      console.log(result);
+      expect(result).toEqual(theaterList[0]);
+    });
+    it('Should be return Error', () => {
+      jest.spyOn(controller, 'getAddress');
+      expect(controller.getAddress).rejects.toThrowError();
     });
   });
 
