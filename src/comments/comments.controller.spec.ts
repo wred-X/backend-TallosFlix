@@ -3,7 +3,6 @@ import { CommentsController } from './comments.controller';
 import { CommentService } from './shared/comment.service';
 import { Comment } from './shared/comment';
 import { CommentGetDto } from './shared/PaginationParams';
-import { eComment } from './model/emailComment';
 
 const comment: Comment[] = [
   {
@@ -113,7 +112,7 @@ describe('CommentsController', () => {
             getByEmail: jest.fn().mockRejectedValue(commentMail[0]),
             getByMovieId: jest.fn().mockResolvedValue(commentMovie),
             updateReply: jest.fn().mockRejectedValue(newComment),
-            getByReply: jest.fn().mockResolvedValue(comment),
+            getByReply: jest.fn().mockResolvedValue(commentMovie[0]),
           },
         },
       ],
@@ -151,6 +150,31 @@ describe('CommentsController', () => {
       const pagination = 1;
       expect(
         commentController.getAll(new CommentGetDto(), pagination)
+      ).rejects.toThrowError();
+    });
+  });
+  describe('Retorna as resposta do comentário através do ID do comentário principal', () => {
+    it('Deve retornar lista de comentarios', async () => {
+      // Act
+      const pagination = {
+        limit : 1,
+        skip : 1,
+      }
+      const result = await commentController.getByReply(pagination, commentMovie[0].commentReply)
+      // Assert
+      expect(result).toEqual(commentMovie[0]);
+      expect(typeof result).toEqual('object');
+      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      jest.spyOn(commentService, 'getByReply').mockRejectedValueOnce(new Error());
+
+      // Assert
+
+      expect(
+        commentController.getByReply(new CommentGetDto(), '1')
       ).rejects.toThrowError();
     });
   });
