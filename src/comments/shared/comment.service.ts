@@ -147,6 +147,7 @@ export class CommentService {
           new: true,
         }
       );
+      this.socket.emitNewComment(comment);
 
       return replyComment;
     } catch {
@@ -159,6 +160,8 @@ export class CommentService {
       const uppdate = await this.commentsModel.findByIdAndUpdate(id, comments, {
         new: true,
       });
+      this.socket.emitComentUpdated(comments);
+
       return uppdate;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
@@ -167,8 +170,11 @@ export class CommentService {
 
   async delete(id: string) {
     try {
-      return await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
-    } catch {
+      const deleted = await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
+      this.socket.emitComentDeleted(id)
+      return deleted;
+    
+      } catch {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
   }
