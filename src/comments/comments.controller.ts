@@ -42,8 +42,8 @@ export class CommentsController {
   @IsPublic()
   @Roles(Role.ADMIN, Role.USER)
   @Get('/response/:id')
-  async getByReply(@Param('id') id: string): Promise<Comment[]> {
-    return await this.commentService.getByReply(id);
+  async getByReply(@Query() pagination: any,  comment: CommentGetDto, @Param('id') id: string) {
+    return await this.commentService.getByReply(pagination, comment, id);
   }
 
   @IsPublic()
@@ -79,7 +79,6 @@ export class CommentsController {
   //reply
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
-    console.log('oq mandei', comment);
     return await this.commentService.updateReply(id, comment);
   }
 
