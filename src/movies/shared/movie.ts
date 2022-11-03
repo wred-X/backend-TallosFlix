@@ -232,6 +232,11 @@ export class Movie {
   @IsOptional()
   _id: string;
 
+  @ApiProperty({
+    example:
+      'https://www.youtube.com/watch?v=SaHZHU-44XA&ab_channel=Ingresso.com',
+    description: 'link de trailer do filme.',
+  })
   @IsOptional()
   trailer?: string;
 

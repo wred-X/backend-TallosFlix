@@ -31,9 +31,10 @@ export class RatingService {
   }
 
   async getRates(movieId: string) {
+    const movie_id = new ObjectId(movieId);
     try {
       const rateInfo = await this.ratingModel.find({
-        movie_id: movieId,
+        movie_id: movie_id,
       });
       return rateInfo;
     } catch (error) {
