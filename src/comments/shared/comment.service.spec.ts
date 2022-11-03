@@ -174,16 +174,14 @@ describe('CommentService', () => {
   describe('getByReply', () => {
     it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
       // Act
-      const result = await commentService.getByReply(
-        '5a9427648b0beebeb69579cf'
+      const result = await commentService.getByReply({page:1, limit:1},
+        '1'
       );
 
       // Assert
-      expect(result).toEqual(comment);
+      expect(result).toEqual(commentMovie[0]);
       expect(commentService.getByReply).toHaveBeenCalledTimes(1);
-      expect(commentService.getByReply).toHaveBeenCalledWith(
-        '5a9427648b0beebeb69579cf'
-      );
+
     });
 
     it('should throw an exception', () => {
@@ -194,7 +192,7 @@ describe('CommentService', () => {
 
       // Assert
       expect(
-        commentService.getByReply('5a9427648b0beebeb69579cf')
+        commentService.getByReply({page:1, limit:1},'5a9427648b0beebeb69579cf')
       ).rejects.toThrowError();
     });
   });
@@ -226,11 +224,10 @@ describe('CommentService', () => {
         limit : 1,
         skip : 1,
       }
-      const result = await commentService.getByReply(pagination, commentMovie[0].commentReply)
+      const result = await commentService.getByReply(pagination, commentMovie[0]._id)
       // Assert
       expect(result).toEqual(commentMovie[0]);
       expect(typeof result).toEqual('object');
-      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an exception', () => {

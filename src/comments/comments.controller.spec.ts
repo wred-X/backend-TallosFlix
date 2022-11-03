@@ -112,7 +112,7 @@ describe('CommentsController', () => {
             getByEmail: jest.fn().mockRejectedValue(commentMail[0]),
             getByMovieId: jest.fn().mockResolvedValue(commentMovie),
             updateReply: jest.fn().mockRejectedValue(newComment),
-            getByReply: jest.fn().mockResolvedValue(commentMovie[0]),
+            getByReply: jest.fn().mockResolvedValue(comment[0]),
           },
         },
       ],
@@ -162,9 +162,9 @@ describe('CommentsController', () => {
       }
       const result = await commentController.getByReply(pagination, commentMovie[0].commentReply)
       // Assert
-      expect(result).toEqual(commentMovie[0]);
+      expect(result).toEqual(comment[0]);
       expect(typeof result).toEqual('object');
-      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
+      expect(commentService.getByReply).toHaveBeenCalled();
     });
 
     it('should throw an exception', () => {
@@ -202,16 +202,13 @@ describe('CommentsController', () => {
   describe('getByReply', () => {
     it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
       // Act
-      const result = await commentController.getByReply(
+      const result = await commentController.getByReply({page:1, limit:1},
         '5a9427648b0beebeb69579cf'
       );
 
       // Assert
-      expect(result).toEqual(comment);
+      expect(result).toEqual(comment[0]);
       expect(commentService.getByReply).toHaveBeenCalledTimes(1);
-      expect(commentService.getByReply).toHaveBeenCalledWith(
-        '5a9427648b0beebeb69579cf'
-      );
     });
 
     it('should throw an exception', () => {
@@ -222,7 +219,7 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByReply('5a9427648b0beebeb69579cf')
+        commentController.getByReply({page:1, limit:1}, '5a9427648b0beebeb69579cf')
       ).rejects.toThrowError();
     });
   });
