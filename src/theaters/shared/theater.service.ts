@@ -26,6 +26,16 @@ export class TheaterService {
     }
   }
 
+  async getAddress(address: string) {
+    try {
+      return await this.theaterModel.find({
+        'location.address.city': { $regex: address, $options: 'i' },
+      });
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   async getByLocation(coordinates1: number, coordinates2: number) {
     try {
       const teste = [coordinates1, coordinates2];

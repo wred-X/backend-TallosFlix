@@ -65,6 +65,7 @@ describe('TheaterService', () => {
     const Mocks = {
       find: jest.fn().mockResolvedValue(theaterList),
       findById: jest.fn().mockReturnValue(theaterList[0]),
+      getAddress: jest.fn().mockResolvedValue(theaterList[0]),
       aggregate: jest.fn().mockReturnValue(theaterList[0]),
       create: jest.fn().mockReturnValue(TheaterCreated),
       save: jest.fn().mockResolvedValue(TheaterCreated),
@@ -113,6 +114,20 @@ describe('TheaterService', () => {
     it('Should be return Error', () => {
       jest.spyOn(theaterService, 'getById');
       expect(theaterService.getById).rejects.toThrowError();
+    });
+  });
+
+  describe('getAddress', () => {
+    it('Retorna um teatro pelo nome da cidade', async () => {
+      const result = await theaterService.getAddress('UT');
+      console.log(result);
+      expect(result[0].location.address.city).toEqual(
+        theaterList[0].location.address.city
+      );
+    });
+    it('Should be return Error', () => {
+      jest.spyOn(theaterService, 'getAddress');
+      expect(theaterService.getAddress).rejects.toThrowError();
     });
   });
 
