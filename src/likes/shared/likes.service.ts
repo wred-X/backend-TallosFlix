@@ -52,7 +52,7 @@ export class LikesService {
       const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
       this.socket.emitnewLike(likeNumbers);
 
-      return likeNumbers;
+      return {likeNumbers: likeNumbers, results: result};
     } catch (error) {
       console.log(`inserir trativa aqui ${error}`);
       return;
