@@ -24,19 +24,28 @@ export class LikesService {
     return result;
   }
   async allLikes(id: string) {
-    const result = await this.likesModel.find({
-      commentId: id,
-    });
+   
     let valueLikes = 0;
     let valueDeslikes = 0;
-    for (let i = 0; i < result[0].userLike.length; i++) {
-      if (result[0].userLike[i].like === true) valueLikes++;
-      if (result[0].userLike[i].unlike === true) valueDeslikes++;
-    }
-    const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
-    this.socket.emitnewLike(likeNumbers);
-
+    
+    try {
+      const result = await this.likesModel.find({
+        commentId: id,
+      });
+      for (let i = 0; i < result[0].userLike.length; i++) {
+        if (result[0].userLike[i].like === true) valueLikes++;
+        if (result[0].userLike[i].unlike === true) valueDeslikes++;
+      }
+      const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
+      this.socket.emitnewLike(likeNumbers);
+  
     return likeNumbers;
+
+    } catch (error) {
+      console.log(`inserir trativa aqui ${error}`)
+      return;
+    }
+ 
   }
 
   async create(docLike: Likes) {
