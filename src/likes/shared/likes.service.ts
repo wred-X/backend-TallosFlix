@@ -11,23 +11,36 @@ export class LikesService {
   constructor(private readonly socket: SocketGateway) {}
 
   async getAll() {
-    const result = await this.likesModel.find();
-    return result;
+    try {
+      const result = await this.likesModel.find();
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        `Não encontramos, ${error}`,
+        HttpStatus.NOT_FOUND
+      );
+    }
   }
   async byId(query: Likes) {
-    const result: Likes = await this.likesModel.findOne({
-      commentId: query.commentId,
-    });
-    !result;
-    await this.create(query);
+    try {
+      const result: Likes = await this.likesModel.findOne({
+        commentId: query.commentId,
+      });
+      !result;
+      await this.create(query);
 
-    return result;
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        `Não encontramos, ${error}`,
+        HttpStatus.NOT_FOUND
+      );
+    }
   }
   async allLikes(id: string) {
-   
     let valueLikes = 0;
     let valueDeslikes = 0;
-    
+
     try {
       const result = await this.likesModel.find({
         commentId: id,
@@ -38,14 +51,12 @@ export class LikesService {
       }
       const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
       this.socket.emitnewLike(likeNumbers);
-  
-    return likeNumbers;
 
+      return likeNumbers;
     } catch (error) {
-      console.log(`inserir trativa aqui ${error}`)
+      console.log(`inserir trativa aqui ${error}`);
       return;
     }
- 
   }
 
   async create(docLike: Likes) {
@@ -64,7 +75,6 @@ export class LikesService {
 
   async likeComment(id: string, array: userLiked) {
     const userLike = array;
-
     //verifica se o userId ja deu like ou deslike nesse comentario especifico
     const validateLiked = await this.likesModel.findOne({
       commentId: id,
