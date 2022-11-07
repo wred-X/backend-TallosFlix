@@ -85,8 +85,10 @@ export class CommentsController {
   @Post()
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
-  async create(@Body() comment: Comment): Promise<Comment> {
-    return await this.commentService.create(comment);
+  async create(@Body() comment: Comment) {
+    comment.userAvatar = comment.userAvatar
+    const createRetorno = await this.commentService.create(comment);
+    return createRetorno
   }
 
   @Put(':id')

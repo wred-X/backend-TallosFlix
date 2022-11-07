@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { UserService } from 'src/users/shared/user.service';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
@@ -9,7 +10,8 @@ import { CommentGetDto } from './PaginationParams';
 @Injectable()
 export class CommentService {
   @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
-  constructor(private readonly socket: SocketGateway) {}
+  @Inject() private userService: UserService
+  constructor(private readonly socket: SocketGateway) { }
 
   async getAll(pagination, comment: CommentGetDto) {
     const limit = pagination.limit || 10;
@@ -51,8 +53,8 @@ export class CommentService {
     const total = await this.commentsModel.countDocuments()
     const qtdPages = Math.floor(total / pagination.limit) + 1;
     const totalResponse = await this.commentsModel
-    .find( {commentReply: id})
-    .count();
+      .find({ commentReply: id })
+      .count();
     try {
       const response = await this.commentsModel
         .find({ commentReply: replyId })
@@ -126,11 +128,13 @@ export class CommentService {
     }
   }
 
-  async create(comments: Comment): Promise<Comment> {
+  async create(comments: Comment) {
     try {
-      const createdComment = new this.commentsModel(comments);
+      const createdComment = await this.commentsModel.create(comments);
+      const avatar = await this.userService.getPhoto(createdComment.email)
+      createdComment.userAvatar = avatar;
       this.socket.emitNewComment(createdComment);
-      return await createdComment.save();
+      return createdComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
@@ -173,8 +177,8 @@ export class CommentService {
       const deleted = await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
       this.socket.emitComentDeleted(id)
       return deleted;
-    
-      } catch {
+
+    } catch {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
   }
