@@ -56,8 +56,16 @@ export class LikesController {
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   @Get(':id')
-  async allLikes(@Param('id') id: string): Promise<object> {
-    const addLike = await this.likesService.allLikes(id);
+  async allLikes(
+    @Param('id') id: string,
+    @Body() find: { userId: string }
+  ): Promise<object> {
+    // /likes/:COMENTARIOID/({
+    //   USERID=STATEID
+    // })
+    // RESPONSE = {50, 10, 'LIKE'}
+    console.log(find.userId, 'controllerrrrrrrr');
+    const addLike = await this.likesService.allLikes(id, find.userId);
     return addLike;
   }
 }

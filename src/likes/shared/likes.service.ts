@@ -37,19 +37,38 @@ export class LikesService {
       );
     }
   }
-  async allLikes(id: string) {
+  async allLikes(id: string, userId: string) {
     let valueLikes = 0;
     let valueDeslikes = 0;
+    let myLike: string = 'NOT';
 
     try {
       const result = await this.likesModel.find({
         commentId: id,
       });
       for (let i = 0; i < result[0].userLike.length; i++) {
+        console.log(result[0].userLike[i].userId);
+        console.log(userId);
         if (result[0].userLike[i].like === true) valueLikes++;
         if (result[0].userLike[i].unlike === true) valueDeslikes++;
+        if (
+          result[0].userLike[i].userId == userId &&
+          result[0].userLike[i].like === true
+        )
+          myLike = 'LIKE';
+        if (
+          result[0].userLike[i].userId == userId &&
+          result[0].userLike[i].unlike === true
+        )
+          myLike = 'UNLIKE';
       }
-      const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
+      const likeNumbers = {
+        likes: valueLikes,
+        deslikes: valueDeslikes,
+        myLike,
+        id,
+        userId,
+      };
       this.socket.emitnewLike(likeNumbers);
 
       return likeNumbers;
