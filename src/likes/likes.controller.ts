@@ -60,12 +60,6 @@ export class LikesController {
     @Param('id') id: string,
     @Body() find: { userId: string }
   ): Promise<object> {
-    // /likes/{$:}:COMENTARIOID/({
-    //   !USERID='' ou com id
-    // })
-    // REQ ID COMENT E O ID USER
-    // RESPONSE = {50, 10, 'LIKE'}
-    // OBJETO1 = { REQ E RES}
     console.log(find.userId, 'controllerrrrrrrr');
     const addLike = await this.likesService.allLikes(id, find.userId);
     return addLike;
