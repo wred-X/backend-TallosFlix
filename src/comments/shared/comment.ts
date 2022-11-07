@@ -75,6 +75,9 @@ export class Comment {
   @IsOptional()
   _id?: string;
 
+  @IsOptional()
+  userAvatar?: string
+
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;
     this.name = comment?.name;
