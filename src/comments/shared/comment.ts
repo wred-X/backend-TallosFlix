@@ -87,5 +87,6 @@ export class Comment {
     this.date = comment?.date;
     this.isReply = comment?.isReply;
     this.commentReply = comment?.commentReply;
+    this.userAvatar = comment?.userAvatar;
   }
 }
