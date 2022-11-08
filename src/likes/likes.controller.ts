@@ -60,7 +60,6 @@ export class LikesController {
     @Param('id') id: string,
     @Body() find: { userId: string }
   ): Promise<object> {
-    console.log(find.userId, 'controllerrrrrrrr');
     const addLike = await this.likesService.allLikes(id, find.userId);
     return addLike;
   }
