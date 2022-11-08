@@ -130,9 +130,9 @@ export class CommentService {
 
   async create(comments: Comment) {
     try {
+      const avatar = await this.userService.getPhoto(comments.email)
+      comments.userAvatar = avatar;
       const createdComment = await this.commentsModel.create(comments);
-      const avatar = await this.userService.getPhoto(createdComment.email)
-      createdComment.userAvatar = avatar;
       this.socket.emitNewComment(createdComment);
       return createdComment;
     } catch {
