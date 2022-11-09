@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CommentService } from 'src/comments/shared/comment.service';
 import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Roles } from '../autentications/decorators/role-decorator';
 import { RolesGuard } from '../autentications/guards/role.guard';
@@ -20,7 +21,10 @@ import { LikesService } from './shared/likes.service';
 @ApiBearerAuth('JWT-auth')
 @Controller('Likes')
 export class LikesController {
-  constructor(private likesService: LikesService) {}
+  constructor(
+    private likesService: LikesService,
+    private commentService: CommentService
+  ) {}
   @IsPublic()
   @Get()
   async getLikes() {
@@ -38,19 +42,43 @@ export class LikesController {
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   @Post(':id')
-  async likeComment(
-    @Param('id') id: string,
-    @Body() liked: userLiked
-  ): Promise<Likes> {
-    const addLike = await this.likesService.likeComment(id, liked);
-    return addLike;
+  async likeComment(@Param('id') id: string, @Body() liked: userLiked) {
+    const countLikes = await this.likesService.likeComment(id, liked);
+    //this.likesService.allLikes(id, find.userId);
+    const upLikes = await this.likesService.allLikes(id, liked.userId);
+
+    const upComment = await this.commentService.updateLike(
+      upLikes.id,
+      upLikes.likes,
+      upLikes.deslikes
+    );
+
+    return upComment;
   }
 
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   @Post()
-  async create(@Body() liked: Likes): Promise<Likes> {
-    return await this.likesService.create(liked);
+  async create(@Body() liked: Likes) {
+    const countLikes = await this.likesService.create(liked);
+    console.log(countLikes);
+
+    if (countLikes.userLike[0] === liked.userLike[0]) {
+      const upLikes = await this.likesService.allLikes(
+        countLikes.commentId,
+        countLikes.userLike[0].userId
+      );
+
+      const upComment = await this.commentService.updateLike(
+        upLikes.id,
+        upLikes.likes,
+        upLikes.deslikes
+      );
+
+      return upComment;
+    } else {
+      return this.likeComment(countLikes.commentId, liked.userLike[0]);
+    }
   }
 
   @Roles(Role.ADMIN, Role.USER)
@@ -60,8 +88,12 @@ export class LikesController {
     @Param('id') id: string,
     @Body() find: { userId: string }
   ): Promise<object> {
-    console.log(find.userId, 'controllerrrrrrrr');
-    const addLike = await this.likesService.allLikes(id, find.userId);
-    return addLike;
+    const response = await this.likesService.allLikes(id, find.userId);
+    const myLike = {
+      resLike: response.myLike,
+      resComment: response.id,
+      resUserId: response.userId,
+    };
+    return myLike;
   }
 }

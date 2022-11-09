@@ -85,7 +85,10 @@ export class LikesService {
       });
       if (!result) {
         const createdLikeDoc = this.likesModel.create(docLike);
+        console.log(createdLikeDoc, 'creat......................');
         return await createdLikeDoc;
+      } else {
+        return result;
       }
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);

@@ -75,6 +75,12 @@ export class Comment {
   @IsOptional()
   _id?: string;
 
+  @IsOptional()
+  like?: string;
+
+  @IsOptional()
+  deslike?: string;
+
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;
     this.name = comment?.name;

@@ -10,5 +10,6 @@ import { SocketGateway } from '../socket/socket.gateway';
   ],
   controllers: [CommentsController],
   providers: [CommentService, SocketGateway],
+  exports: [CommentService],
 })
 export class CommentsModule {}

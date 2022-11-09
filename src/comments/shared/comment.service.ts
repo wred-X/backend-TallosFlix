@@ -48,11 +48,11 @@ export class CommentService {
     const limit = pagination.limit || 5;
     const currentPage = pagination.page || 1;
     const skip = limit * (currentPage - 1);
-    const total = await this.commentsModel.countDocuments()
+    const total = await this.commentsModel.countDocuments();
     const qtdPages = Math.floor(total / pagination.limit) + 1;
     const totalResponse = await this.commentsModel
-    .find( {commentReply: id})
-    .count();
+      .find({ commentReply: id })
+      .count();
     try {
       const response = await this.commentsModel
         .find({ commentReply: replyId })
@@ -168,13 +168,31 @@ export class CommentService {
     }
   }
 
+  async updateLike(id: string, likes: number, deslikes: number) {
+    try {
+      const update = await this.commentsModel.findByIdAndUpdate(
+        id,
+        { like: likes, deslike: deslikes },
+        {
+          new: true,
+        }
+      );
+      this.socket.emitComentUpdated(update);
+
+      return update;
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+
   async delete(id: string) {
     try {
-      const deleted = await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
-      this.socket.emitComentDeleted(id)
+      const deleted = await this.commentsModel
+        .findByIdAndDelete({ _id: id })
+        .exec();
+      this.socket.emitComentDeleted(id);
       return deleted;
-    
-      } catch {
+    } catch {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
   }
