@@ -181,7 +181,7 @@ export class CommentService {
           new: true,
         }
       );
-      this.socket.emitComentUpdated(update);
+      this.socket.emitnewLike(update);
 
       return update;
     } catch {

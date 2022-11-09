@@ -69,11 +69,14 @@ export class LikesService {
         id,
         userId,
       };
+      console.log(likeNumbers);
       this.socket.emitnewLike(likeNumbers);
 
       return likeNumbers;
     } catch (error) {
-      console.log(`inserir trativa aqui ${error}`);
+      console.error(
+        `Opa, esse comentario nunca foi avaliado. Crie sua primeira avaliação${error}`
+      );
       return;
     }
   }
@@ -91,7 +94,7 @@ export class LikesService {
         return result;
       }
     } catch {
-      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Check all datas', HttpStatus.LENGTH_REQUIRED);
     }
   }
 
