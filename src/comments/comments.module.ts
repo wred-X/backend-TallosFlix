@@ -8,11 +8,11 @@ import { CommentSchema } from './schemas/comment.schema';
 import { SocketGateway } from '../socket/socket.gateway';
 @Module({
   imports: [
-    forwardRef(()=> UsersModule),
+    forwardRef(() => UsersModule),
     MongooseModule.forFeature([{ name: 'Comment', schema: CommentSchema }]),
   ],
   controllers: [CommentsController],
   providers: [CommentService, SocketGateway, UsersModule],
-  exports:[CommentService]
+  exports: [CommentService],
 })
 export class CommentsModule {}

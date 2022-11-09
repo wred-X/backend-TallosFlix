@@ -1,4 +1,4 @@
-import { UserService } from '../../users/shared/user.service'
+import { UserService } from '../../users/shared/user.service';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
@@ -10,8 +10,8 @@ import { CommentGetDto } from './PaginationParams';
 @Injectable()
 export class CommentService {
   @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
-  @Inject() private userService: UserService
-  constructor(private readonly socket: SocketGateway) { }
+  @Inject() private userService: UserService;
+  constructor(private readonly socket: SocketGateway) {}
 
   async getAll(pagination, comment: CommentGetDto) {
     const limit = pagination.limit || 10;
@@ -50,7 +50,7 @@ export class CommentService {
     const limit = pagination.limit || 5;
     const currentPage = pagination.page || 1;
     const skip = limit * (currentPage - 1);
-    const total = await this.commentsModel.countDocuments()
+    const total = await this.commentsModel.countDocuments();
     const qtdPages = Math.floor(total / pagination.limit) + 1;
     const totalResponse = await this.commentsModel
       .find({ commentReply: id })
@@ -130,7 +130,7 @@ export class CommentService {
 
   async create(comments: Comment) {
     try {
-      const avatar = await this.userService.getPhoto(comments.email)
+      const avatar = await this.userService.getPhoto(comments.email);
       comments.userAvatar = avatar;
       const createdComment = await this.commentsModel.create(comments);
       this.socket.emitNewComment(createdComment);
@@ -172,12 +172,30 @@ export class CommentService {
     }
   }
 
+  async updateLike(id: string, likes: number, deslikes: number) {
+    try {
+      const update = await this.commentsModel.findByIdAndUpdate(
+        id,
+        { like: likes, deslike: deslikes },
+        {
+          new: true,
+        }
+      );
+      this.socket.emitComentUpdated(update);
+
+      return update;
+    } catch {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
+
   async delete(id: string) {
     try {
-      const deleted = await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
-      this.socket.emitComentDeleted(id)
+      const deleted = await this.commentsModel
+        .findByIdAndDelete({ _id: id })
+        .exec();
+      this.socket.emitComentDeleted(id);
       return deleted;
-
     } catch {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }

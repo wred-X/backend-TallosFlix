@@ -76,7 +76,11 @@ export class Comment {
   _id?: string;
 
   @IsOptional()
-  userAvatar?: string
+  like?: string;
+
+  @IsOptional()
+  deslike?: string;
+  userAvatar?: string;
 
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;

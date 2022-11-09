@@ -8,7 +8,9 @@ export const CommentSchema = new mongoose.Schema(
     date: Date,
     isReply: Boolean,
     commentReply: mongoose.Schema.Types.ObjectId,
-    userAvatar: String
+    like: Number,
+    deslike: Number,
+    userAvatar: String,
   },
   { typeKey: '$type' }
 );
