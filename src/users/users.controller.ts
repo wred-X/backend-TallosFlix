@@ -51,13 +51,11 @@ export class UsersController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   async create(@Body() user: User): Promise<User> {
-    user.avatar = '';
     return await this.userService.create(user);
   }
   @IsPublic()
   @Post('public')
   async createpub(@Body() user: UserPub): Promise<User> {
-    user.avatar = '';
     user.role = Role.USER;
     return await this.userService.create(user);
   }

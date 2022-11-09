@@ -80,6 +80,7 @@ export class Comment {
 
   @IsOptional()
   deslike?: string;
+  userAvatar?: string;
 
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;
@@ -90,5 +91,6 @@ export class Comment {
     this.date = comment?.date;
     this.isReply = comment?.isReply;
     this.commentReply = comment?.commentReply;
+    this.userAvatar = comment?.userAvatar;
   }
 }

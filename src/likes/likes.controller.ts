@@ -83,7 +83,7 @@ export class LikesController {
 
   @Roles(Role.ADMIN, Role.USER)
   @IsPublic()
-  @Get(':id')
+  @Post('list/:id')
   async allLikes(
     @Param('id') id: string,
     @Body() find: { userId: string }

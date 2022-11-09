@@ -146,7 +146,6 @@ describe('LikesController', () => {
       // Assert
       expect(result).toEqual(likeNumbers);
       expect(likeService.allLikes).toHaveBeenCalledTimes(1);
-      expect(likeService.allLikes).toHaveBeenCalledWith(like[0].commentId);
     });
 
     it('should throw an exception', () => {

@@ -10,6 +10,7 @@ export const CommentSchema = new mongoose.Schema(
     commentReply: mongoose.Schema.Types.ObjectId,
     like: Number,
     deslike: Number,
+    userAvatar: String,
   },
   { typeKey: '$type' }
 );

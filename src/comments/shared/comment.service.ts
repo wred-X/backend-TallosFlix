@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { UserService } from '../../users/shared/user.service';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
@@ -9,6 +10,7 @@ import { CommentGetDto } from './PaginationParams';
 @Injectable()
 export class CommentService {
   @InjectModel('Comment') private readonly commentsModel: Model<Comment>;
+  @Inject() private userService: UserService;
   constructor(private readonly socket: SocketGateway) {}
 
   async getAll(pagination, comment: CommentGetDto) {
@@ -126,11 +128,13 @@ export class CommentService {
     }
   }
 
-  async create(comments: Comment): Promise<Comment> {
+  async create(comments: Comment) {
     try {
-      const createdComment = new this.commentsModel(comments);
+      const avatar = await this.userService.getPhoto(comments.email);
+      comments.userAvatar = avatar;
+      const createdComment = await this.commentsModel.create(comments);
       this.socket.emitNewComment(createdComment);
-      return await createdComment.save();
+      return createdComment;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }

@@ -150,7 +150,6 @@ describe('LikesService', () => {
       expect(result.likes).toEqual(likeNumbers.likes);
       expect(result.deslikes).toEqual(likeNumbers.deslikes);
       expect(likeService.allLikes).toHaveBeenCalledTimes(1);
-      expect(likeService.allLikes).toHaveBeenCalledWith(like[0].commentId);
     });
 
     it('should throw an exception', () => {
