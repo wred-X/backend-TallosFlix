@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CommentService } from 'src/comments/shared/comment.service';
+import { CommentService } from '../comments/shared/comment.service';
 import { IsPublic } from '../autentications/decorators/is-public-decorator';
 import { Roles } from '../autentications/decorators/role-decorator';
 import { RolesGuard } from '../autentications/guards/role.guard';
@@ -61,7 +61,6 @@ export class LikesController {
   @Post()
   async create(@Body() liked: Likes) {
     const countLikes = await this.likesService.create(liked);
-    console.log(countLikes);
 
     if (countLikes.userLike[0] === liked.userLike[0]) {
       const upLikes = await this.likesService.allLikes(
