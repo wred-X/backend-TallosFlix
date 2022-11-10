@@ -97,14 +97,15 @@ export class Comment {
   userAvatar?: string;
 
   constructor(comment?: Partial<Comment>) {
-    this._id = comment?._id;
-    this.name = comment?.name;
-    this.email = comment?.email;
-    this.movie_id = comment?.movie_id;
-    this.text = comment?.text;
-    this.date = comment?.date;
-    this.isReply = comment?.isReply;
-    this.commentReply = comment?.commentReply;
-    this.userAvatar = comment?.userAvatar;
+    // this._id = comment?._id;
+    // this.name = comment?.name;
+    // this.email = comment?.email;
+    // this.movie_id = comment?.movie_id;
+    // this.text = comment?.text;
+    // this.date = comment?.date;
+    // this.isReply = comment?.isReply;
+    // this.commentReply = comment?.commentReply;
+    // this.userAvatar = comment?.userAvatar;
+    Object.assign(this, comment);
   }
 }

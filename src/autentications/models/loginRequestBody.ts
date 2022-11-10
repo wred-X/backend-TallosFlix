@@ -20,7 +20,9 @@ export class LoginRequestBody {
   password: string;
 
   constructor(todo?: Partial<LoginRequestBody>) {
-    this.email = todo?.email;
-    this.password = todo?.password;
+    // this.email = todo?.email;
+    // this.password = todo?.password;
+    Object.assign(this, todo)
+
   }
 }

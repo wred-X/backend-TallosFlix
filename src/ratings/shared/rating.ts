@@ -26,8 +26,10 @@ export class Rating {
   allRate: Rate[];
 
   constructor(todo?: Partial<Rating>) {
-    this._id = todo?._id;
-    this.allRate = todo?.allRate;
-    this.movie_id = todo?.movie_id;
+    // this._id = todo?._id;
+    // this.allRate = todo?.allRate;
+    // this.movie_id = todo?.movie_id;
+    Object.assign(this, todo)
+
   }
 }
