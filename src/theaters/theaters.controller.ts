@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
@@ -41,6 +42,12 @@ export class TheatersController {
     @Body() cord: { lat: number; long: number }
   ): Promise<Theater[]> {
     return await this.theaterService.getByLocation(cord.lat, cord.long);
+  }
+
+  @IsPublic()
+  @Get('/city/:address')
+  async getAddress(@Param('address') address: string): Promise<Theater[]> {
+    return await this.theaterService.getAddress(address);
   }
 
   @Post()

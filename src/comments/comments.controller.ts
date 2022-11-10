@@ -40,31 +40,45 @@ export class CommentsController {
   }
 
   @IsPublic()
+  @Roles(Role.ADMIN, Role.USER)
+  @Get('/response/:id')
+  async getByReply(@Query() pagination: any, @Param('id') id: string) {
+    return await this.commentService.getByReply(pagination, id);
+  }
+
+  @IsPublic()
   @ApiBody({ type: MovieId })
   @Post('movie_id')
   async getByMovieId(
     @Query() pagination,
+    comment: CommentGetDto,
     @Body() movie_id: { movie: string }
-  ): Promise<Comment[]> {
+  ) {
     const comments = await this.commentService.getByMovieId(
       pagination,
-      movie_id.movie
+      movie_id.movie,
+      comment
     );
     return comments;
   }
+
   @IsPublic()
   @ApiBody({ type: eComment })
-  @Post('mail')
-  async getByEmail(@Body() email: { mail: string }): Promise<Comment[]> {
-    const comments = await this.commentService.getByEmail(email.mail);
+  @Post('email')
+  async getByEmail(
+    @Query() pagination,
+    @Body() email: { mail: string }
+  ): Promise<Comment[]> {
+    const comments = await this.commentService.getByEmail(
+      pagination,
+      email.mail
+    );
     return comments;
   }
 
   //reply
-  @ApiBody({ type: Reply })
   @Put('/reply/:id')
   async replyComment(@Param('id') id: string, @Body() comment: Comment) {
-    console.log('oq mandei', comment);
     return await this.commentService.updateReply(id, comment);
   }
 

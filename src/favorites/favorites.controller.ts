@@ -43,6 +43,7 @@ export class FavoritesController {
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(RolesGuard)
   async create(@Body() favorite: Favorite): Promise<Favorite> {
+    console.log(favorite);
     return await this.favoriteService.create(favorite);
   }
 

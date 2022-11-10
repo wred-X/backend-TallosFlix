@@ -31,17 +31,18 @@ export class FavoriteService {
 
   async create(favorite: Favorite) {
     try {
-      const createdTheater = this.favoriteModel.create(favorite);
-      return await createdTheater;
+      const createdFavorite = this.favoriteModel.create(favorite);
+      return await createdFavorite;
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
   }
 
   async update(id: string, favorite: UpdateFavorite) {
+    const user_id = new ObjectId(id);
     try {
-      return await this.favoriteModel.findByIdAndUpdate(
-        { _id: id },
+      return await this.favoriteModel.findOneAndUpdate(
+        { user_Id: user_id },
         {
           $push: { movie_Id: favorite.movie_Id },
         },
@@ -55,11 +56,12 @@ export class FavoriteService {
   }
 
   async delete(id: string, favorite: UpdateFavorite) {
+    const user_id = new ObjectId(id);
     try {
-      return await this.favoriteModel.findByIdAndUpdate(
-        { _id: id },
+      return await this.favoriteModel.findOneAndUpdate(
+        { user_Id: user_id },
         {
-          $pull: { movie_Id: favorite.movie_Id },
+          $pull: { movie_Id: { $in: favorite.movie_Id } },
         },
         {
           new: true,

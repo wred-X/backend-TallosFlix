@@ -57,7 +57,13 @@ export class SocketGateway
     console.log('emiti o evento de comment', { comment });
     this.server.emit('new-comment', { comment });
   }
+  emitComentUpdated(comment: Comment) {
+    this.server.emit('update-comment', { comment });
+  }
 
+  emitComentDeleted(id: string) {
+    this.server.emit('deleted-comment', { id });
+  }
   emitNewFavorite(movie: Movie, _id: User) {
     this.server.emit('new-favorited', { movie, _id });
   }
@@ -68,4 +74,6 @@ export class SocketGateway
   emitAllLikes(liked: any) {
     this.server.emit('all-likes', { liked });
   }
+
+
 }

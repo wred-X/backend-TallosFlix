@@ -11,32 +11,52 @@ export class LikesService {
   constructor(private readonly socket: SocketGateway) {}
 
   async getAll() {
-    const result = await this.likesModel.find();
-    return result;
+    try {
+      const result = await this.likesModel.find();
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        `Não encontramos, ${error}`,
+        HttpStatus.NOT_FOUND
+      );
+    }
   }
   async byId(query: Likes) {
-    const result: Likes = await this.likesModel.findOne({
-      commentId: query.commentId,
-    });
-    !result;
-    await this.create(query);
+    try {
+      const result: Likes = await this.likesModel.findOne({
+        commentId: query.commentId,
+      });
+      !result;
+      await this.create(query);
 
-    return result;
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        `Não encontramos, ${error}`,
+        HttpStatus.NOT_FOUND
+      );
+    }
   }
   async allLikes(id: string) {
-    const result = await this.likesModel.find({
-      commentId: id,
-    });
     let valueLikes = 0;
     let valueDeslikes = 0;
-    for (let i = 0; i < result[0].userLike.length; i++) {
-      if (result[0].userLike[i].like === true) valueLikes++;
-      if (result[0].userLike[i].unlike === true) valueDeslikes++;
-    }
-    const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
-    this.socket.emitnewLike(likeNumbers);
 
-    return likeNumbers;
+    try {
+      const result = await this.likesModel.find({
+        commentId: id,
+      });
+      for (let i = 0; i < result[0].userLike.length; i++) {
+        if (result[0].userLike[i].like === true) valueLikes++;
+        if (result[0].userLike[i].unlike === true) valueDeslikes++;
+      }
+      const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
+      this.socket.emitnewLike(likeNumbers);
+
+      return {likeNumbers: likeNumbers, results: result};
+    } catch (error) {
+      console.log(`inserir trativa aqui ${error}`);
+      return;
+    }
   }
 
   async create(docLike: Likes) {
@@ -55,7 +75,6 @@ export class LikesService {
 
   async likeComment(id: string, array: userLiked) {
     const userLike = array;
-
     //verifica se o userId ja deu like ou deslike nesse comentario especifico
     const validateLiked = await this.likesModel.findOne({
       commentId: id,
@@ -77,14 +96,16 @@ export class LikesService {
         { new: true }
       );
       this.socket.emitnewLike(validateLiked);
+      console.log(userLike.like, userLike.unlike);
 
-      if (userLike.like === true && userLike.unlike === true) {
-        const newLike = this.pushFuction(id, userLike);
+      if (userLike.like === true || userLike.unlike === true) {
+        console.log('entrei');
+        const newLike = await this.pushFuction(id, userLike);
         return newLike;
       }
     } else {
       //caso n tenha dado like e nem unlike, n existe o objeto dentro do array de userLikes, então ele deve criar um novo objeto dentro do array do commentId
-      const newLike = this.pushFuction(id, userLike);
+      const newLike = await this.pushFuction(id, userLike);
       return newLike;
     }
   }

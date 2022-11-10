@@ -26,7 +26,8 @@ export class AutenticationService {
       sub: user._id,
       email: user.email,
       name: user.name,
-      role: user.role
+      role: user.role,
+      avatar:user.avatar
     };
 
     const userInfo = user._id;

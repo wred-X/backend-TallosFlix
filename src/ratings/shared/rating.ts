@@ -16,7 +16,7 @@ export class Rating {
   movie_id: string;
 
   @ApiProperty({
-    example: { rate: 5, user_id: 'idDEusuario123' },
+    example: [{ rate: 5, user_id: 'idDEusuario123' }],
     description: `Id dos filmes adicionado aos favoritos desse usuario.`,
   })
   @IsNotEmpty({

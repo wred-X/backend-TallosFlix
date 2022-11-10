@@ -17,7 +17,7 @@ export class CommentService {
     const skip = limit * (currentPage - 1);
     const total = await this.commentsModel.countDocuments(comment);
     const qtdPages = Math.floor(total / pagination.limit) + 1;
-
+    const totalResponse = await this.commentsModel.find(comment).count();
     try {
       const response = await this.commentsModel
         .find(comment)
@@ -28,6 +28,7 @@ export class CommentService {
         numberOfElements: total,
         pagesTotal: qtdPages,
         page: pagination.page || 1,
+        totalResponse: totalResponse,
       };
     } catch {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -42,34 +43,86 @@ export class CommentService {
     }
   }
 
+  async getByReply(pagination: any, id: string) {
+    const replyId = new ObjectId(id);
+    const limit = pagination.limit || 5;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+    const total = await this.commentsModel.countDocuments()
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
+    const totalResponse = await this.commentsModel
+    .find( {commentReply: id})
+    .count();
+    try {
+      const response = await this.commentsModel
+        .find({ commentReply: replyId })
+        .limit(limit)
+        .skip(skip);
+
+      return {
+        response,
+        numberOfElements: total,
+        pagesTotal: qtdPages,
+        page: pagination.page || 1,
+        totalReplys: totalResponse,
+      };
+    } catch {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
   // async getByMovieId(movie_id: string) {
   //   const movie = movie_id;
   //   return await this.commentsModel.findOne({ movie }).exec();
   // }
 
-  async getByMovieId(pagination, movie_id: string) {
+  async getByMovieId(pagination, movie_id: string, comment: CommentGetDto) {
     const id = new ObjectId(movie_id);
     const limit = pagination.limit || 10;
+    const currentPage = pagination.page || 1;
+    const skip = limit * (currentPage - 1);
+    const total = await this.commentsModel.countDocuments(comment);
+    const qtdPages = Math.floor(total / pagination.limit) + 1;
+
+    const countReplys = await this.commentsModel
+      .find({ movie_id: id, isReply: true })
+      .countDocuments();
+
+    const myReplys = await this.commentsModel.find({
+      movie_id: id,
+      isReply: true,
+    });
+
     try {
       const commentsMovie = await this.commentsModel
         .find({ movie_id: id })
-        .limit(limit);
-      return commentsMovie;
-    } catch {
+        .limit(limit)
+        .skip(skip);
+
+      return {
+        commentsMovie,
+        numberOfElements: total,
+        pagesTotal: qtdPages,
+        page: pagination.page || 1,
+        totalReplys: countReplys,
+        replys: myReplys,
+      };
+    } catch (error) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
   //criar paginação de comentarios do filme
 
-  async getByEmail(mail: string) {
+  async getByEmail(pagination, mail: string): Promise<Comment[]> {
+    const limit = pagination.limit || 10;
     try {
       const commentsMovie = await this.commentsModel
         .find({ email: mail })
-        .limit(50);
+        .limit(limit);
       return commentsMovie;
     } catch {
-      throw new HttpException('Check data -mail- ', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -94,6 +147,7 @@ export class CommentService {
           new: true,
         }
       );
+      this.socket.emitNewComment(comment);
 
       return replyComment;
     } catch {
@@ -106,6 +160,8 @@ export class CommentService {
       const uppdate = await this.commentsModel.findByIdAndUpdate(id, comments, {
         new: true,
       });
+      this.socket.emitComentUpdated(comments);
+
       return uppdate;
     } catch {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
@@ -114,8 +170,11 @@ export class CommentService {
 
   async delete(id: string) {
     try {
-      return await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
-    } catch {
+      const deleted = await this.commentsModel.findByIdAndDelete({ _id: id }).exec();
+      this.socket.emitComentDeleted(id)
+      return deleted;
+    
+      } catch {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
   }

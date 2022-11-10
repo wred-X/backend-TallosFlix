@@ -15,7 +15,7 @@ export class Favorite {
   user_Id: string;
 
   @ApiProperty({
-    example: '1filmeID1',
+    example: ['1filmeID1'],
     description: `Id dos filmes adicionado aos favoritos desse usuario.`,
   })
   @IsNotEmpty({
