@@ -75,6 +75,13 @@ export class Comment {
   @IsOptional()
   _id?: string;
 
+  @IsOptional()
+  like?: string;
+
+  @IsOptional()
+  deslike?: string;
+  userAvatar?: string;
+
   constructor(comment?: Partial<Comment>) {
     this._id = comment?._id;
     this.name = comment?.name;
@@ -84,5 +91,6 @@ export class Comment {
     this.date = comment?.date;
     this.isReply = comment?.isReply;
     this.commentReply = comment?.commentReply;
+    this.userAvatar = comment?.userAvatar;
   }
 }

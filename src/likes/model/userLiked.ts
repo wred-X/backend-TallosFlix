@@ -6,7 +6,7 @@ export class userLiked {
     example: '59b99db4cfa9a34dcd7885b6',
     description: 'id do usuario',
   })
-  userId: ObjectId | String;
+  userId: string;
 
   @ApiProperty({ example: 'true ou false' })
   like: boolean;

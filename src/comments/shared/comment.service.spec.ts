@@ -1,3 +1,4 @@
+import { UserService } from '../../users/shared/user.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Comment } from './comment';
 import { CommentService } from './comment.service';
@@ -86,6 +87,7 @@ const commentMovie: Comment[] = [
 
 const commentMail: Comment[] = [
   {
+    userAvatar: '',
     _id: '1',
     name: 'Lucas',
     email: 'lucas@gmail.com',
@@ -109,6 +111,7 @@ const commentMail: Comment[] = [
 
 describe('CommentService', () => {
   let commentService: CommentService;
+  let userService: UserService;
   let commentsModel: Model<Comment>;
 
   const mockComment = {
@@ -121,22 +124,27 @@ describe('CommentService', () => {
     getByMovieId: jest.fn().mockResolvedValue(commentMovie),
     updateReply: jest.fn().mockRejectedValue(newComment),
     getByReply: jest.fn().mockResolvedValue(commentMovie[0]),
+    getPhoto: jest.fn().mockResolvedValue(commentMail[1])
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        {
-          provide: CommentService,
-          useValue: mockComment,
-        },
-        {
-          provide: getModelToken('Comment'),
-          useValue: mockComment,
-        },
+      providers: [{
+        provide: CommentService, useValue: mockComment,
+      },
+      {
+        provide: UserService,
+        useValue: mockComment,
+      },
+      {
+        provide: getModelToken('Comment'),
+        useValue: mockComment,
+      },
+
       ],
     }).compile();
     commentService = module.get<CommentService>(CommentService);
+    userService = module.get<UserService>(UserService);
     commentsModel = module.get<Model<Comment>>(getModelToken('Comment'));
   });
 
@@ -174,7 +182,7 @@ describe('CommentService', () => {
   describe('getByReply', () => {
     it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
       // Act
-      const result = await commentService.getByReply({page:1, limit:1},
+      const result = await commentService.getByReply({ page: 1, limit: 1 },
         '1'
       );
 
@@ -192,7 +200,7 @@ describe('CommentService', () => {
 
       // Assert
       expect(
-        commentService.getByReply({page:1, limit:1},'5a9427648b0beebeb69579cf')
+        commentService.getByReply({ page: 1, limit: 1 }, '5a9427648b0beebeb69579cf')
       ).rejects.toThrowError();
     });
   });
@@ -221,8 +229,8 @@ describe('CommentService', () => {
     it('Deve retornar lista de comentarios', async () => {
       // Act
       const pagination = {
-        limit : 1,
-        skip : 1,
+        limit: 1,
+        skip: 1,
       }
       const result = await commentService.getByReply(pagination, commentMovie[0]._id)
       // Assert
@@ -246,9 +254,10 @@ describe('CommentService', () => {
     it('Deve criar um novo comentario com sucesso', async () => {
       // Arrange
       const body: Comment = {
+        userAvatar: '',
         _id: '',
         name: 'eu',
-        email: 'eu@eu.com',
+        email: 'lucas@gmail.com',
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
@@ -256,11 +265,15 @@ describe('CommentService', () => {
         commentReply: '1',
       };
       // Act
+      // jest.spyOn(userService, 'getPhoto').mockImplementation();
+      const resultavatar = await userService.getPhoto('lucas@gmail.com')
+      body.userAvatar = resultavatar
       const result = await commentService.create(body);
 
       // Assert
       expect(result).toEqual(newComment);
       expect(commentService.create).toHaveBeenCalledTimes(1);
+      expect(userService.getPhoto).toHaveBeenCalledTimes(1);
       expect(commentService.create).toHaveBeenCalledWith(body);
     });
 
