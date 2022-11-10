@@ -1,4 +1,4 @@
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { userLiked } from './userLiked';
 
 export class Likes {
@@ -7,5 +7,9 @@ export class Likes {
     description: `id do comentario`,
   })
   commentId: string;
+  @ApiProperty({
+    example: { userId: '59b99db4cfa9a34dcd7885b6', like: true, unlike: false },
+    description: `id do comentario`,
+  })
   userLike: userLiked[];
 }

@@ -75,11 +75,25 @@ export class Comment {
   @IsOptional()
   _id?: string;
 
+  @ApiProperty({
+    example: 100,
+    description: 'número de likes',
+  })
   @IsOptional()
   like?: string;
 
+  @ApiProperty({
+    example: 50,
+    description: 'número de deslikes',
+  })
   @IsOptional()
   deslike?: string;
+
+  @ApiProperty({
+    example: 'insira um link de imagem aqui',
+    description: 'imagem de perfil do user',
+  })
+  @IsOptional()
   userAvatar?: string;
 
   constructor(comment?: Partial<Comment>) {
