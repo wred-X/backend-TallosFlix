@@ -72,7 +72,7 @@ export class LikesService {
       console.log(likeNumbers);
       this.socket.emitnewLike(likeNumbers);
 
-      return likeNumbers;
+      return {likeNumbers: likeNumbers, results: result};
     } catch (error) {
       console.error(
         `Opa, esse comentario nunca foi avaliado. Crie sua primeira avaliação${error}`
