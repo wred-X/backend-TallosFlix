@@ -87,7 +87,7 @@ export class CommentsController {
   @UseGuards(RolesGuard)
   async create(@Body() comment: Comment) {
     const createRetorno = await this.commentService.create(comment);
-    return createRetorno
+    return createRetorno;
   }
 
   @Put(':id')
