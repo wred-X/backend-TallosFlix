@@ -80,14 +80,14 @@ export class Comment {
     description: 'número de likes',
   })
   @IsOptional()
-  like?: string;
+  like?: number;
 
   @ApiProperty({
     example: 50,
     description: 'número de deslikes',
   })
   @IsOptional()
-  deslike?: string;
+  deslike?: number;
 
   @ApiProperty({
     example: 'insira um link de imagem aqui',
