@@ -88,6 +88,7 @@ export class LikesController {
     @Body() find: { userId: string }
   ): Promise<object> {
     const response = await this.likesService.allLikes(id, find.userId);
+    console.log(response);
     const myLike = {
       resLike: response.myLike,
       resComment: response.id,

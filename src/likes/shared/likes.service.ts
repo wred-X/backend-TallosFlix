@@ -77,7 +77,7 @@ export class LikesService {
       console.error(
         `Opa, esse comentario nunca foi avaliado. Crie sua primeira avaliação${error}`
       );
-      return;
+      return { likes: 0, deslikes: 0, myLike: 'NOT', id: id, userId: userId };
     }
   }
 

@@ -66,11 +66,12 @@ export class User {
   })
   role?: Role;
   constructor(todo?: Partial<User>) {
-    this._id = todo?._id;
-    this.avatar = todo?.avatar;
-    this.name = todo?.name;
-    this.email = todo?.email;
-    this.password = todo?.password;
-    this.role = todo?.role;
+    // this._id = todo?._id;
+    // this.avatar = todo?.avatar;
+    // this.name = todo?.name;
+    // this.email = todo?.email;
+    // this.password = todo?.password;
+    // this.role = todo?.role;
+    Object.assign(this, todo)
   }
 }

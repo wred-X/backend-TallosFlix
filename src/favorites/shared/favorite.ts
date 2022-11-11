@@ -25,8 +25,10 @@ export class Favorite {
   movie_Id: string[];
 
   constructor(todo?: Partial<Favorite>) {
-    this._id = todo?._id;
-    this.user_Id = todo?.user_Id;
-    this.movie_Id = todo?.movie_Id;
+    // this._id = todo?._id;
+    // this.user_Id = todo?.user_Id;
+    // this.movie_Id = todo?.movie_Id;
+
+    Object.assign(this, todo)
   }
 }

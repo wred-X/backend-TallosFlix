@@ -97,7 +97,7 @@ export class CommentService {
 
     try {
       const commentsMovie = await this.commentsModel
-        .find({ movie_id: id })
+        .find({ movie_id: id, isReply: false })
         .limit(limit)
         .skip(skip);
 
@@ -129,15 +129,15 @@ export class CommentService {
   }
 
   async create(comments: Comment) {
-    try {
-      const avatar = await this.userService.getPhoto(comments.email);
-      comments.userAvatar = avatar;
-      const createdComment = await this.commentsModel.create(comments);
-      this.socket.emitNewComment(createdComment);
-      return createdComment;
-    } catch {
-      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
-    }
+    // try {
+    const avatar = await this.userService.getPhoto(comments.email);
+    comments.userAvatar = avatar;
+    const createdComment = await this.commentsModel.create(comments);
+    this.socket.emitNewComment(createdComment);
+    return createdComment;
+    // } catch {
+    //   throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    // }
   }
   async updateReply(id: string, comment: Comment) {
     try {
@@ -190,10 +190,10 @@ export class CommentService {
   }
 
   async delete(id: string) {
+    const deleteMore = new ObjectId(id);
     try {
-      const deleted = await this.commentsModel
-        .findByIdAndDelete({ _id: id })
-        .exec();
+      const deleted = await this.commentsModel.findByIdAndDelete({ _id: id });
+      await this.commentsModel.deleteMany({ commentReply: deleteMore });
       this.socket.emitComentDeleted(id);
       return deleted;
     } catch {

@@ -55,8 +55,7 @@ export class MoviesController {
   @Post()
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
-  async create(@Body() movie: Movie): Promise<Movie> {
-    movie.trailer = '';
+  async create(@Body() movie: Movie) {
     return await this.movieService.create(movie);
   }
 
