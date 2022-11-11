@@ -97,7 +97,7 @@ export class CommentService {
 
     try {
       const commentsMovie = await this.commentsModel
-        .find({ movie_id: id })
+        .find({ movie_id: id, isReply: true })
         .limit(limit)
         .skip(skip);
 
