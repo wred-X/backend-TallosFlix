@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Role } from '../../autentications/models/role.enum';
 import { Pages } from '../model/pages';
 import { User } from '../shared/user';
-import { UserService } from '../services/use.service';
+import { UserService } from '../services/user.service';
 import { UsersController } from './users.controller';
 
 const user: User[] = [
