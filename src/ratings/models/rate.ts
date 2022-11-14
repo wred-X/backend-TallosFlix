@@ -21,7 +21,8 @@ export class Rate {
   user_id: string;
 
   constructor(todo?: Partial<Rate>) {
-    this.user_id = todo?.user_id;
-    this.rate = todo?.rate;
+    // this.user_id = todo?.user_id;
+    // this.rate = todo?.rate;
+    Object.assign(this, todo)
   }
 }
