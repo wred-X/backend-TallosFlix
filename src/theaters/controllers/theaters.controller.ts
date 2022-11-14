@@ -1,5 +1,5 @@
-import { Role } from './../autentications/models/role.enum';
-import { RolesGuard } from './../autentications/guards/role.guard';
+import { Role } from '../../autentications/models/role.enum';
+import { RolesGuard } from '../../autentications/guards/role.guard';
 import {
   Body,
   Controller,
@@ -12,12 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { Coordinates } from './model/coordinates';
-import { updateTheater } from './model/updateTheater';
-import { Theater } from './shared/theater';
-import { TheaterService } from './shared/theater.service';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
+import { Coordinates } from '../model/coordinates';
+import { updateTheater } from '../model/updateTheater';
+import { Theater } from '../shared/theater';
+import { TheaterService } from '../services/theater.service';
+import { Roles } from '../../autentications/decorators/role-decorator';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
 
 @ApiTags('theaters')
 @ApiBearerAuth('JWT-auth')

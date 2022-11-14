@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Theater } from './shared/theater';
-import { TheaterService } from './shared/theater.service';
+import { Theater } from '../shared/theater';
+import { TheaterService } from '../services/theater.service';
 import { TheatersController } from './theaters.controller';
 
 describe('TheatersController', () => {

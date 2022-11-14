@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { updateTheater } from '../model/updateTheater';
-import { Theater } from './theater';
+import { Theater } from '../shared/theater';
 
 @Injectable()
 export class TheaterService {
