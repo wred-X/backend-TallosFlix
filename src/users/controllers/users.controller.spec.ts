@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { STATUS_CODES } from 'http';
-import { Role } from '../autentications/models/role.enum';
-import { Pages } from './model/pages';
-import { User } from './shared/user';
-import { UserService } from './shared/user.service';
+import { Role } from '../../autentications/models/role.enum';
+import { Pages } from '../model/pages';
+import { User } from '../shared/user';
+import { UserService } from '../services/user.service';
 import { UsersController } from './users.controller';
 
 const user: User[] = [

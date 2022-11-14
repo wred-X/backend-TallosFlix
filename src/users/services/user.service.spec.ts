@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
-import { User } from './user';
+import { User } from '../shared/user';
 import { UserService } from './user.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Pages } from '../model/pages';

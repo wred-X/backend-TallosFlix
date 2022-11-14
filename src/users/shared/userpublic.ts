@@ -1,5 +1,4 @@
 import { Role } from './../../autentications/models/role.enum';
-import { Document } from 'mongoose';
 import {
   IsEmail,
   IsNotEmpty,
@@ -9,7 +8,6 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop } from '@nestjs/mongoose';
 // import { Expose } from 'class-transformer';
 
 export class UserPub {
