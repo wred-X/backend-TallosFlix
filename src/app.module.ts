@@ -1,21 +1,19 @@
-import { PeoplesModule } from './peoples/peoples.module';
-import { LikesModule } from './likes/likes.module';
-import { LikesService } from './likes/shared/likes.service';
-import { RatingService } from './ratings/shared/rating.service';
-import { FavoritesModule } from './favorites/favorites.module';
-import { SocketGateway } from './socket/socket.gateway';
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { CommentsModule } from './comments/comments.module';
-import { MoviesModule } from './movies/movies.module';
-import { TheatersModule } from './theaters/theaters.module';
-import { SessionsModule } from './sessions/sessions.module';
-import { AutenticationsModule } from './autentications/autentications.module';
-import { MongooseModule } from '@nestjs/mongoose';
 import { APP_GUARD } from '@nestjs/core';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AutenticationsModule } from './autentications/autentications.module';
 import { JwtAuthGuard } from './autentications/guards/jwt-autentication.guard';
-import { SocketTestModule } from './socket/socket.module';
+import { CommentsModule } from './comments/comments.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { LikesModule } from './likes/likes.module';
+import { MoviesModule } from './movies/movies.module';
+import { PeoplesModule } from './peoples/peoples.module';
 import { RatingsModule } from './ratings/ratings.module';
+import { SessionsModule } from './sessions/sessions.module';
+import { SocketGateway } from './socket/socket.gateway';
+import { SocketTestModule } from './socket/socket.module';
+import { TheatersModule } from './theaters/theaters.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [

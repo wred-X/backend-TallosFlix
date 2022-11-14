@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { Rate } from './models/rate';
-import { Rating } from './shared/rating';
-import { RatingService } from './shared/rating.service';
+import { Rate } from '../models/rate';
+import { Rating } from '../shared/rating';
+import { RatingService } from '../service/rating.service';
 
 @ApiTags('ratings')
 @ApiBearerAuth('JWT-auth')
