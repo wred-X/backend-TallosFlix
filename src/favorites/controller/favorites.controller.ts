@@ -1,5 +1,5 @@
-import { Role } from './../autentications/models/role.enum';
-import { RolesGuard } from './../autentications/guards/role.guard';
+import { Role } from '../../autentications/models/role.enum';
+import { RolesGuard } from '../../autentications/guards/role.guard';
 /*
 https://docs.nestjs.com/controllers#controllers
 */
@@ -14,10 +14,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { UpdateFavorite } from './model/update';
-import { Favorite } from './shared/favorite';
-import { FavoriteService } from './shared/favorite.service';
-import { Roles } from '../autentications/decorators/role-decorator';
+import { UpdateFavorite } from '../model/update';
+import { Favorite } from '../shared/favorite';
+import { FavoriteService } from '../service/favorite.service';
+import { Roles } from '../../autentications/decorators/role-decorator';
 
 @ApiTags('favorites')
 @ApiBearerAuth('JWT-auth')
