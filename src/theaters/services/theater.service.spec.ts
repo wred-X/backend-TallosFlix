@@ -1,7 +1,8 @@
+import { Theater } from './../shared/theater';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
-import { Theater } from './theater';
+
 import { TheaterService } from './theater.service';
 
 describe('TheaterService', () => {
