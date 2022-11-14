@@ -1,10 +1,11 @@
-import { UserService } from '../../users/shared/user.service';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { Comment } from '../shared/comment';
 import { CommentService } from './comment.service';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { CommentGetDto } from '../shared/PaginationParams';
+import { UserService } from '../../users/services/user.service';
 jest.useFakeTimers();
 
 const comment: Comment[] = [

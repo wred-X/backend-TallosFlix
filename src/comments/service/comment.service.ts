@@ -1,8 +1,8 @@
-import { UserService } from '../../users/shared/user.service';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
+import { UserService } from '../../users/services/user.service';
 import { SocketGateway } from '../../socket/socket.gateway';
 import { Comment } from '../shared/comment';
 import { CommentGetDto } from '../shared/PaginationParams';
