@@ -1,5 +1,5 @@
-import { UserService } from './shared/user.service';
-import { UsersController } from './users.controller';
+import { UserService } from './services/user.service';
+import { UsersController } from './controllers/users.controller';
 import { UserSchema } from './schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { forwardRef, Module } from '@nestjs/common';
