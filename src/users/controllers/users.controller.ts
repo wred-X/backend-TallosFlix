@@ -1,6 +1,6 @@
-import { UserPub } from './shared/userpublic';
-import { Role } from './../autentications/models/role.enum';
-import { RolesGuard } from './../autentications/guards/role.guard';
+import { UserPub } from '../shared/userpublic';
+import { Role } from '../../autentications/models/role.enum';
+import { RolesGuard } from '../../autentications/guards/role.guard';
 import {
   Body,
   Controller,
@@ -13,13 +13,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger/dist';
-import { User } from './shared/user';
-import { UserService } from './shared/user.service';
-import { CurrentUser } from '../autentications/decorators/current-user.decorator';
-import { Update } from './model/update';
-import { Pages } from './model/pages';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
+import { User } from '../shared/user';
+import { UserService } from '../services/use.service';
+import { CurrentUser } from '../../autentications/decorators/current-user.decorator';
+import { Update } from '../model/update';
+import { Pages } from '../model/pages';
+import { Roles } from '../../autentications/decorators/role-decorator';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
