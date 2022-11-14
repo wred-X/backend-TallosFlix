@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RatingsController } from './ratings.controller';
-import { RatingService } from './shared/rating.service';
-import { Rating } from './shared/rating';
-import { Rate } from './models/rate';
+import { RatingService } from './rating.service';
+import { Rating } from '../shared/rating';
+import { Rate } from '../models/rate';
+import { Model } from 'mongoose';
+import { getModelToken } from '@nestjs/mongoose';
 
 const rating: Rating[] = [
   {
@@ -39,42 +40,47 @@ const updatedRating: Rating = {
 
 const rate: number = 4;
 
-describe('RatingsController', () => {
-  let ratingController: RatingsController;
+describe('RatingsSeratingService', () => {
   let ratingService: RatingService;
+  let ratingModel: Model<Rating>;
+
+  const mockFavorite = {
+    getAll: jest.fn().mockResolvedValue(rating),
+    getById: jest.fn().mockResolvedValue(rating[0]),
+    getRates: jest.fn().mockResolvedValue(rating[0]),
+    getRating: jest.fn().mockResolvedValue(rate),
+    create: jest.fn().mockResolvedValue(newRating),
+    addRate: jest.fn().mockResolvedValue(updatedRating),
+    delete: jest.fn().mockResolvedValue(updatedRating),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [RatingsController],
       providers: [
         {
           provide: RatingService,
-          useValue: {
-            getAll: jest.fn().mockResolvedValue(rating),
-            getById: jest.fn().mockResolvedValue(rating[0]),
-            getRates: jest.fn().mockResolvedValue(rating[0]),
-            getRating: jest.fn().mockResolvedValue(rate),
-            create: jest.fn().mockResolvedValue(newRating),
-            addRate: jest.fn().mockResolvedValue(updatedRating),
-            delete: jest.fn().mockResolvedValue(updatedRating),
-          },
+          useValue: mockFavorite,
+        },
+        {
+          provide: getModelToken('Rating'),
+          useValue: mockFavorite,
         },
       ],
     }).compile();
 
-    ratingController = module.get<RatingsController>(RatingsController);
+    ratingModel = module.get<Model<Rating>>(getModelToken('Rating'));
     ratingService = module.get<RatingService>(RatingService);
   });
 
   it('should be defined', () => {
-    expect(ratingController).toBeDefined();
     expect(ratingService).toBeDefined();
+    expect(ratingModel).toBeDefined();
   });
 
   describe('getAll', () => {
     it('Deve retornar lista de notas', async () => {
       // Act
-      const result = await ratingController.getAll();
+      const result = await ratingService.getAll();
 
       // Assert
       expect(result).toEqual(rating);
@@ -87,16 +93,14 @@ describe('RatingsController', () => {
       jest.spyOn(ratingService, 'getAll').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingController.getAll()).rejects.toThrowError();
+      expect(ratingService.getAll()).rejects.toThrowError();
     });
   });
 
   describe('getById', () => {
     it('Deve retornar as notas feitas com sucesso pelo ID do user', async () => {
       // Act
-      const result = await ratingController.getById(
-        rating[0].allRate[0].user_id
-      );
+      const result = await ratingService.getById(rating[0].allRate[0].user_id);
 
       // Assert
       expect(result).toEqual(rating[0]);
@@ -112,7 +116,7 @@ describe('RatingsController', () => {
 
       // Assert
       expect(
-        ratingController.getById(rating[0].allRate[0].user_id)
+        ratingService.getById(rating[0].allRate[0].user_id)
       ).rejects.toThrowError();
     });
   });
@@ -120,7 +124,7 @@ describe('RatingsController', () => {
   describe('getRates', () => {
     it('Deve retornar as card de notas feitas com sucesso pelo ID do filme', async () => {
       // Act
-      const result = await ratingController.getRates(rating[0].movie_id);
+      const result = await ratingService.getRates(rating[0].movie_id);
 
       // Assert
       expect(result).toEqual(rating[0]);
@@ -133,16 +137,14 @@ describe('RatingsController', () => {
       jest.spyOn(ratingService, 'getRates').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(
-        ratingController.getRates(rating[0].movie_id)
-      ).rejects.toThrowError();
+      expect(ratingService.getRates(rating[0].movie_id)).rejects.toThrowError();
     });
   });
 
   describe('getRating', () => {
     it('Deve retornar uma media da nota com sucesso pelo ID do filme', async () => {
       // Act
-      const result = await ratingController.getRating(rating[1].movie_id);
+      const result = await ratingService.getRating(rating[1].movie_id);
 
       // Assert
       expect(result).toEqual(rate);
@@ -156,7 +158,7 @@ describe('RatingsController', () => {
 
       // Assert
       expect(
-        ratingController.getRating(rating[1].movie_id)
+        ratingService.getRating(rating[1].movie_id)
       ).rejects.toThrowError();
     });
   });
@@ -170,7 +172,7 @@ describe('RatingsController', () => {
         allRate: [{ user_id: '1', rate: 5 }],
       };
       // Act
-      const result = await ratingController.create(body);
+      const result = await ratingService.create(body);
 
       // Assert
       expect(result).toEqual(newRating);
@@ -188,7 +190,7 @@ describe('RatingsController', () => {
       jest.spyOn(ratingService, 'create').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingController.create(body)).rejects.toThrowError();
+      expect(ratingService.create(body)).rejects.toThrowError();
     });
   });
 
@@ -198,7 +200,7 @@ describe('RatingsController', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       // Act
-      const result = await ratingController.addRate('1', body);
+      const result = await ratingService.addRate(body.user_id, body);
 
       // Assert
       expect(result).toEqual(updatedRating);
@@ -213,24 +215,22 @@ describe('RatingsController', () => {
       jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingController.addRate('1', body)).rejects.toThrowError();
+      expect(ratingService.addRate('1', body)).rejects.toThrowError();
     });
   });
 
-  describe('update', () => {
-    it('Deve alterar uma nota com sucesso', async () => {
+  describe('delete', () => {
+    it('Deve remover uma nota com sucesso', async () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 2 };
 
       // Act
-      const result = await ratingController.update('1', body);
+      const result = await ratingService.delete('1', body);
 
       // Assert
       expect(result).toEqual(updatedRating);
       expect(ratingService.delete).toHaveBeenCalledTimes(1);
       expect(ratingService.delete).toHaveBeenCalledWith('1', body);
-      expect(ratingService.addRate).toHaveBeenCalledTimes(1);
-      expect(ratingService.addRate).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
@@ -238,10 +238,9 @@ describe('RatingsController', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       jest.spyOn(ratingService, 'delete').mockRejectedValueOnce(new Error());
-      jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingController.update('1', body)).rejects.toThrowError();
+      expect(ratingService.delete('1', body)).rejects.toThrowError();
     });
   });
 });

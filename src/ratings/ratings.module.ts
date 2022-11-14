@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RatingsController } from './ratings.controller';
+import { RatingsController } from './controller/ratings.controller';
 import { RatingSchema } from './schemas/ratings.schema';
-import { RatingService } from './shared/rating.service';
+import { RatingService } from './service/rating.service';
 
 @Module({
   imports: [

@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Rate } from '../models/rate';
-import { Rating } from './rating';
 import { ObjectId } from 'mongodb';
+import { Rating } from '../shared/rating';
 
 @Injectable()
 export class RatingService {
