@@ -69,12 +69,34 @@ export class RatingService {
 
   async addRate(movie_id: string, rating: Rate) {
     try {
-            return await this.ratingModel.findOneAndUpdate(
-        { movie_id: movie_id },
+      // const updateRating = await this.ratingModel.findOneAndUpdate(
+      //   {
+      //     movie_id: movie_id,
+      //     allRate: { $elemMatch: {user_id: rating.user_id } },
+      //   },
+      //   {
+      //     $push: { allRate: rating },
+      //   }
+      // );
+
+      // return updateRating;
+      const updateRating = await this.ratingModel.findOneAndUpdate(
         {
-          $push: { allRate: rating },
+          movie_id: movie_id,
+          'allRate.user_id': rating.user_id,
+        },
+        {
+          allRate: rating,
         }
       );
+        //esta atualizando, porém quando criamos um novo avaliação, n está inserindo dentro do array e sim criando ouro objeto
+      // com o mesmo movie_id
+      // allRate Array
+      // encontrar o indice do array que possua esse userId
+      // atualizar o rating usando o indx encontrado
+      // salvar o novo array de rating
+
+      return updateRating;
     } catch (error) {
       throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
     }
