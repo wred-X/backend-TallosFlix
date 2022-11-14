@@ -37,25 +37,47 @@ export class LikesService {
       );
     }
   }
-  async allLikes(id: string) {
+  async allLikes(id: string, userId: string) {
     let valueLikes = 0;
     let valueDeslikes = 0;
+    let myLike: string = 'NOT';
 
     try {
       const result = await this.likesModel.find({
         commentId: id,
       });
       for (let i = 0; i < result[0].userLike.length; i++) {
+        console.log(result[0].userLike[i].userId);
+        console.log(userId);
         if (result[0].userLike[i].like === true) valueLikes++;
         if (result[0].userLike[i].unlike === true) valueDeslikes++;
+        if (
+          result[0].userLike[i].userId == userId &&
+          result[0].userLike[i].like === true
+        )
+          myLike = 'LIKE';
+        if (
+          result[0].userLike[i].userId == userId &&
+          result[0].userLike[i].unlike === true
+        )
+          myLike = 'UNLIKE';
       }
-      const likeNumbers = { likes: valueLikes, deslikes: valueDeslikes };
+      const likeNumbers = {
+        likes: valueLikes,
+        deslikes: valueDeslikes,
+        myLike,
+        id,
+        userId,
+      };
+      console.log(likeNumbers);
       this.socket.emitnewLike(likeNumbers);
 
-      return {likeNumbers: likeNumbers, results: result};
+      return likeNumbers;
     } catch (error) {
-      console.log(`inserir trativa aqui ${error}`);
-      return;
+      console.error(
+        `Opa, esse comentario nunca foi avaliado. Crie sua primeira avaliação${error}`
+      );
+      return { likes: 0, deslikes: 0, myLike: 'NOT', id: id, userId: userId };
     }
   }
 
@@ -67,9 +89,11 @@ export class LikesService {
       if (!result) {
         const createdLikeDoc = this.likesModel.create(docLike);
         return await createdLikeDoc;
+      } else {
+        return result;
       }
     } catch {
-      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Check all datas', HttpStatus.LENGTH_REQUIRED);
     }
   }
 

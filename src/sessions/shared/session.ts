@@ -22,8 +22,10 @@ export class Session {
   jwt: string;
 
   constructor(todo?: Partial<Session>) {
-    this._id = todo?._id;
-    this.user_id = todo?.user_id;
-    this.jwt = todo?.jwt;
+    // this._id = todo?._id;
+    // this.user_id = todo?.user_id;
+    // this.jwt = todo?.jwt;
+
+    Object.assign(this, todo)
   }
 }

@@ -141,7 +141,7 @@ describe('UsersController', () => {
         password: 'Abc@12345',
         name: 'Neymar Jr.',
         _id: '62e9116f63a31dc1d1c90707',
-        role: Role.USER
+        role: Role.USER,
       };
 
       // Act
