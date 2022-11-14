@@ -1,11 +1,10 @@
-import { UsersModule } from 'src/users/users.module';
-import { UserService } from 'src/users/shared/user.service';
-import { Module, forwardRef } from '@nestjs/common';
-import { CommentsController } from './comments.controller';
-import { CommentService } from './shared/comment.service';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CommentSchema } from './schemas/comment.schema';
+import { UsersModule } from 'src/users/users.module';
 import { SocketGateway } from '../socket/socket.gateway';
+import { CommentsController } from './controller/comments.controller';
+import { CommentSchema } from './schemas/comment.schema';
+import { CommentService } from './service/comment.service';
 @Module({
   imports: [
     forwardRef(() => UsersModule),

@@ -10,16 +10,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { RolesGuard } from './../autentications/guards/role.guard';
-import { Role } from './../autentications/models/role.enum';
-import { eComment } from './model/emailComment';
-import { MovieId } from './model/movieId';
-import { Comment } from './shared/comment';
-import { CommentService } from './shared/comment.service';
-import { CommentGetDto } from './shared/PaginationParams';
-import { Reply } from './shared/reply';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
+import { Roles } from '../../autentications/decorators/role-decorator';
+import { RolesGuard } from '../../autentications/guards/role.guard';
+import { Role } from '../../autentications/models/role.enum';
+import { eComment } from '../model/emailComment';
+import { MovieId } from '../model/movieId';
+import { Comment } from '../shared/comment';
+import { CommentService } from '../service/comment.service';
+import { CommentGetDto } from '../shared/PaginationParams';
+import { Reply } from '../shared/reply';
 
 @ApiTags('comments')
 @ApiBearerAuth('JWT-auth')

@@ -4,8 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 import { SocketGateway } from '../../socket/socket.gateway';
-import { Comment } from './comment';
-import { CommentGetDto } from './PaginationParams';
+import { Comment } from '../shared/comment';
+import { CommentGetDto } from '../shared/PaginationParams';
 
 @Injectable()
 export class CommentService {

@@ -1,39 +1,42 @@
+import { UserService } from '../../users/shared/user.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommentsController } from './comments.controller';
-import { CommentService } from './shared/comment.service';
-import { Comment } from './shared/comment';
-import { CommentGetDto } from './shared/PaginationParams';
+import { Comment } from '../shared/comment';
+import { CommentService } from './comment.service';
+import { Model } from 'mongoose';
+import { getModelToken } from '@nestjs/mongoose';
+import { CommentGetDto } from '../shared/PaginationParams';
+jest.useFakeTimers();
 
 const comment: Comment[] = [
   {
     _id: '1',
-    name: 'eu',
-    email: 'eu@eu.com',
-    movie_id: 'abcde1234#',
-    text: 'asijdaisjdiajsdi',
+    name: 'Lucas',
+    email: 'lucas@gmail.com',
+    movie_id: '573a1390f29313caabcd41b1',
+    text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '5a9427648b0beebeb69579cf',
   },
   {
     _id: '2',
-    name: 'eu2',
-    email: 'eu3@eu.com',
-    movie_id: 'abcde1234#',
-    text: 'asijdaisjdiajsdi',
+    name: 'Wesley',
+    email: 'Wesley@gmail.com',
+    movie_id: '573a1390f29313caabcd4218',
+    text: 'Filme deixou a desejar',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '2',
+    commentReply: '5a9427648b0beebeb69579cf',
   },
   {
     _id: '3',
-    name: 'eu3',
-    email: 'eu2@eu.com',
-    movie_id: 'abcde1234#',
-    text: 'asijdaisjdiajsdi',
+    name: 'Juliana',
+    email: 'Juliana@gmail.com',
+    movie_id: '573a1390f29313caabcd432a',
+    text: 'filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '3',
+    commentReply: '5a9427648b0beebeb69579cf',
   },
 ];
 
@@ -45,7 +48,7 @@ const newComment: Comment = {
   text: 'asijdaisjdiajsdi',
   date: new Date('1988-10-16T19:08:23.000Z'),
   isReply: false,
-  commentReply: '1',
+  commentReply: '5a9427648b0beebeb69579cf',
 };
 
 const updatedComment = {
@@ -55,6 +58,8 @@ const updatedComment = {
   movie_id: '573a1390f29313caabcd41b1',
   text: 'Filme muito ruim filho',
   date: new Date('1988-10-16T19:08:23.000Z'),
+  isReply: false,
+  commentReply: '5a9427648b0beebeb69579cf',
 };
 
 const commentMovie: Comment[] = [
@@ -66,7 +71,7 @@ const commentMovie: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '5a9427648b0beebeb69579cf',
   },
   {
     _id: '2',
@@ -76,12 +81,13 @@ const commentMovie: Comment[] = [
     text: 'Filme muito ruim filho',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '2',
+    commentReply: '5a9427648b0beebeb69579cf',
   },
 ];
 
 const commentMail: Comment[] = [
   {
+    userAvatar: '',
     _id: '1',
     name: 'Lucas',
     email: 'lucas@gmail.com',
@@ -89,52 +95,71 @@ const commentMail: Comment[] = [
     text: 'Nunca havia assistido,filme muito bom',
     date: new Date('1988-10-16T19:08:23.000Z'),
     isReply: false,
-    commentReply: '1',
+    commentReply: '5a9427648b0beebeb69579cf',
+  },
+  {
+    _id: '2',
+    name: 'Lucas',
+    email: 'lucas@gmail.com',
+    movie_id: '573a1390f29313caabcd432a',
+    text: 'Filme muito ruim filho',
+    date: new Date('1988-10-16T19:08:23.000Z'),
+    isReply: false,
+    commentReply: '5a9427648b0beebeb69579cf',
   },
 ];
 
-describe('CommentsController', () => {
-  let commentController: CommentsController;
+describe('CommentService', () => {
   let commentService: CommentService;
+  let userService: UserService;
+  let commentsModel: Model<Comment>;
+
+  const mockComment = {
+    getAll: jest.fn().mockResolvedValue(comment),
+    getById: jest.fn().mockResolvedValue(comment[0]),
+    create: jest.fn().mockResolvedValue(newComment),
+    update: jest.fn().mockResolvedValue(updatedComment),
+    delete: jest.fn().mockResolvedValue(undefined),
+    getByEmail: jest.fn().mockRejectedValue(commentMail),
+    getByMovieId: jest.fn().mockResolvedValue(commentMovie),
+    updateReply: jest.fn().mockRejectedValue(newComment),
+    getByReply: jest.fn().mockResolvedValue(commentMovie[0]),
+    getPhoto: jest.fn().mockResolvedValue(commentMail[1])
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CommentsController],
-      providers: [
-        {
-          provide: CommentService,
-          useValue: {
-            getAll: jest.fn().mockResolvedValue(comment),
-            getById: jest.fn().mockResolvedValue(comment[0]),
-            create: jest.fn().mockResolvedValue(newComment),
-            update: jest.fn().mockResolvedValue(updatedComment),
-            delete: jest.fn().mockResolvedValue(undefined),
-            getByEmail: jest.fn().mockRejectedValue(commentMail[0]),
-            getByMovieId: jest.fn().mockResolvedValue(commentMovie),
-            updateReply: jest.fn().mockRejectedValue(newComment),
-            updateLike: jest.fn().mockRejectedValue(newComment),
-            getByReply: jest.fn().mockResolvedValue(comment[0]),
-          },
-        },
+      providers: [{
+        provide: CommentService, useValue: mockComment,
+      },
+      {
+        provide: UserService,
+        useValue: mockComment,
+      },
+      {
+        provide: getModelToken('Comment'),
+        useValue: mockComment,
+      },
+
       ],
     }).compile();
-
-    commentController = module.get<CommentsController>(CommentsController);
     commentService = module.get<CommentService>(CommentService);
+    userService = module.get<UserService>(UserService);
+    commentsModel = module.get<Model<Comment>>(getModelToken('Comment'));
   });
 
   it('should be defined', () => {
-    expect(commentController).toBeDefined();
     expect(commentService).toBeDefined();
+    expect(commentsModel).toBeDefined();
   });
 
   describe('getAll', () => {
     it('Deve retornar lista de comentarios', async () => {
       // Act
       const pagination = 1;
-      const result = await commentController.getAll(
-        new CommentGetDto(),
-        pagination
+      const result = await commentService.getAll(
+        pagination,
+        new CommentGetDto()
       );
 
       // Assert
@@ -146,29 +171,25 @@ describe('CommentsController', () => {
     it('should throw an exception', () => {
       // Arrange
       jest.spyOn(commentService, 'getAll').mockRejectedValueOnce(new Error());
-
-      // Assert
       const pagination = 1;
+      // Assert
       expect(
-        commentController.getAll(new CommentGetDto(), pagination)
+        commentService.getAll(pagination, new CommentGetDto())
       ).rejects.toThrowError();
     });
   });
-  describe('Retorna as resposta do comentário através do ID do comentário principal', () => {
-    it('Deve retornar lista de comentarios', async () => {
+
+  describe('getByReply', () => {
+    it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
       // Act
-      const pagination = {
-        limit: 1,
-        skip: 1,
-      };
-      const result = await commentController.getByReply(
-        pagination,
-        commentMovie[0].commentReply
+      const result = await commentService.getByReply({ page: 1, limit: 1 },
+        '1'
       );
+
       // Assert
-      expect(result).toEqual(comment[0]);
-      expect(typeof result).toEqual('object');
-      expect(commentService.getByReply).toHaveBeenCalled();
+      expect(result).toEqual(commentMovie[0]);
+      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
+
     });
 
     it('should throw an exception', () => {
@@ -178,9 +199,8 @@ describe('CommentsController', () => {
         .mockRejectedValueOnce(new Error());
 
       // Assert
-
       expect(
-        commentController.getByReply(new CommentGetDto(), '1')
+        commentService.getByReply({ page: 1, limit: 1 }, '5a9427648b0beebeb69579cf')
       ).rejects.toThrowError();
     });
   });
@@ -188,7 +208,7 @@ describe('CommentsController', () => {
   describe('getById', () => {
     it('Deve retornar um comentario com sucesso pelo ID', async () => {
       // Act
-      const result = await commentController.getById('1');
+      const result = await commentService.getById('1');
 
       // Assert
       expect(result).toEqual(comment[0]);
@@ -201,46 +221,43 @@ describe('CommentsController', () => {
       jest.spyOn(commentService, 'getById').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentController.getById('1')).rejects.toThrowError();
+      expect(commentService.getById('1')).rejects.toThrowError();
     });
   });
 
-  describe('getByReply', () => {
-    it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
+  describe('Retorna as resposta do comentário através do ID do comentário principal', () => {
+    it('Deve retornar lista de comentarios', async () => {
       // Act
-      const result = await commentController.getByReply(
-        { page: 1, limit: 1 },
-        '5a9427648b0beebeb69579cf'
-      );
-
+      const pagination = {
+        limit: 1,
+        skip: 1,
+      }
+      const result = await commentService.getByReply(pagination, commentMovie[0]._id)
       // Assert
-      expect(result).toEqual(comment[0]);
-      expect(commentService.getByReply).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(commentMovie[0]);
+      expect(typeof result).toEqual('object');
     });
 
     it('should throw an exception', () => {
       // Arrange
-      jest
-        .spyOn(commentService, 'getByReply')
-        .mockRejectedValueOnce(new Error());
+      jest.spyOn(commentService, 'getByReply').mockRejectedValueOnce(new Error());
 
       // Assert
+
       expect(
-        commentController.getByReply(
-          { page: 1, limit: 1 },
-          '5a9427648b0beebeb69579cf'
-        )
+        commentService.getByReply(new CommentGetDto(), '1')
       ).rejects.toThrowError();
     });
   });
 
   describe('create', () => {
-    it('Deve criar uma novo comentario com sucesso', async () => {
+    it('Deve criar um novo comentario com sucesso', async () => {
       // Arrange
       const body: Comment = {
+        userAvatar: '',
         _id: '',
         name: 'eu',
-        email: 'eu@eu.com',
+        email: 'lucas@gmail.com',
         movie_id: 'abcde1234#',
         text: 'asijdaisjdiajsdi',
         date: new Date('1988-10-16T19:08:23.000Z'),
@@ -248,11 +265,15 @@ describe('CommentsController', () => {
         commentReply: '1',
       };
       // Act
-      const result = await commentController.create(body);
+      // jest.spyOn(userService, 'getPhoto').mockImplementation();
+      const resultavatar = await userService.getPhoto('lucas@gmail.com')
+      body.userAvatar = resultavatar
+      const result = await commentService.create(body);
 
       // Assert
       expect(result).toEqual(newComment);
       expect(commentService.create).toHaveBeenCalledTimes(1);
+      expect(userService.getPhoto).toHaveBeenCalledTimes(1);
       expect(commentService.create).toHaveBeenCalledWith(body);
     });
 
@@ -271,34 +292,7 @@ describe('CommentsController', () => {
       jest.spyOn(commentService, 'create').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentController.create(body)).rejects.toThrowError();
-    });
-  });
-
-  describe('delete', () => {
-    it('Deve remover um comentário com sucesso', async () => {
-      // Arrange
-      const id = {
-        _id: '1',
-      };
-
-      // Act
-      const result = await commentController.delete(id._id);
-
-      // Assert
-      expect(result).toBeUndefined();
-    });
-
-    it('should throw an exception', () => {
-      // Arrange
-      const id = {
-        _id: '1',
-      };
-
-      jest.spyOn(commentService, 'delete').mockRejectedValueOnce(new Error());
-
-      // Assert
-      expect(commentController.delete(id._id)).rejects.toThrowError();
+      expect(commentService.create(body)).rejects.toThrowError();
     });
   });
 
@@ -313,6 +307,7 @@ describe('CommentsController', () => {
   //       text: 'asijdaisjdiajsdi',
   //       date: new Date('1988-10-16T19:08:23.000Z'),
   //       isReply: false,
+  //       comments: ['10'],
   //     };
 
   //     const resposta = {
@@ -327,13 +322,39 @@ describe('CommentsController', () => {
   //     };
 
   //     // Assert
-  //     const response = commentController.replyComment(body._id, resposta);
-  //     console.log('REPLY', response);
+  //     const response = commentService.updateReply(body._id, resposta);
   //     expect(response).toEqual(response);
-  //     expect(body._id).toEqual(resposta.commentReply);
+  //     expect(body.comments).toEqual([resposta._id]);
   //     // Assert
   //   });
   // });
+
+  describe('delete', () => {
+    it('Deve remover um comentário com sucesso', async () => {
+      // Arrange
+      const id = {
+        _id: '1',
+      };
+
+      // Act
+      const result = await commentService.delete(id._id);
+
+      // Assert
+      expect(result).toBeUndefined();
+    });
+
+    it('should throw an exception', () => {
+      // Arrange
+      const id = {
+        _id: '1',
+      };
+
+      jest.spyOn(commentService, 'delete').mockRejectedValueOnce(new Error());
+
+      // Assert
+      expect(commentService.delete(id._id)).rejects.toThrowError();
+    });
+  });
 
   describe('update', () => {
     it('Deve atualizar comentário', async () => {
@@ -350,7 +371,7 @@ describe('CommentsController', () => {
       };
 
       // Act
-      const result = await commentController.update(body._id, body);
+      const result = await commentService.update(body._id, body);
 
       // Assert
       expect(result).toEqual(updatedComment);
@@ -374,32 +395,31 @@ describe('CommentsController', () => {
       jest.spyOn(commentService, 'update').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(commentController.update(body._id, body)).rejects.toThrowError();
+      expect(commentService.update(body._id, body)).rejects.toThrowError();
     });
   });
+
+
+
 
   describe('getByEmail', () => {
     it('Retorna lista de comentarios de usuario pelo email', async () => {
       try {
-        const body = 'lucas@gmail.com';
+        // Arrange
+        const body = { mail: 'lucas@gmail.com' };
 
-        console.log(
-          await commentController.getByEmail(
-            { limit: 1, page: 1 },
-            { mail: body }
-          )
+        // Act
+        const result = await commentService.getByEmail(
+          { limit: 10, page: 1 },
+          body.mail
         );
 
-        const result = await commentController.getByEmail(
-          { limit: 1, page: 1 },
-          { mail: body }
-        );
-
+        // Assert
         expect(result).toEqual(commentMail);
         expect(commentService.getByEmail).toHaveBeenCalledTimes(1);
         expect(commentService.getByEmail).toHaveBeenCalledWith(
-          { limit: 1, page: 1 },
-          { mail: body }
+          { limit: 10, page: 1 },
+          body.mail
         );
       } catch (error) {
         console.log('Error OADJOAISJDOIAJ >>>>>>>', error);
@@ -417,7 +437,7 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByEmail({ limit: 1, page: 1 }, body)
+        commentService.getByEmail({ limit: 10, page: 1 }, body.mail)
       ).rejects.toThrowError();
     });
   });
@@ -428,10 +448,10 @@ describe('CommentsController', () => {
         movie: '573a1390f29313caabcd41b1',
       };
 
-      const result = await commentController.getByMovieId(
+      const result = await commentService.getByMovieId(
         { limit: 1, page: 1 },
-        new CommentGetDto(),
-        body
+        body.movie,
+        new CommentGetDto()
       );
 
       expect(result).toEqual(commentMovie);
@@ -456,10 +476,10 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByMovieId(
+        commentService.getByMovieId(
           { limit: 1, page: 1 },
-          new CommentGetDto(),
-          body
+          body.movie,
+          new CommentGetDto()
         )
       ).rejects.toThrowError();
     });

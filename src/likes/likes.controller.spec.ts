@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommentService } from '../comments/shared/comment.service';
+import { CommentService } from '../comments/service/comment.service';
 import { LikesController } from './likes.controller';
 import { Likes } from './model/likes';
 import { userLiked } from './model/userLiked';
