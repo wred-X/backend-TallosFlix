@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommentsController } from './comments.controller';
-import { CommentService } from './shared/comment.service';
-import { Comment } from './shared/comment';
-import { CommentGetDto } from './shared/PaginationParams';
+import { Comment } from '../shared/comment';
+import { CommentService } from '../service/comment.service';
+import { CommentGetDto } from '../shared/PaginationParams';
 
 const comment: Comment[] = [
   {
@@ -112,6 +112,7 @@ describe('CommentsController', () => {
             getByEmail: jest.fn().mockRejectedValue(commentMail[0]),
             getByMovieId: jest.fn().mockResolvedValue(commentMovie),
             updateReply: jest.fn().mockRejectedValue(newComment),
+            updateLike: jest.fn().mockRejectedValue(newComment),
             getByReply: jest.fn().mockResolvedValue(comment[0]),
           },
         },
@@ -157,10 +158,13 @@ describe('CommentsController', () => {
     it('Deve retornar lista de comentarios', async () => {
       // Act
       const pagination = {
-        limit : 1,
-        skip : 1,
-      }
-      const result = await commentController.getByReply(pagination, commentMovie[0].commentReply)
+        limit: 1,
+        skip: 1,
+      };
+      const result = await commentController.getByReply(
+        pagination,
+        commentMovie[0].commentReply
+      );
       // Assert
       expect(result).toEqual(comment[0]);
       expect(typeof result).toEqual('object');
@@ -169,7 +173,9 @@ describe('CommentsController', () => {
 
     it('should throw an exception', () => {
       // Arrange
-      jest.spyOn(commentService, 'getByReply').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(commentService, 'getByReply')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
 
@@ -202,7 +208,8 @@ describe('CommentsController', () => {
   describe('getByReply', () => {
     it('Deve retornar as respostas de um comentario com sucesso pelo ID', async () => {
       // Act
-      const result = await commentController.getByReply({page:1, limit:1},
+      const result = await commentController.getByReply(
+        { page: 1, limit: 1 },
         '5a9427648b0beebeb69579cf'
       );
 
@@ -219,7 +226,10 @@ describe('CommentsController', () => {
 
       // Assert
       expect(
-        commentController.getByReply({page:1, limit:1}, '5a9427648b0beebeb69579cf')
+        commentController.getByReply(
+          { page: 1, limit: 1 },
+          '5a9427648b0beebeb69579cf'
+        )
       ).rejects.toThrowError();
     });
   });

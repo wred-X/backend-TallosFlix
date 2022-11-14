@@ -241,36 +241,37 @@ export class Movie {
   trailer?: string;
 
   constructor(todo?: Partial<Movie>) {
-    this._id = todo?._id;
-    this.plot = todo?.plot;
-    this.genres = todo?.genres;
-    this.runtime = todo?.runtime;
-    this.num_mflix_comments = todo?.num_mflix_comments;
-    this.poster = todo?.poster;
-    this.title = todo?.title;
-    this.fullplot = todo?.fullplot;
-    this.metacritic = todo?.metacritic;
-    this.cast = todo?.cast;
-    this.languages = todo?.languages;
-    this.countries = todo?.countries;
-    this.realeased = todo?.realeased;
-    this.directors = todo?.directors;
-    this.awards = todo?.awards;
-    this.plot = todo?.plot;
-    this.rated = todo?.rated;
-    this.awards = todo?.awards;
-    this.lastupdadted = todo?.lastupdadted;
-    this.year = todo?.year;
-    this.imdb = todo?.imdb;
-    this.type = todo?.type;
-    this.tomatoes = todo?.tomatoes;
-    this.dvd = todo?.dvd;
-    this.fresh = todo?.fresh;
-    this.production = todo?.production;
-    this.rotten = todo?.rotten;
-    this.lastUpdated = todo?.lastUpdated;
-    this.website = todo?.website;
-    this.writers = todo?.writers;
-    this.trailer = todo?.trailer;
+    // this._id = todo?._id;
+    // this.plot = todo?.plot;
+    // this.genres = todo?.genres;
+    // this.runtime = todo?.runtime;
+    // this.num_mflix_comments = todo?.num_mflix_comments;
+    // this.poster = todo?.poster;
+    // this.title = todo?.title;
+    // this.fullplot = todo?.fullplot;
+    // this.metacritic = todo?.metacritic;
+    // this.cast = todo?.cast;
+    // this.languages = todo?.languages;
+    // this.countries = todo?.countries;
+    // this.realeased = todo?.realeased;
+    // this.directors = todo?.directors;
+    // this.awards = todo?.awards;
+    // this.plot = todo?.plot;
+    // this.rated = todo?.rated;
+    // this.awards = todo?.awards;
+    // this.lastupdadted = todo?.lastupdadted;
+    // this.year = todo?.year;
+    // this.imdb = todo?.imdb;
+    // this.type = todo?.type;
+    // this.tomatoes = todo?.tomatoes;
+    // this.dvd = todo?.dvd;
+    // this.fresh = todo?.fresh;
+    // this.production = todo?.production;
+    // this.rotten = todo?.rotten;
+    // this.lastUpdated = todo?.lastUpdated;
+    // this.website = todo?.website;
+    // this.writers = todo?.writers;
+    // this.trailer = todo?.trailer;
+    Object.assign(this, todo)
   }
 }

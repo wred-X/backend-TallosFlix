@@ -142,22 +142,26 @@ describe('LikesService', () => {
 
   describe('allLikes', () => {
     it('Deve retornar uma media da nota com sucesso pelo ID do filme', async () => {
+      const body = like[0].userLike[0].userId;
       // Act
-      const result = await likeService.allLikes(like[0].commentId);
+      const result = await likeService.allLikes(like[0].commentId, body);
 
       // Assert
       expect(result.likes).toEqual(likeNumbers.likes);
       expect(result.deslikes).toEqual(likeNumbers.deslikes);
       expect(likeService.allLikes).toHaveBeenCalledTimes(1);
-      expect(likeService.allLikes).toHaveBeenCalledWith(like[0].commentId);
     });
 
     it('should throw an exception', () => {
+      const body = like[0].userLike[0].userId;
+
       // Arrange
       jest.spyOn(likeService, 'allLikes').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(likeService.allLikes(like[0].commentId)).rejects.toThrowError();
+      expect(
+        likeService.allLikes(like[0].commentId, body)
+      ).rejects.toThrowError();
     });
   });
 

@@ -67,15 +67,12 @@ export class RatingService {
     }
   }
 
-  async addRate(id: string, rating: Rate) {
+  async addRate(movie_id: string, rating: Rate) {
     try {
-      return await this.ratingModel.findByIdAndUpdate(
-        { _id: id },
+            return await this.ratingModel.findOneAndUpdate(
+        { movie_id: movie_id },
         {
           $push: { allRate: rating },
-        },
-        {
-          new: true,
         }
       );
     } catch (error) {
@@ -85,7 +82,6 @@ export class RatingService {
 
   async delete(id: string, rating: Rate) {
     const user_Id = rating.user_id;
-    console.log(rating);
     try {
       return await this.ratingModel.findByIdAndUpdate(
         { _id: id },

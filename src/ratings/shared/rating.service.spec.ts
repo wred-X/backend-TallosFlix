@@ -200,7 +200,7 @@ describe('RatingsSeratingService', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       // Act
-      const result = await ratingService.addRate('1', body);
+      const result = await ratingService.addRate(body.user_id, body);
 
       // Assert
       expect(result).toEqual(updatedRating);
