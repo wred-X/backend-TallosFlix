@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UpdateFavorite } from '../model/update';
-import { Favorite } from './favorite';
+import { Favorite } from '../shared/favorite';
 import { ObjectId } from 'mongodb';
 
 @Injectable()

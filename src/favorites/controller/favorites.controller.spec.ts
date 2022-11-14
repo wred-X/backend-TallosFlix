@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FavoriteService } from './favorite.service';
-import { Favorite } from './favorite';
+import { FavoritesController } from './favorites.controller';
+import { FavoriteService } from '../service/favorite.service';
+import { Favorite } from '../shared/favorite';
 import { UpdateFavorite } from '../model/update';
-import { Model } from 'mongoose';
-import { getModelToken } from '@nestjs/mongoose';
 
 const favorite: Favorite[] = [
   {
@@ -47,45 +46,40 @@ const updatedFavorite = {
   movie_Id: ['573a13a1f29313caabd08539', '573a13bff29313caabd5e99e'],
 };
 
-describe('FavoriteService', () => {
+describe('FavoritesController', () => {
+  let favoriteController: FavoritesController;
   let favoriteService: FavoriteService;
-  let favoriteModel: Model<Favorite>;
-
-  const mockFavorite = {
-    getAll: jest.fn().mockResolvedValue(favorite),
-    getById: jest.fn().mockResolvedValue(favorite[0]),
-    create: jest.fn().mockResolvedValue(newFavorite),
-    update: jest.fn().mockResolvedValue(updatedFavorite),
-    delete: jest.fn().mockResolvedValue(updatedFavorite),
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [FavoritesController],
       providers: [
         {
           provide: FavoriteService,
-          useValue: mockFavorite,
-        },
-        {
-          provide: getModelToken('Favorite'),
-          useValue: mockFavorite,
+          useValue: {
+            getAll: jest.fn().mockResolvedValue(favorite),
+            getById: jest.fn().mockResolvedValue(favorite[0]),
+            create: jest.fn().mockResolvedValue(newFavorite),
+            update: jest.fn().mockResolvedValue(updatedFavorite),
+            delete: jest.fn().mockResolvedValue(updatedFavorite),
+          },
         },
       ],
     }).compile();
 
+    favoriteController = module.get<FavoritesController>(FavoritesController);
     favoriteService = module.get<FavoriteService>(FavoriteService);
-    favoriteModel = module.get<Model<Favorite>>(getModelToken('Favorite'));
   });
 
   it('should be defined', () => {
+    expect(favoriteController).toBeDefined();
     expect(favoriteService).toBeDefined();
-    expect(favoriteModel).toBeDefined();
   });
 
   describe('getAll', () => {
     it('Deve retornar lista de favoritos gerais', async () => {
       // Act
-      const result = await favoriteService.getAll();
+      const result = await favoriteController.getAll();
 
       // Assert
       expect(result).toEqual(favorite);
@@ -98,14 +92,14 @@ describe('FavoriteService', () => {
       jest.spyOn(favoriteService, 'getAll').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(favoriteService.getAll()).rejects.toThrowError();
+      expect(favoriteController.getAll()).rejects.toThrowError();
     });
   });
 
   describe('getById', () => {
     it('Deve retornar lista de favoritos do user com sucesso pelo seu ID', async () => {
       // Act
-      const result = await favoriteService.getById('1');
+      const result = await favoriteController.getById('1');
 
       // Assert
       expect(result).toEqual(favorite[0]);
@@ -118,7 +112,7 @@ describe('FavoriteService', () => {
       jest.spyOn(favoriteService, 'getById').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(favoriteService.getById('1')).rejects.toThrowError();
+      expect(favoriteController.getById('1')).rejects.toThrowError();
     });
   });
 
@@ -131,7 +125,7 @@ describe('FavoriteService', () => {
         movie_Id: ['573a13a1f29313caabd08539'],
       };
       // Act
-      const result = await favoriteService.create(body);
+      const result = await favoriteController.create(body);
 
       // Assert
       expect(result).toEqual(newFavorite);
@@ -149,7 +143,7 @@ describe('FavoriteService', () => {
       jest.spyOn(favoriteService, 'create').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(favoriteService.create(body)).rejects.toThrowError();
+      expect(favoriteController.create(body)).rejects.toThrowError();
     });
   });
 
@@ -161,7 +155,7 @@ describe('FavoriteService', () => {
       };
 
       // Act
-      const result = await favoriteService.update('1', body);
+      const result = await favoriteController.update('1', body);
 
       // Assert
       expect(result).toEqual(updatedFavorite);
@@ -178,7 +172,7 @@ describe('FavoriteService', () => {
       jest.spyOn(favoriteService, 'update').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(favoriteService.update('1', body)).rejects.toThrowError();
+      expect(favoriteController.update('1', body)).rejects.toThrowError();
     });
   });
 
@@ -190,7 +184,7 @@ describe('FavoriteService', () => {
       };
 
       // Act
-      const result = await favoriteService.delete('1', body);
+      const result = await favoriteController.delete('1', body);
 
       // Assert
       expect(result).toEqual(updatedFavorite);
@@ -207,7 +201,7 @@ describe('FavoriteService', () => {
       jest.spyOn(favoriteService, 'delete').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(favoriteService.delete('1', body)).rejects.toThrowError();
+      expect(favoriteController.delete('1', body)).rejects.toThrowError();
     });
   });
 });
