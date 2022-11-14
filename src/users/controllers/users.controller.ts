@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger/dist';
 import { User } from '../shared/user';
-import { UserService } from '../services/use.service';
+import { UserService } from '../services/user.service';
 import { CurrentUser } from '../../autentications/decorators/current-user.decorator';
 import { Update } from '../model/update';
 import { Pages } from '../model/pages';

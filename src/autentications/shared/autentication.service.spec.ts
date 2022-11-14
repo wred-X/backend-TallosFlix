@@ -1,6 +1,6 @@
 import { AutenticationService } from './autentication.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from '../../users/services/use.service';
+import { UserService } from '../../users/services/user.service';
 
 const newLog = {
   access_token:

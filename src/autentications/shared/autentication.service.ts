@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../users/shared/user';
-import { UserService } from '../../users/services/use.service';
+import { UserService } from '../../users/services/user.service';
 import { SessionService } from '../../sessions/shared/session.service';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 import { UserPayload } from '../models/userPayload';
