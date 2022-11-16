@@ -60,12 +60,16 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      //validar se esse usuario ja avaliou esse movie_id antes de criar
-      //caso tenha avaliado, chamar o addRate
-      //caso n tenha avaliado, dar um jeito de no lugar de criar um novo documento, fazer o push dentro do documento
-      //com o mesmo movie_id
+      const createRating = await this.ratingModel.create(rating);
+      return createRating;
+    } catch (error) {
+      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
+    }
+  }
 
-      // const updateRating = await this.ratingModel.findOne(
+  async addRate(movie_id: string, rating: Rate) {
+    try {
+      // const updateRating = await this.ratingModel.findOneAndUpdate(
       //   {
       //     movie_id: movie_id,
       //     allRate: { $elemMatch: {user_id: rating.user_id } },
@@ -76,22 +80,18 @@ export class RatingService {
       // );
 
       // return updateRating;
-
-      const createdTheater = this.ratingModel.create(rating);
-      return await createdTheater;
-    } catch (error) {
-      throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
-    }
-  }
-
-  async addRate(movie_id: string, rating: Rate) {
-    try {
-            return await this.ratingModel.findOneAndUpdate(
-        { movie_id: movie_id },
+      const updateRating = await this.ratingModel.findOneAndUpdate(
         {
-          $push: { allRate: rating },
+          movie_id: movie_id,
+          'allRate.user_id': rating.user_id,
+        },
+        {
+          allRate: rating,
         }
       );
+
+
+      return updateRating;
     } catch (error) {
       throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
     }

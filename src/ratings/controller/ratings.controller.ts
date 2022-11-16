@@ -31,7 +31,7 @@ export class RatingsController {
   }
 
   @Post()
-  async create(@Body() rating: Rating): Promise<Rating> {
+  async create(@Body() rating: Rating){
     return await this.ratingService.create(rating);
   }
 
