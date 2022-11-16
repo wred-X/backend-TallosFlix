@@ -1,5 +1,5 @@
-import { PeopleService } from './shared/people.service';
-import { PeoplesController } from './peoples.controller';
+import { PeopleService } from './service/people.service';
+import { PeoplesController } from './controllers/peoples.controller';
 import { Module } from '@nestjs/common';
 import { PeopleSchema } from './schemas/people.schema';
 import { MongooseModule } from '@nestjs/mongoose';
