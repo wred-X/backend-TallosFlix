@@ -89,12 +89,7 @@ export class RatingService {
           allRate: rating,
         }
       );
-      //esta atualizando, porém quando criamos um novo avaliação, n está inserindo dentro do array e sim criando ouro objeto
-      // com o mesmo movie_id
-      // allRate Array
-      // encontrar o indice do array que possua esse userId
-      // atualizar o rating usando o indx encontrado
-      // salvar o novo array de rating
+
 
       return updateRating;
     } catch (error) {
