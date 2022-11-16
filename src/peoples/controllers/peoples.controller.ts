@@ -8,9 +8,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
-import { People } from './shared/people';
-import { PeopleService } from './shared/people.service';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
+import { People } from '../shared/people';
+import { PeopleService } from '../service/people.service';
 
 @ApiTags('peoples')
 @ApiBearerAuth('JWT-auth')
