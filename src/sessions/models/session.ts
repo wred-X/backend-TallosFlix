@@ -26,6 +26,6 @@ export class Session {
     // this.user_id = todo?.user_id;
     // this.jwt = todo?.jwt;
 
-    Object.assign(this, todo)
+    Object.assign(this, todo);
   }
 }
