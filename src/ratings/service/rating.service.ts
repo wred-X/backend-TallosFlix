@@ -60,10 +60,18 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      const findRating = this.ratingModel.findById(rating.movie_id)
-      !findRating ? this.ratingModel.create(rating) : this.addRate(rating.movie_id, {})
-
-      
+      const findRating = this.ratingModel.findById(rating.movie_id);
+      !findRating
+        ? this.ratingModel.create(rating)
+        : this.ratingModel.findByIdAndUpdate(
+            {
+              movie_id: rating.movie_id,
+              allRate: rating.allRate,
+            },
+            {
+              allRate: rating,
+            }
+          );
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
@@ -91,7 +99,7 @@ export class RatingService {
           allRate: rating,
         }
       );
-        //esta atualizando, porém quando criamos um novo avaliação, n está inserindo dentro do array e sim criando ouro objeto
+      //esta atualizando, porém quando criamos um novo avaliação, n está inserindo dentro do array e sim criando ouro objeto
       // com o mesmo movie_id
       // allRate Array
       // encontrar o indice do array que possua esse userId
