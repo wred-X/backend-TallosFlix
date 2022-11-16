@@ -60,18 +60,8 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      const findRating = this.ratingModel.findById(rating.movie_id);
-      !findRating
-        ? this.ratingModel.create(rating)
-        : this.ratingModel.findByIdAndUpdate(
-            {
-              movie_id: rating.movie_id,
-              allRate: rating.allRate,
-            },
-            {
-              allRate: rating.allRate,
-            }
-          );
+      const createRating = await this.ratingModel.create(rating);
+      return createRating;
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
