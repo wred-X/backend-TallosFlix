@@ -60,8 +60,8 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      const createdTheater = this.ratingModel.create(rating);
-      return await createdTheater;
+      const createRating = await this.ratingModel.create(rating);
+      return createRating;
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
@@ -69,12 +69,29 @@ export class RatingService {
 
   async addRate(movie_id: string, rating: Rate) {
     try {
-            return await this.ratingModel.findOneAndUpdate(
-        { movie_id: movie_id },
+      // const updateRating = await this.ratingModel.findOneAndUpdate(
+      //   {
+      //     movie_id: movie_id,
+      //     allRate: { $elemMatch: {user_id: rating.user_id } },
+      //   },
+      //   {
+      //     $push: { allRate: rating },
+      //   }
+      // );
+
+      // return updateRating;
+      const updateRating = await this.ratingModel.findOneAndUpdate(
         {
-          $push: { allRate: rating },
+          movie_id: movie_id,
+          'allRate.user_id': rating.user_id,
+        },
+        {
+          allRate: rating,
         }
       );
+
+
+      return updateRating;
     } catch (error) {
       throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
     }
