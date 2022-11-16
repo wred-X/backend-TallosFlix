@@ -8,14 +8,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CommentService } from '../comments/service/comment.service';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { RolesGuard } from '../autentications/guards/role.guard';
-import { Role } from '../autentications/models/role.enum';
-import { Likes } from './model/likes';
-import { userLiked } from './model/userLiked';
-import { LikesService } from './shared/likes.service';
+import { CommentService } from '../../comments/service/comment.service';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
+import { Roles } from '../../autentications/decorators/role-decorator';
+import { RolesGuard } from '../../autentications/guards/role.guard';
+import { Role } from '../../autentications/models/role.enum';
+import { Likes } from '../model/likes';
+import { userLiked } from '../model/userLiked';
+import { LikesService } from '../services/likes.service';
 
 @ApiTags('likes')
 @ApiBearerAuth('JWT-auth')
