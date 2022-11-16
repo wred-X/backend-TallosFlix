@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommentService } from '../comments/service/comment.service';
+import { CommentService } from '../../comments/service/comment.service';
 import { LikesController } from './likes.controller';
-import { Likes } from './model/likes';
-import { userLiked } from './model/userLiked';
-import { LikesService } from './shared/likes.service';
+import { Likes } from '../model/likes';
+import { userLiked } from '../model/userLiked';
+import { LikesService } from '../services/likes.service';
 
 const like: Likes[] = [
   {
