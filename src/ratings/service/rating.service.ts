@@ -60,6 +60,23 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
+      //validar se esse usuario ja avaliou esse movie_id antes de criar
+      //caso tenha avaliado, chamar o addRate
+      //caso n tenha avaliado, dar um jeito de no lugar de criar um novo documento, fazer o push dentro do documento
+      //com o mesmo movie_id
+
+      // const updateRating = await this.ratingModel.findOne(
+      //   {
+      //     movie_id: movie_id,
+      //     allRate: { $elemMatch: {user_id: rating.user_id } },
+      //   },
+      //   {
+      //     $push: { allRate: rating },
+      //   }
+      // );
+
+      // return updateRating;
+
       const createdTheater = this.ratingModel.create(rating);
       return await createdTheater;
     } catch (error) {
