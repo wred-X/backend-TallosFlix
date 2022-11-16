@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Pages } from '../model/pages';
 import { updateMovie } from '../model/update';
-import { Movie } from './movie';
+import { Movie } from '../model/movie';
 
 @Injectable()
 export class MovieService {
