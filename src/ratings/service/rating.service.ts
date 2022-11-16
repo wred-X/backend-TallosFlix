@@ -69,7 +69,7 @@ export class RatingService {
               allRate: rating.allRate,
             },
             {
-              allRate: rating,
+              allRate: rating.allRate,
             }
           );
     } catch (error) {
