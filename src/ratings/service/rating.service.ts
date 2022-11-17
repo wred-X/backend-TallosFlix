@@ -73,12 +73,14 @@ export class RatingService {
             $push: { allRate: rating.allRate },
           }
         );
+      }else{
+
+        const createRating = await this.ratingModel.create({
+          movie_id: rating.movie_id,
+          allRate: rating.allRate,
+        });
+        return createRating;
       }
-      const createRating = await this.ratingModel.create({
-        movie_id: rating.movie_id,
-        allRate: rating.allRate,
-      });
-      return createRating;
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
