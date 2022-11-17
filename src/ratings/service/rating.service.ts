@@ -60,41 +60,74 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      const createRating = await this.ratingModel.create(rating);
-      return createRating;
+      //caso n exista o movie_id registrado ele cria
+      const findRating = await this.ratingModel.findOne({
+        movie_id: rating.movie_id,
+      });
+      if (findRating) {
+        await this.ratingModel.updateOne(
+          {
+            movie_id: findRating.movie_id,
+          },
+          {
+            $push: { allRate: rating.allRate },
+          }
+        );
+      } else {
+        const createRating = await this.ratingModel.create({
+          movie_id: rating.movie_id,
+          allRate: rating.allRate,
+        });
+        return createRating;
+      }
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
   }
 
-  async addRate(movie_id: string, rating: Rate) {
-    try {
-      // const updateRating = await this.ratingModel.findOneAndUpdate(
-      //   {
-      //     movie_id: movie_id,
-      //     allRate: { $elemMatch: {user_id: rating.user_id } },
-      //   },
-      //   {
-      //     $push: { allRate: rating },
-      //   }
-      // );
+  async updateRate(movie_id: string, rating: Rate) {
+    const response = await this.ratingModel.findOne({
+      movie_id: movie_id,
+      'allRate.user_id': rating.user_id,
+    });
 
-      // return updateRating;
-      const updateRating = await this.ratingModel.findOneAndUpdate(
-        {
-          movie_id: movie_id,
-          'allRate.user_id': rating.user_id,
-        },
-        {
-          allRate: rating,
-        }
-      );
-
-
-      return updateRating;
-    } catch (error) {
-      throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
+    if (response) {
+      {
+        await this.ratingModel.findOneAndUpdate(
+          {
+            'allRate.user_id': rating.user_id,
+          },
+          {
+            $set: { 'allRate.$.rate': rating.rate },
+          }
+        );
+      }
     }
+
+    // try {
+    // if (updateRating) {
+    //   const response = await this.ratingModel.updateOne(
+    //     { user_id: rating.user_id },
+    //     {
+    //     $set:  'allRate.rate': rating.rate,
+    //     }
+    //   );
+
+    // }
+    //findOne
+    // if (!updateRating) {
+    //   await this.ratingModel.findOneAndUpdate(
+    //     {
+    //       movie_id: movie_id,
+    //     },
+    //     {
+    //       $push: { allRate: rating },
+    //     }
+    //   );
+    // }
+    // } catch (error) {
+    //   throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
+    // }
   }
 
   async delete(id: string, rating: Rate) {

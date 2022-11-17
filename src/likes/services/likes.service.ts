@@ -102,7 +102,6 @@ export class LikesService {
     //verifica se o userId ja deu like ou deslike nesse comentario especifico
     const validateLiked = await this.likesModel.findOne({
       commentId: id,
-      userLike: { $elemMatch: { userId: userLike.userId } },
     });
     //caso tenha dado like ou unlike, ele fara o update do novo like ou unlike
 
