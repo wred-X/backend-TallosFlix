@@ -73,28 +73,24 @@ export class RatingService {
             $push: { allRate: rating.allRate },
           }
         );
-      } else {
-        const createRating = await this.ratingModel.create({
-          movie_id: rating.movie_id,
-          allRate: rating.allRate,
-        });
-        return createRating;
       }
+      const createRating = await this.ratingModel.create({
+        movie_id: rating.movie_id,
+        allRate: rating.allRate,
+      });
+      return createRating;
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
   }
 
   async updateRate(movie_id: string, rating: Rate) {
-    const response = await this.ratingModel.findOne({
-      movie_id: movie_id,
-      'allRate.user_id': rating.user_id,
-    });
-
-    if (response) {
+    try {
       {
         await this.ratingModel.findOneAndUpdate(
           {
+            movie_id: movie_id,
+
             'allRate.user_id': rating.user_id,
           },
           {
@@ -102,32 +98,9 @@ export class RatingService {
           }
         );
       }
+    } catch (error) {
+      throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
     }
-
-    // try {
-    // if (updateRating) {
-    //   const response = await this.ratingModel.updateOne(
-    //     { user_id: rating.user_id },
-    //     {
-    //     $set:  'allRate.rate': rating.rate,
-    //     }
-    //   );
-
-    // }
-    //findOne
-    // if (!updateRating) {
-    //   await this.ratingModel.findOneAndUpdate(
-    //     {
-    //       movie_id: movie_id,
-    //     },
-    //     {
-    //       $push: { allRate: rating },
-    //     }
-    //   );
-    // }
-    // } catch (error) {
-    //   throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
-    // }
   }
 
   async delete(id: string, rating: Rate) {
