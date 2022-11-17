@@ -40,8 +40,8 @@ export class RatingsController {
   async addRate(
     @Param('id') id: string,
     @Body() rating: Rate
-  ): Promise<Rating> {
-    return this.ratingService.addRate(id, rating);
+  ){
+    return this.ratingService.updateRate(id, rating);
   }
 
   @ApiBody({ type: Rate })
@@ -53,8 +53,8 @@ export class RatingsController {
 
   @ApiBody({ type: Rate })
   @Put('/update/:id')
-  async update(@Param('id') id: string, @Body() rating: Rate): Promise<Rating> {
+  async update(@Param('id') id: string, @Body() rating: Rate){
     await this.ratingService.delete(id, rating);
-    return this.ratingService.addRate(id, rating);
+    return this.ratingService.updateRate(id, rating);
   }
 }

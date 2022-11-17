@@ -5,7 +5,6 @@ import { Rate } from '../models/rate';
 export class Rating {
   @IsOptional()
   _id?: string;
-
   @ApiProperty({
     example: '1movieID1',
     description: `Id para referenciar o filme a qual pertence a nota.`,
