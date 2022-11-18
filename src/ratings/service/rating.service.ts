@@ -21,10 +21,40 @@ export class RatingService {
 
   async getById(user_Id: string) {
     try {
+      let myRates: Array<object> = [];
+      let likeNumbers: object;
       const ratingMovie = await this.ratingModel.find({
         allRate: { $elemMatch: { user_id: user_Id } },
       });
-      return ratingMovie;
+      for (let i = 0; i < ratingMovie.length; i++) {
+        for (let j = 0; j < ratingMovie[i].allRate.length; j++) {
+          if (ratingMovie[i].allRate[j].user_id == user_Id) {
+            likeNumbers = {
+              myRate: ratingMovie[i].allRate[j],
+              movie: ratingMovie[i].movie_id,
+            };
+            myRates.push(likeNumbers);
+          }
+        }
+      }
+      return myRates;
+    } catch (error) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async rateById(user_Id: string, movieId: string) {
+    try {
+      let myRate = null;
+      const movie_id = new ObjectId(movieId);
+      const ratingMovie = await this.ratingModel.find({
+        movie_id: movie_id,
+      });
+      for (let i = 0; i < ratingMovie[0].allRate.length; i++) {
+        if (ratingMovie[0].allRate[i].user_id == user_Id)
+          myRate = ratingMovie[0].allRate[i];
+      }
+      return myRate;
     } catch (error) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
@@ -69,7 +99,7 @@ export class RatingService {
 
   async addRate(movie_id: string, rating: Rate) {
     try {
-            return await this.ratingModel.findOneAndUpdate(
+      return await this.ratingModel.findOneAndUpdate(
         { movie_id: movie_id },
         {
           $push: { allRate: rating },

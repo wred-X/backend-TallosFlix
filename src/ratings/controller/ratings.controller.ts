@@ -16,8 +16,16 @@ export class RatingsController {
   }
 
   @Get(':id')
-  async getById(@Param('id') user_Id: string): Promise<Rating[]> {
+  async getById(@Param('id') user_Id: string): Promise<object[]> {
     return await this.ratingService.getById(user_Id);
+  }
+
+  @Post('myRate/:id')
+  async rateById(
+    @Param('id') user_Id: string,
+    @Body() movie: { movie_id: string }
+  ): Promise<Rating[]> {
+    return await this.ratingService.rateById(user_Id, movie.movie_id);
   }
 
   @Get('movie/:id')
