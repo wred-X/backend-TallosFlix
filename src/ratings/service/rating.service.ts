@@ -90,21 +90,45 @@ export class RatingService {
 
   async create(rating: Rating) {
     try {
-      const createdTheater = this.ratingModel.create(rating);
-      return await createdTheater;
+      //caso n exista o movie_id registrado ele cria
+      const findRating = await this.ratingModel.findOne({
+        movie_id: rating.movie_id,
+      });
+      if (findRating) {
+        await this.ratingModel.updateOne(
+          {
+            movie_id: findRating.movie_id,
+          },
+          {
+            $push: { allRate: rating.allRate },
+          }
+        );
+      } else {
+        const createRating = await this.ratingModel.create({
+          movie_id: rating.movie_id,
+          allRate: rating.allRate,
+        });
+        return createRating;
+      }
     } catch (error) {
       throw new HttpException('Check all datas', HttpStatus.NOT_ACCEPTABLE);
     }
   }
 
-  async addRate(movie_id: string, rating: Rate) {
+  async updateRate(movie_id: string, rating: Rate) {
     try {
-      return await this.ratingModel.findOneAndUpdate(
-        { movie_id: movie_id },
-        {
-          $push: { allRate: rating },
-        }
-      );
+      {
+        await this.ratingModel.findOneAndUpdate(
+          {
+            movie_id: movie_id,
+
+            'allRate.user_id': rating.user_id,
+          },
+          {
+            $set: { 'allRate.$.rate': rating.rate },
+          }
+        );
+      }
     } catch (error) {
       throw new HttpException('Check user_id data', HttpStatus.NOT_ACCEPTABLE);
     }

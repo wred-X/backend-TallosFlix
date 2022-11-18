@@ -55,7 +55,7 @@ describe('RatingsController', () => {
             getRates: jest.fn().mockResolvedValue(rating[0]),
             getRating: jest.fn().mockResolvedValue(rate),
             create: jest.fn().mockResolvedValue(newRating),
-            addRate: jest.fn().mockResolvedValue(updatedRating),
+            updateRate: jest.fn().mockResolvedValue(updatedRating),
             delete: jest.fn().mockResolvedValue(updatedRating),
           },
         },
@@ -192,7 +192,7 @@ describe('RatingsController', () => {
     });
   });
 
-  describe('addRate', () => {
+  describe('updateRate', () => {
     it('Deve adicionar uma nova nota a um filme com sucesso', async () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 5 };
@@ -202,15 +202,17 @@ describe('RatingsController', () => {
 
       // Assert
       expect(result).toEqual(updatedRating);
-      expect(ratingService.addRate).toHaveBeenCalledTimes(1);
-      expect(ratingService.addRate).toHaveBeenCalledWith('1', body);
+      expect(ratingService.updateRate).toHaveBeenCalledTimes(1);
+      expect(ratingService.updateRate).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 5 };
 
-      jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
       expect(ratingController.addRate('1', body)).rejects.toThrowError();
@@ -229,8 +231,8 @@ describe('RatingsController', () => {
       expect(result).toEqual(updatedRating);
       expect(ratingService.delete).toHaveBeenCalledTimes(1);
       expect(ratingService.delete).toHaveBeenCalledWith('1', body);
-      expect(ratingService.addRate).toHaveBeenCalledTimes(1);
-      expect(ratingService.addRate).toHaveBeenCalledWith('1', body);
+      expect(ratingService.updateRate).toHaveBeenCalledTimes(1);
+      expect(ratingService.updateRate).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
@@ -238,7 +240,9 @@ describe('RatingsController', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       jest.spyOn(ratingService, 'delete').mockRejectedValueOnce(new Error());
-      jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
       expect(ratingController.update('1', body)).rejects.toThrowError();

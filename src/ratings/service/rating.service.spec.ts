@@ -50,7 +50,7 @@ describe('RatingsSeratingService', () => {
     getRates: jest.fn().mockResolvedValue(rating[0]),
     getRating: jest.fn().mockResolvedValue(rate),
     create: jest.fn().mockResolvedValue(newRating),
-    addRate: jest.fn().mockResolvedValue(updatedRating),
+    updateRate: jest.fn().mockResolvedValue(updatedRating),
     delete: jest.fn().mockResolvedValue(updatedRating),
   };
 
@@ -200,22 +200,24 @@ describe('RatingsSeratingService', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       // Act
-      const result = await ratingService.addRate(body.user_id, body);
+      const result = await ratingService.updateRate(body.user_id, body);
 
       // Assert
       expect(result).toEqual(updatedRating);
-      expect(ratingService.addRate).toHaveBeenCalledTimes(1);
-      expect(ratingService.addRate).toHaveBeenCalledWith('1', body);
+      expect(ratingService.updateRate).toHaveBeenCalledTimes(1);
+      expect(ratingService.updateRate).toHaveBeenCalledWith('1', body);
     });
 
     it('should throw an exception', () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 5 };
 
-      jest.spyOn(ratingService, 'addRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(ratingService.addRate('1', body)).rejects.toThrowError();
+      expect(ratingService.updateRate('1', body)).rejects.toThrowError();
     });
   });
 
