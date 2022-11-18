@@ -212,7 +212,9 @@ describe('RatingsSeratingService', () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 5 };
 
-      jest.spyOn(ratingService, 'updateRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
       expect(ratingService.updateRate('1', body)).rejects.toThrowError();

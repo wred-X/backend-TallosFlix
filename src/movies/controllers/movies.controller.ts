@@ -1,5 +1,5 @@
-import { Role } from './../autentications/models/role.enum';
-import { RolesGuard } from './../autentications/guards/role.guard';
+import { Role } from '../../autentications/models/role.enum';
+import { RolesGuard } from '../../autentications/guards/role.guard';
 import {
   Body,
   Controller,
@@ -13,12 +13,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { updateMovie } from './model/update';
-import { Movie } from './shared/movie';
-import { MovieService } from './shared/movie.service';
-import { Roles } from '../autentications/decorators/role-decorator';
-import { IsPublic } from '../autentications/decorators/is-public-decorator';
-import { Pages } from './model/pages';
+import { updateMovie } from '../model/update';
+import { Movie } from '../model/movie';
+import { MovieService } from '../services/movie.service';
+import { Roles } from '../../autentications/decorators/role-decorator';
+import { IsPublic } from '../../autentications/decorators/is-public-decorator';
+import { Pages } from '../model/pages';
 @ApiTags('movies')
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')

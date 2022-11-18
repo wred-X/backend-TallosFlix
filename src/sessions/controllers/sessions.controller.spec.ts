@@ -1,8 +1,7 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Model } from 'mongoose';
-import { Session } from './session';
-import { SessionService } from './session.service';
+import { SessionsController } from './sessions.controller';
+import { Session } from '../models/session';
+import { SessionService } from '../services/session.service';
 
 const session: Session[] = [
   { _id: '1', user_id: '1', jwt: 'abcde1234#' },
@@ -14,45 +13,40 @@ const newSession: Session = { _id: '1', user_id: '1', jwt: 'abcde1234#' };
 
 const updatedSession = { _id: '1', user_id: '1', jwt: 'abcde1234#' };
 
-describe('SessionsService', () => {
+describe('SessionsController', () => {
+  let sessionController: SessionsController;
   let sessionService: SessionService;
-  let sessionModel: Model<Session>;
-
-  const mockUser = {
-    getAll: jest.fn().mockResolvedValue(session),
-    getById: jest.fn().mockResolvedValue(session[0]),
-    create: jest.fn().mockResolvedValue(newSession),
-    update: jest.fn().mockResolvedValue(updatedSession),
-    delete: jest.fn().mockResolvedValue(undefined),
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [SessionsController],
       providers: [
         {
           provide: SessionService,
-          useValue: mockUser,
-        },
-        {
-          provide: getModelToken('Session'),
-          useValue: mockUser,
+          useValue: {
+            getAll: jest.fn().mockResolvedValue(session),
+            getById: jest.fn().mockResolvedValue(session[0]),
+            create: jest.fn().mockResolvedValue(newSession),
+            update: jest.fn().mockResolvedValue(updatedSession),
+            delete: jest.fn().mockResolvedValue(undefined),
+          },
         },
       ],
     }).compile();
 
+    sessionController = module.get<SessionsController>(SessionsController);
     sessionService = module.get<SessionService>(SessionService);
-    sessionModel = module.get<Model<Session>>(getModelToken('Session'));
   });
 
   it('should be defined', () => {
+    expect(sessionController).toBeDefined();
     expect(sessionService).toBeDefined();
-    expect(sessionModel).toBeDefined();
   });
 
   describe('getAll', () => {
     it('Deve retornar lista de usuarios logados', async () => {
       // Act
-      const result = await sessionService.getAll();
+      const result = await sessionController.getAll();
 
       // Assert
       expect(result).toEqual(session);
@@ -65,7 +59,7 @@ describe('SessionsService', () => {
       jest.spyOn(sessionService, 'getAll').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(sessionService.getAll()).rejects.toThrowError();
+      expect(sessionController.getAll()).rejects.toThrowError();
     });
   });
 
@@ -74,7 +68,7 @@ describe('SessionsService', () => {
       // Arrange
       const body: Session = { _id: '1', user_id: '1', jwt: 'abcde1234#' };
       // Act
-      const result = await sessionService.create(body);
+      const result = await sessionController.create(body);
 
       // Assert
       expect(result).toEqual(newSession);
@@ -88,13 +82,13 @@ describe('SessionsService', () => {
       jest.spyOn(sessionService, 'create').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(sessionService.create(body)).rejects.toThrowError();
+      expect(sessionController.create(body)).rejects.toThrowError();
     });
   });
   describe('getById', () => {
     it('Deve retornar uma sessão com sucesso pelo ID', async () => {
       // Act
-      const result = await sessionService.getById('1');
+      const result = await sessionController.getById('1');
 
       // Assert
       expect(result).toEqual(session[0]);
@@ -107,7 +101,7 @@ describe('SessionsService', () => {
       jest.spyOn(sessionService, 'getById').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(sessionService.getById('1')).rejects.toThrowError();
+      expect(sessionController.getById('1')).rejects.toThrowError();
     });
   });
 
@@ -117,7 +111,7 @@ describe('SessionsService', () => {
       const body: Session = { _id: '1', user_id: '1', jwt: 'abcde1234#' };
 
       // Act
-      const result = await sessionService.update('1', body);
+      const result = await sessionController.update('1', body);
 
       // Assert
       expect(result).toEqual(updatedSession);
@@ -132,7 +126,7 @@ describe('SessionsService', () => {
       jest.spyOn(sessionService, 'update').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(sessionService.update(body._id, body)).rejects.toThrowError();
+      expect(sessionController.update(body._id, body)).rejects.toThrowError();
     });
   });
 
@@ -144,7 +138,7 @@ describe('SessionsService', () => {
       };
 
       // Act
-      const result = await sessionService.delete(id._id);
+      const result = await sessionController.delete(id._id);
 
       // Assert
       expect(result).toBeUndefined();
@@ -159,7 +153,7 @@ describe('SessionsService', () => {
       jest.spyOn(sessionService, 'delete').mockRejectedValueOnce(new Error());
 
       // Assert
-      expect(sessionService.delete(id._id)).rejects.toThrowError();
+      expect(sessionController.delete(id._id)).rejects.toThrowError();
     });
   });
 });

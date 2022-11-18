@@ -8,8 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Session } from './shared/session';
-import { SessionService } from './shared/session.service';
+import { Session } from '../models/session';
+import { SessionService } from '../services/session.service';
 
 @ApiTags('sessions')
 @ApiBearerAuth('JWT-auth')

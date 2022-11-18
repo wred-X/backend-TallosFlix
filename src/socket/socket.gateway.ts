@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Comment } from '../comments/shared/comment';
-import { Movie } from '../movies/shared/movie';
+import { Movie } from '../movies/model/movie';
 import { User } from '../users/shared/user';
 
 @Injectable()
@@ -74,6 +74,4 @@ export class SocketGateway
   emitAllLikes(liked: any) {
     this.server.emit('all-likes', { liked });
   }
-
-
 }

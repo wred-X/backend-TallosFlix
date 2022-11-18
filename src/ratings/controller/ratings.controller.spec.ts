@@ -210,7 +210,9 @@ describe('RatingsController', () => {
       // Arrange
       const body: Rate = { user_id: '1', rate: 5 };
 
-      jest.spyOn(ratingService, 'updateRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
       expect(ratingController.addRate('1', body)).rejects.toThrowError();
@@ -238,7 +240,9 @@ describe('RatingsController', () => {
       const body: Rate = { user_id: '1', rate: 5 };
 
       jest.spyOn(ratingService, 'delete').mockRejectedValueOnce(new Error());
-      jest.spyOn(ratingService, 'updateRate').mockRejectedValueOnce(new Error());
+      jest
+        .spyOn(ratingService, 'updateRate')
+        .mockRejectedValueOnce(new Error());
 
       // Assert
       expect(ratingController.update('1', body)).rejects.toThrowError();

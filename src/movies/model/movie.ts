@@ -272,6 +272,6 @@ export class Movie {
     // this.website = todo?.website;
     // this.writers = todo?.writers;
     // this.trailer = todo?.trailer;
-    Object.assign(this, todo)
+    Object.assign(this, todo);
   }
 }

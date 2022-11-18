@@ -16,8 +16,16 @@ export class RatingsController {
   }
 
   @Get(':id')
-  async getById(@Param('id') user_Id: string): Promise<Rating[]> {
+  async getById(@Param('id') user_Id: string): Promise<object[]> {
     return await this.ratingService.getById(user_Id);
+  }
+
+  @Post('myRate/:id')
+  async rateById(
+    @Param('id') user_Id: string,
+    @Body() movie: { movie_id: string }
+  ): Promise<Rating[]> {
+    return await this.ratingService.rateById(user_Id, movie.movie_id);
   }
 
   @Get('movie/:id')
@@ -31,16 +39,13 @@ export class RatingsController {
   }
 
   @Post()
-  async create(@Body() rating: Rating){
+  async create(@Body() rating: Rating) {
     return await this.ratingService.create(rating);
   }
 
   @ApiBody({ type: Rate })
   @Put('/add/:id')
-  async addRate(
-    @Param('id') id: string,
-    @Body() rating: Rate
-  ){
+  async addRate(@Param('id') id: string, @Body() rating: Rate) {
     return this.ratingService.updateRate(id, rating);
   }
 
@@ -53,7 +58,7 @@ export class RatingsController {
 
   @ApiBody({ type: Rate })
   @Put('/update/:id')
-  async update(@Param('id') id: string, @Body() rating: Rate){
+  async update(@Param('id') id: string, @Body() rating: Rate) {
     await this.ratingService.delete(id, rating);
     return this.ratingService.updateRate(id, rating);
   }
