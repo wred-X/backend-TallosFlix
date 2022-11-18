@@ -137,8 +137,8 @@ export class RatingService {
   async delete(id: string, rating: Rate) {
     const user_Id = rating.user_id;
     try {
-      return await this.ratingModel.findByIdAndUpdate(
-        { _id: id },
+      return await this.ratingModel.findOneAndUpdate(
+        { movie_id: id },
         {
           $pull: { allRate: { user_id: user_Id, rate: { $lt: 6 } } },
         },
