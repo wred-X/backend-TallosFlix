@@ -18,6 +18,7 @@ services:
        - kong-net
     ports:
       - '4000:4000'
+      - '3008:3008'
 
 
 

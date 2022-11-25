@@ -12,13 +12,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { updateMovie } from '../model/update';
 import { Movie } from '../model/movie';
 import { MovieService } from '../services/movie.service';
 import { Roles } from '../../autentications/decorators/role-decorator';
 import { IsPublic } from '../../autentications/decorators/is-public-decorator';
 import { Pages } from '../model/pages';
+import { Cast } from '../model/cast';
 @ApiTags('movies')
 @ApiBearerAuth('JWT-auth')
 @Controller('movies')
@@ -57,6 +58,12 @@ export class MoviesController {
   @UseGuards(RolesGuard)
   async create(@Body() movie: Movie) {
     return await this.movieService.create(movie);
+  }
+
+  @ApiBody({ type: Cast })
+  @Post('/cast')
+  async getCast(@Body() cast: { actor: string }): Promise<Movie[]> {
+    return await this.movieService.getCast(cast.actor);
   }
 
   @Put(':id')
