@@ -84,6 +84,14 @@ export class MovieService {
     };
   }
 
+  async getCast(value: string) {
+    const actors = value;
+    const findMovies = await this.movieModel.find({
+      cast: { $regex: actors, $options: 'i' },
+    });
+    return findMovies;
+  }
+
   async create(movie: Movie) {
     try {
       const createdMovie = new this.movieModel(movie);
