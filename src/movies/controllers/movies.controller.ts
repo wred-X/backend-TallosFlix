@@ -60,13 +60,12 @@ export class MoviesController {
     return await this.movieService.create(movie);
   }
 
+  @IsPublic()
   @ApiBody({ type: Cast })
   @Post('/cast')
   async getCast(@Body() cast: { actor: string }): Promise<Movie[]> {
     return await this.movieService.getCast(cast.actor);
   }
-
-  // teste aaaaaaaaaaaaaaaaa
 
   @Put(':id')
   @Roles(Role.ADMIN)
